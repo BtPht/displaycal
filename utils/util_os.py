@@ -5,7 +5,6 @@ import errno
 import fnmatch
 import glob
 import importlib
-import locale
 import os
 import re
 import shutil

@@ -7,23 +7,37 @@ import sys
 import time
 import warnings
 
-from util_list import floatlist, strlist
-from util_str import safe_str, safe_unicode
-
 import config
 import localization as lang
-from config import (defaults, enc, get_argyll_display_number, get_default_dpi,
-                    get_display_number, get_display_rects, getcfg, geticon,
-                    scale_adjustment_factor, setcfg, writecfg)
+from config import (
+    defaults,
+    enc,
+    get_argyll_display_number,
+    get_default_dpi,
+    get_display_number,
+    get_display_rects,
+    getcfg,
+    geticon,
+    scale_adjustment_factor,
+    setcfg,
+    writecfg,
+)
 from debughelpers import handle_error
 from log import safe_print
 from meta import name as appname
 from options import debug
+from utils.util_list import floatlist, strlist
+from utils.util_str import safe_str, safe_unicode
 
 from .wxaddons import wx
 from .wxfixes import GenBitmapButton as BitmapButton
-from .wxwindows import (BaseApp, BitmapBackgroundPanel, ConfirmDialog,
-                        InfoDialog, InvincibleFrame)
+from .wxwindows import (
+    BaseApp,
+    BitmapBackgroundPanel,
+    ConfirmDialog,
+    InfoDialog,
+    InvincibleFrame,
+)
 
 try:
     import RealDisplaySizeMM as RDSMM

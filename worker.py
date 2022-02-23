@@ -58,13 +58,13 @@ if sys.platform == "win32":
 	from win32com.shell import shell as win32com_shell
 
 # custom
-from util_decimal import stripzeros
-from util_http import encode_multipart_formdata
-from util_io import (EncodedWriter, Files, GzipFileProper, LineBufferedStream,
-                     LineCache)
-from util_io import StringIOu as StringIO
-from util_io import TarFileProper
-from util_list import intlist, natsort
+from utils.util_decimal import stripzeros
+from utils.util_http import encode_multipart_formdata
+from utils.util_io import (EncodedWriter, Files, GzipFileProper,
+                           LineBufferedStream, LineCache)
+from utils.util_io import StringIOu as StringIO
+from utils.util_io import TarFileProper
+from utils.util_list import intlist, natsort
 
 from . import CGATS
 from . import ICCProfile as ICCP
@@ -113,12 +113,13 @@ from .patterngenerators import (PrismaPatternGeneratorClient,
 from .trash import trash
 
 if sys.platform == "darwin":
-	from util_mac import (get_machine_attributes, get_model_id, mac_app_activate,
-	                      mac_terminal_do_script, mac_terminal_set_colors,
-	                      osascript)
+	from utils.util_mac import (get_machine_attributes, get_model_id,
+	                            mac_app_activate, mac_terminal_do_script,
+	                            mac_terminal_set_colors, osascript)
 elif sys.platform == "win32":
 	import util_win
-	from util_win import run_as_admin, shell_exec, win_ver
+
+	from utils.util_win import run_as_admin, shell_exec, win_ver
 	try:
 		import wmi
 	except Exception as exception:
@@ -128,30 +129,32 @@ else:
 	# Linux
 	from .defaultpaths import xdg_data_home
 	try:
-		from util_dbus import (BUSTYPE_SESSION, DBusException, DBusObject,
-		                       dbus_session, dbus_system)
+		from utils.util_dbus import (BUSTYPE_SESSION, DBusException, DBusObject,
+		                             dbus_session, dbus_system)
 	except ImportError:
 		dbus_session = None
 		dbus_system = None
-from util_os import (dlopen, expanduseru, fname_ext, getenvu, is_superuser,
-                     launch_file, make_win32_compatible_long_path, mksfile,
-                     mkstemp_bypath, quote_args, safe_glob, which)
+from utils.util_os import (dlopen, expanduseru, fname_ext, getenvu,
+                           is_superuser, launch_file,
+                           make_win32_compatible_long_path, mksfile,
+                           mkstemp_bypath, quote_args, safe_glob, which)
 
 from . import colord
 
 if sys.platform not in ("darwin", "win32"):
-	from util_os import getgroups
+	from utils.util_os import getgroups
 if sys.platform == "win32" and sys.getwindowsversion() >= (6, ):
-	from util_os import win64_disable_file_system_redirection
+	from utils.util_os import win64_disable_file_system_redirection
 
-from util_str import (make_filename_safe, safe_asciize, safe_basestring,
-                      safe_str, safe_unicode, strtr, universal_newlines)
 from wxaddons import BetterCallLater, BetterWindowDisabler, wx
 from wxDisplayAdjustmentFrame import DisplayAdjustmentFrame
 from wxDisplayUniformityFrame import DisplayUniformityFrame
 from wxUntetheredFrame import UntetheredFrame
 from wxwindows import (ConfirmDialog, HtmlInfoDialog, InfoDialog,
                        ProgressDialog, SimpleTerminal, show_result_dialog)
+
+from utils.util_str import (make_filename_safe, safe_asciize, safe_basestring,
+                            safe_str, safe_unicode, strtr, universal_newlines)
 
 from .worker_base import (MP_Xicclu, WorkerBase, Xicclu, _mp_generate_B2A_clut,
                           _mp_xicclu, check_argyll_bin, get_argyll_util,

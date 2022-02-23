@@ -11,9 +11,6 @@ import exceptions
 if sys.platform == "win32":
     import win32api
 
-from util_decimal import stripzeros
-from util_os import islink, readlink, safe_glob, waccess
-from util_str import safe_unicode, strtr
 from wx import xrc
 
 import colormath
@@ -28,19 +25,36 @@ import xh_filebrowsebutton
 import xh_floatspin
 from argyll_cgats import cal_to_fake_profile
 from argyll_names import video_encodings
-from config import (defaults, get_data_path, get_verified_path, getcfg,
-                    geticon, hascfg, profile_ext, setcfg)
+from config import (
+    defaults,
+    get_data_path,
+    get_verified_path,
+    getcfg,
+    geticon,
+    hascfg,
+    profile_ext,
+    setcfg,
+)
 from log import safe_print
 from meta import name as appname
 from meta import version
 from options import debug
-from worker import (Error, Info, UnloggedInfo, UnloggedWarning,
-                    check_set_argyll_bin, get_current_profile_path,
-                    get_options_from_profile, show_result_dialog)
+from utils.util_decimal import stripzeros
+from utils.util_os import islink, readlink, safe_glob, waccess
+from utils.util_str import safe_unicode, strtr
+from worker import (
+    Error,
+    Info,
+    UnloggedInfo,
+    UnloggedWarning,
+    check_set_argyll_bin,
+    get_current_profile_path,
+    get_options_from_profile,
+    show_result_dialog,
+)
 
 from .wxfixes import TempXmlResource
-from .wxwindows import (BaseApp, BaseFrame, ConfirmDialog, FileDrop,
-                        InfoDialog, wx)
+from .wxwindows import BaseApp, BaseFrame, ConfirmDialog, FileDrop, InfoDialog, wx
 
 
 class LUT3DFrame(BaseFrame):

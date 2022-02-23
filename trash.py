@@ -67,7 +67,7 @@ else:
     from urllib.parse import quote
     import shutil
 
-from util_os import expanduseru, getenvu
+from utils.util_os import expanduseru, getenvu
 
 
 class TrashAborted(Exception):

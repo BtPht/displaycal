@@ -22,26 +22,47 @@ if sys.platform == "darwin":
 
 from time import sleep
 
-from util_list import intlist
-from util_str import wrap
 from wx.lib.agw import aui
 from wx.lib.intctrl import IntCtrl
 
 import ICCProfile as ICCP
 import localization as lang
-from config import (defaults, fs_enc, get_argyll_display_number,
-                    get_default_dpi, get_display_name, get_icon_bundle,
-                    getbitmap, getcfg, geticon, initcfg, profile_ext, setcfg)
+from config import (
+    defaults,
+    fs_enc,
+    get_argyll_display_number,
+    get_default_dpi,
+    get_display_name,
+    get_icon_bundle,
+    getbitmap,
+    getcfg,
+    geticon,
+    initcfg,
+    profile_ext,
+    setcfg,
+)
 from log import safe_print
 from meta import name as appname
-from worker import (Error, UnloggedError, Warn, Worker, get_argyll_util,
-                    show_result_dialog)
+from utils.util_list import intlist
+from utils.util_str import wrap
+from worker import (
+    Error,
+    UnloggedError,
+    Warn,
+    Worker,
+    get_argyll_util,
+    show_result_dialog,
+)
 
 from .wxfixes import GenBitmapButton as BitmapButton
-from .wxfixes import (get_bitmap_disabled, get_bitmap_hover,
-                      get_bitmap_pressed, wx, wx_Panel)
-from .wxwindows import (FlatShadedButton, HStretchStaticBitmap,
-                        TaskBarNotification)
+from .wxfixes import (
+    get_bitmap_disabled,
+    get_bitmap_hover,
+    get_bitmap_pressed,
+    wx,
+    wx_Panel,
+)
+from .wxwindows import FlatShadedButton, HStretchStaticBitmap, TaskBarNotification
 
 try:
     import RealDisplaySizeMM as RDSMM

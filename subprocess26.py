@@ -114,9 +114,15 @@ CTRL_BREAK_EVENT = 1
 STILL_ACTIVE = 259
 
 if mswindows:
-    from _subprocess import (CREATE_NEW_CONSOLE, STARTF_USESHOWWINDOW,
-                             STARTF_USESTDHANDLES, STD_ERROR_HANDLE,
-                             STD_INPUT_HANDLE, STD_OUTPUT_HANDLE, SW_HIDE)
+    from _subprocess import (
+        CREATE_NEW_CONSOLE,
+        STARTF_USESHOWWINDOW,
+        STARTF_USESTDHANDLES,
+        STD_ERROR_HANDLE,
+        STD_INPUT_HANDLE,
+        STD_OUTPUT_HANDLE,
+        SW_HIDE,
+    )
 
     CREATE_NEW_PROCESS_GROUP = 512
 

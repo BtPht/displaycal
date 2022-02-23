@@ -31,7 +31,7 @@ elif sys.platform == "darwin":
     import re
     from . import subprocess as sp
 
-from util_str import make_ascii_printable, safe_str, strtr
+from utils.util_str import make_ascii_printable, safe_str, strtr
 
 from . import config
 from .config import enc

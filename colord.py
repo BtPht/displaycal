@@ -23,9 +23,9 @@ except ImportError:
 else:
     cancellable = Gio.Cancellable.new()
 
-from util_dbus import BUSTYPE_SYSTEM, DBusException, DBusObject
-from util_os import which
-from util_str import safe_str, safe_unicode
+from utils.util_dbus import BUSTYPE_SYSTEM, DBusException, DBusObject
+from utils.util_os import which
+from utils.util_str import safe_str, safe_unicode
 
 from . import localization as lang
 

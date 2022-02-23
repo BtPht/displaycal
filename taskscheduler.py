@@ -40,13 +40,12 @@ Create a new task to be run under the current user account at logon:
 
 import codecs
 import os
-import sys
 
 import pywintypes
 import winerror
-from util_os import getenvu
-from util_str import indent, safe_str, safe_unicode, universal_newlines
-from util_win import run_as_admin
+
+from utils.util_str import indent, safe_str, safe_unicode, universal_newlines
+from utils.util_win import run_as_admin
 
 from . import subprocess as sp
 from . import tempfile
@@ -287,7 +286,9 @@ class TaskScheduler(object):
         if not self.__ts:
             import pythoncom
             from win32com.taskscheduler.taskscheduler import (
-                CLSID_CTaskScheduler, IID_ITaskScheduler)
+                CLSID_CTaskScheduler,
+                IID_ITaskScheduler,
+            )
 
             self.__ts = pythoncom.CoCreateInstance(
                 CLSID_CTaskScheduler,

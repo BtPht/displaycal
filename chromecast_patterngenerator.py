@@ -42,7 +42,8 @@ If you need support for Python 2 or Python 3.3 please use version 0.19.1
 
 from pychromecast import get_chromecasts
 from pychromecast.controllers import BaseController
-from util_str import safe_unicode
+
+from utils.util_str import safe_unicode
 
 from . import localization as lang
 from .log import safe_print

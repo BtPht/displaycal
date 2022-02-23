@@ -1,9 +1,9 @@
 import os
 import sys
 
-from . import subprocess26
-from .subprocess26 import Popen as _Popen
-from .subprocess26 import _args_from_interpreter_flags, list2cmdline
+import subprocess26
+from subprocess26 import Popen as _Popen
+from subprocess26 import _args_from_interpreter_flags, list2cmdline
 
 
 class Popen(_Popen):
@@ -28,4 +28,4 @@ class Popen(_Popen):
 subprocess26.Popen = Popen
 
 
-from .subprocess26 import *
+from subprocess26 import *

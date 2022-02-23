@@ -9,13 +9,13 @@ import threading
 from time import sleep
 
 import wx.lib.delayedresult as delayedresult
-from util_str import safe_str, safe_unicode, universal_newlines
 
 import config
 import localization as lang
 from config import confighome, getcfg, geticon, initcfg, setcfg, writecfg
 from meta import name as appname
 from safe_print import safe_print
+from utils.util_str import safe_str, safe_unicode, universal_newlines
 from wexpect import split_command_line
 
 from .wxaddons import wx

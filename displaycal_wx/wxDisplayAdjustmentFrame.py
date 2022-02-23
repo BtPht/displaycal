@@ -15,14 +15,19 @@ if sys.platform == "win32":
 elif sys.platform == "darwin":
     from platform import mac_ver
 
-from util_list import intlist
-from util_str import safe_unicode, wrap
-
 import audio
 import config
 import localization as lang
-from config import (enc, get_data_path, get_default_dpi, get_icon_bundle,
-                    getbitmap, getcfg, geticon, setcfg)
+from config import (
+    enc,
+    get_data_path,
+    get_default_dpi,
+    get_icon_bundle,
+    getbitmap,
+    getcfg,
+    geticon,
+    setcfg,
+)
 from lib.agw import labelbook
 from lib.agw.fmresources import *
 from lib.agw.pygauge import PyGauge
@@ -30,10 +35,19 @@ from log import get_file_logger, safe_print
 from meta import name as appname
 from options import debug
 from ordereddict import OrderedDict
+from utils.util_list import intlist
+from utils.util_str import safe_unicode, wrap
 
 from .wxaddons import wx
-from .wxwindows import (BaseApp, BaseFrame, FlatShadedButton, nav_keycodes,
-                        numpad_keycodes, processing_keycodes, wx_Panel)
+from .wxwindows import (
+    BaseApp,
+    BaseFrame,
+    FlatShadedButton,
+    nav_keycodes,
+    numpad_keycodes,
+    processing_keycodes,
+    wx_Panel,
+)
 
 BGCOLOUR = wx.Colour(0x33, 0x33, 0x33)
 BORDERCOLOUR = wx.Colour(0x22, 0x22, 0x22)

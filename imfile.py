@@ -7,7 +7,7 @@ import struct
 import time
 import zlib
 
-from util_str import safe_str
+from utils.util_str import safe_str
 
 from .meta import name as appname
 from .meta import version

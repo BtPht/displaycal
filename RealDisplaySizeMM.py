@@ -5,8 +5,8 @@ import platform
 import re
 import sys
 
-from util_dbus import BUSTYPE_SESSION, DBusException, DBusObject
-from util_x import get_display as _get_x_display
+from utils.util_dbus import BUSTYPE_SESSION, DBusException, DBusObject
+from utils.util_x import get_display as _get_x_display
 
 if sys.platform == "darwin":
     # Mac OS X has universal binaries in two flavors:

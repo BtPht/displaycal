@@ -17,17 +17,24 @@ import CGATS
 import colormath
 import config
 import localization as lang
-from config import (get_data_path, get_icon_bundle, getbitmap, getcfg, geticon,
-                    setcfg)
+from config import get_data_path, get_icon_bundle, getbitmap, getcfg, geticon, setcfg
 from log import get_file_logger, safe_print
 from meta import name as appname
 from options import debug, test, verbose
 
 from .wxaddons import wx
-from .wxwindows import (BaseApp, BaseFrame, BitmapBackgroundPanel,
-                        CustomCheckBox, CustomGrid, FlatShadedButton,
-                        nav_keycodes, numpad_keycodes, processing_keycodes,
-                        wx_Panel)
+from .wxwindows import (
+    BaseApp,
+    BaseFrame,
+    BitmapBackgroundPanel,
+    CustomCheckBox,
+    CustomGrid,
+    FlatShadedButton,
+    nav_keycodes,
+    numpad_keycodes,
+    processing_keycodes,
+    wx_Panel,
+)
 
 BGCOLOUR = wx.Colour(0x33, 0x33, 0x33)
 FGCOLOUR = wx.Colour(0x99, 0x99, 0x99)
@@ -732,10 +739,9 @@ if __name__ == "__main__":
     from _thread import start_new_thread
     from time import sleep
 
-    from util_io import Files
-
     import ICCProfile as ICCP
     import worker
+    from utils.util_io import Files
 
     class Subprocess:
         def send(self, bytes):

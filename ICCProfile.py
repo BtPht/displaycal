@@ -60,12 +60,12 @@ try:
 except ImportError:
     from .safe_print import safe_print
 
-from util_decimal import float2dec
-from util_list import intlist
-from util_str import hexunescape, safe_str, safe_unicode
+from utils.util_decimal import float2dec
+from utils.util_list import intlist
+from utils.util_str import hexunescape, safe_str, safe_unicode
 
 if sys.platform not in ("darwin", "win32"):
-    from util_x import get_display
+    from utils.util_x import get_display
 
     from .defaultpaths import xdg_config_dirs, xdg_config_home
     from .edid import get_edid
@@ -74,7 +74,7 @@ if sys.platform not in ("darwin", "win32"):
         from . import xrandr
     except ImportError:
         xrandr = None
-    from util_os import dlopen, which
+    from utils.util_os import dlopen, which
 elif sys.platform == "win32":
     import util_win
 
@@ -82,8 +82,7 @@ elif sys.platform == "win32":
         # WCS only available under Vista and later
         mscms = None
     else:
-        from .win_handles import (get_handle_name, get_handle_type,
-                                  get_process_handles)
+        from .win_handles import get_handle_name, get_handle_type, get_process_handles
 
         mscms = util_win._get_mscms_windll()
 
@@ -93,7 +92,7 @@ elif sys.platform == "win32":
         )
 
 elif sys.platform == "darwin":
-    from util_mac import osascript
+    from utils.util_mac import osascript
 
 
 # Gamut volumes in cubic colorspace units (L*a*b*) as reported by Argyll's

@@ -24,7 +24,7 @@ if sys.platform == "win32":
 if sys.platform == "win32":
     import win32api
 
-from util_str import safe_str, safe_unicode
+from utils.util_str import safe_str, safe_unicode
 
 from . import ICCProfile as ICCP
 from . import colormath

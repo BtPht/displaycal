@@ -5,8 +5,6 @@ import os
 import sys
 from time import gmtime, strftime
 
-from util_list import natsort_key_factory
-from util_str import strtr
 from wx import xrc
 
 import CGATS
@@ -21,6 +19,8 @@ import xh_hstretchstatbmp
 from config import get_data_path, getcfg, geticon, hascfg, initcfg, setcfg
 from log import safe_print
 from meta import name as appname
+from utils.util_list import natsort_key_factory
+from utils.util_str import strtr
 from worker import Error, get_current_profile_path, show_result_dialog
 
 from .wxfixes import TempXmlResource

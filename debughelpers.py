@@ -3,7 +3,7 @@
 import sys
 import traceback
 
-from util_str import box, safe_unicode
+from utils.util_str import box, safe_unicode
 
 from . import config
 from .config import fs_enc

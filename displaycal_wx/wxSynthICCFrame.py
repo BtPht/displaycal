@@ -4,9 +4,6 @@ import math
 import os
 import sys
 
-from util_io import Files
-from util_os import waccess
-from util_str import safe_str
 from wx import xrc
 
 import CGATS
@@ -19,21 +16,29 @@ import worker
 import xh_bitmapctrls
 import xh_floatspin
 from argyll_cgats import extract_device_gray_primaries
-from config import (enc, get_data_path, get_verified_path, getcfg, hascfg,
-                    profile_ext, setcfg)
+from config import (
+    enc,
+    get_data_path,
+    get_verified_path,
+    getcfg,
+    hascfg,
+    profile_ext,
+    setcfg,
+)
 from debughelpers import Error
 from ICCProfile import ICCProfile
 from log import log, safe_print
 from meta import name as appname
 from options import debug
 from ordereddict import OrderedDict
-from worker import (Error, FilteredStream, LineBufferedStream,
-                    show_result_dialog)
+from utils.util_io import Files
+from utils.util_os import waccess
+from utils.util_str import safe_str
+from worker import Error, FilteredStream, LineBufferedStream, show_result_dialog
 
 from .wxfixes import TempXmlResource
 from .wxLUT3DFrame import LUT3DFrame
-from .wxwindows import (BaseApp, BaseFrame, ConfirmDialog, FileDrop,
-                        InfoDialog, wx)
+from .wxwindows import BaseApp, BaseFrame, ConfirmDialog, FileDrop, InfoDialog, wx
 
 
 class SynthICCFrame(BaseFrame):

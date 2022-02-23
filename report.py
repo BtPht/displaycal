@@ -7,7 +7,7 @@ import shutil
 import sys
 from time import strftime
 
-from util_str import safe_unicode
+from utils.util_str import safe_unicode
 
 from . import jspacker
 from . import localization as lang

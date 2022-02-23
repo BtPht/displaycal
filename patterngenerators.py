@@ -10,14 +10,25 @@ import threading
 import urllib.error
 import urllib.parse
 import urllib.request
-from socket import (AF_INET, SHUT_RDWR, SO_BROADCAST, SO_REUSEADDR, SOCK_DGRAM,
-                    SOCK_STREAM, SOL_SOCKET, error, gethostbyname, gethostname,
-                    socket, timeout)
+from socket import (
+    AF_INET,
+    SHUT_RDWR,
+    SO_BROADCAST,
+    SO_REUSEADDR,
+    SOCK_DGRAM,
+    SOCK_STREAM,
+    SOL_SOCKET,
+    error,
+    gethostbyname,
+    gethostname,
+    socket,
+    timeout,
+)
 from socketserver import TCPServer
 from time import sleep
 
-from util_http import encode_multipart_formdata
-from util_str import safe_unicode
+from utils.util_http import encode_multipart_formdata
+from utils.util_str import safe_unicode
 
 from . import localization as lang
 from . import webwin

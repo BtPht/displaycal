@@ -5,7 +5,7 @@ import codecs
 import json
 import os
 
-from util_str import safe_str, safe_unicode
+from utils.util_str import safe_str, safe_unicode
 
 from .config import get_data_path
 from .debughelpers import handle_error

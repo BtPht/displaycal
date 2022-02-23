@@ -14,13 +14,12 @@ import re
 import string
 import sys
 from decimal import Decimal
-from time import gmtime, strftime, timezone
 
 if sys.platform == "win32":
-    import winreg
+    pass
 
-from .argyll_names import intents, observers, video_encodings, viewconds
-from .defaultpaths import appdata, commonappdata
+from argyll_names import intents, observers, video_encodings, viewconds
+from defaultpaths import appdata, commonappdata
 
 if sys.platform == "win32":
     from .defaultpaths import commonprogramfiles
@@ -35,19 +34,16 @@ else:
         xdg_data_dirs,
     )
 
-from util_io import StringIOu as StringIO
-from util_os import (expanduseru, expandvarsu, getenvu, is_superuser,
-                     listdir_re, which)
-from util_str import create_replace_function, safe_unicode, strtr
+from utils.util_io import StringIOu as StringIO
+from utils.util_os import expanduseru, getenvu, is_superuser, listdir_re, which
+from utils.util_str import create_replace_function, safe_unicode, strtr
 
-from . import colormath, encodedstdio
-from .defaultpaths import (autostart, autostart_home, home, iccprofiles,
-                           iccprofiles_home)
-from .meta import build, lastmod
+from . import colormath
+from .defaultpaths import iccprofiles, iccprofiles_home
 from .meta import name as appname
 from .meta import version
-from .options import ascii, debug, verbose
-from .safe_print import enc, fs_enc, original_codepage
+from .options import ascii, debug
+from .safe_print import fs_enc
 
 # Runtime configuration
 
@@ -705,7 +701,7 @@ def runtimeconfig(pyfile):
 
     """
     global safe_print, safe_log
-    from .log import safe_log, safe_print, setup_logging
+    from .log import safe_print, setup_logging
 
     setup_logging(logdir, pyname, pyext, confighome=confighome)
     if debug:
@@ -1912,7 +1908,7 @@ def set_default_app_dpi():
             dpi = wx.ScreenDC().GetPPI()[0]
         else:
             # Linux
-            from util_os import which
+            from utils.util_os import which
 
             txt_scale = None
             # XDG_CURRENT_DESKTOP delimiter is colon (':')
@@ -1953,7 +1949,7 @@ def get_hidpi_scaling_factor():
         return 1.0  # Handled via app DPI
     else:
         # Linux
-        from util_os import which
+        from utils.util_os import which
 
         if which("xrdb"):
             from . import subprocess as sp

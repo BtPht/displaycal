@@ -19,9 +19,8 @@ from . import tempfile
 if sys.platform == "win32":
     import win32api
 
-from util_os import getenvu, quote_args, which
-from util_str import (make_filename_safe, safe_basestring, safe_str,
-                      safe_unicode)
+from utils.util_os import getenvu, quote_args, which
+from utils.util_str import make_filename_safe, safe_basestring, safe_str, safe_unicode
 
 from . import CGATS
 from . import ICCProfile as ICCP
@@ -30,11 +29,21 @@ from . import localization as lang
 from .argyll_names import altnames as argyll_altnames
 from .argyll_names import names as argyll_names
 from .argyll_names import optional as argyll_optional
-from .colormath import (VidRGB_to_cLUT65, VidRGB_to_eeColor, cLUT65_to_VidRGB,
-                        eeColor_to_VidRGB)
+from .colormath import (
+    VidRGB_to_cLUT65,
+    VidRGB_to_eeColor,
+    cLUT65_to_VidRGB,
+    eeColor_to_VidRGB,
+)
 from .config import exe_ext, fs_enc, get_data_path, getcfg, profile_ext
-from .debughelpers import (Error, Info, UnloggedError, UnloggedInfo,
-                           UnloggedWarning, Warn)
+from .debughelpers import (
+    Error,
+    Info,
+    UnloggedError,
+    UnloggedInfo,
+    UnloggedWarning,
+    Warn,
+)
 from .log import LogFile, safe_print
 from .meta import name as appname
 from .multiprocess import mp, pool_slice

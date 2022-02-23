@@ -35,33 +35,70 @@ if sys.platform == "win32":
     import win32process
     import win32ts
     import winerror
-    from util_list import natsort_key_factory
-    from util_os import (getenvu, is_superuser, islink, quote_args, readlink,
-                         safe_glob, which)
-    from util_str import safe_asciize, safe_str, safe_unicode
-    from util_win import (DISPLAY_DEVICE_ACTIVE, MONITORINFOF_PRIMARY,
-                          USE_REGISTRY, calibration_management_isenabled,
-                          enable_per_user_profiles, get_active_display_device,
-                          get_active_display_devices, get_display_devices,
-                          get_file_info, get_first_display_device, get_pids,
-                          get_process_filename, get_real_display_devices_info,
-                          get_windows_error, per_user_profiles_isenabled,
-                          run_as_admin, win_ver)
     from wxaddons import CustomGridCellEvent
     from wxfixes import ThemedGenButton, set_bitmap_labels
-    from wxwindows import (BaseApp, BaseFrame, ConfirmDialog,
-                           CustomCellBoolRenderer, CustomGrid, InfoDialog,
-                           TaskBarNotification, get_dialogs,
-                           show_result_dialog, wx)
+    from wxwindows import (
+        BaseApp,
+        BaseFrame,
+        ConfirmDialog,
+        CustomCellBoolRenderer,
+        CustomGrid,
+        InfoDialog,
+        TaskBarNotification,
+        get_dialogs,
+        show_result_dialog,
+        wx,
+    )
+
+    from utils.util_list import natsort_key_factory
+    from utils.util_os import (
+        getenvu,
+        is_superuser,
+        islink,
+        quote_args,
+        readlink,
+        safe_glob,
+        which,
+    )
+    from utils.util_str import safe_asciize, safe_str, safe_unicode
+    from utils.util_win import (
+        DISPLAY_DEVICE_ACTIVE,
+        MONITORINFOF_PRIMARY,
+        USE_REGISTRY,
+        calibration_management_isenabled,
+        enable_per_user_profiles,
+        get_active_display_device,
+        get_active_display_devices,
+        get_display_devices,
+        get_file_info,
+        get_first_display_device,
+        get_pids,
+        get_process_filename,
+        get_real_display_devices_info,
+        get_windows_error,
+        per_user_profiles_isenabled,
+        run_as_admin,
+        win_ver,
+    )
 
     from . import ICCProfile as ICCP
     from . import madvr
     from . import subprocess as sp
     from .colord import device_id_from_edid
     from .colormath import smooth_avg
-    from .config import (autostart, autostart_home, enc, exe, exedir,
-                         get_data_path, get_default_dpi, get_icon_bundle,
-                         geticon, iccprofiles, pydir)
+    from .config import (
+        autostart,
+        autostart_home,
+        enc,
+        exe,
+        exedir,
+        get_data_path,
+        get_default_dpi,
+        get_icon_bundle,
+        geticon,
+        iccprofiles,
+        pydir,
+    )
     from .debughelpers import Error, UnloggedError, handle_error
     from .edid import get_edid
     from .meta import domain
@@ -1927,7 +1964,7 @@ class ProfileLoader(object):
                 app.MainLoop()
 
     def apply_profiles(self, event=None, index=None):
-        from util_os import dlopen, which
+        from utils.util_os import dlopen, which
 
         from .worker import Worker, get_argyll_util
 

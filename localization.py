@@ -6,8 +6,8 @@ import os
 import re
 import sys
 
-from util_os import expanduseru
-from util_str import safe_unicode
+from utils.util_os import expanduseru
+from utils.util_str import safe_unicode
 
 from .config import data_dirs, defaults, getcfg, storage
 from .debughelpers import handle_error

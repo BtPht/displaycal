@@ -1,52 +1,47 @@
 import atexit
 import errno
 import glob
-import logging
 import os
 import platform
 import socket
+import subprocess as sp
 import sys
 import threading
 from time import sleep
 
-from . import subprocess as sp
-
 if sys.platform == "darwin":
-    import posix
     from platform import mac_ver
 
-# Python version check
-from .meta import py_maxversion, py_minversion
+from config import (
+    appbasename,
+    confighome,
+    datahome,
+    enc,
+    exe_ext,
+    exename,
+    fs_enc,
+    get_data_path,
+    getcfg,
+    initcfg,
+    logdir,
+    pyname,
+    resfiles,
+    runtype,
+)
+from utils.util_os import FileLock
+from utils.util_str import safe_str, safe_unicode
 
-pyver = sys.version_info[:2]
-if pyver < py_minversion or pyver > py_maxversion:
-    raise RuntimeError(
-        "Need Python version >= %s <= %s, got %s"
-        % (
-            ".".join(str(n) for n in py_minversion),
-            ".".join(str(n) for n in py_maxversion),
-            sys.version.split()[0],
-        )
-    )
-
-from util_os import FileLock
-from util_str import safe_str, safe_unicode
-
-from .config import (appbasename, autostart_home, confighome, datahome, enc,
-                     exe, exe_ext, exedir, exename, fs_enc, get_data_path,
-                     getcfg, initcfg, isapp, isexe, logdir, pydir, pyname,
-                     pypath, resfiles, runtype)
 from .debughelpers import ResourceError, handle_error
 from .log import log, safe_print
 from .meta import VERSION, VERSION_BASE, VERSION_STRING, build
 from .meta import name as appname
 from .multiprocess import mp
-from .options import debug, verbose
+from .options import verbose
 
 if sys.platform == "win32":
     import ctypes
 
-    from util_win import win_ver
+    from utils.util_win import win_ver
 
 
 def _excepthook(etype, value, tb):
@@ -105,7 +100,7 @@ def _main(module, name, applockfilename, probe_ports=True):
             safe_print(exception)
         else:
             safe_print("Faulthandler", getattr(faulthandler, "__version__", ""))
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     if "phoenix" in wx.PlatformInfo:
         pass
@@ -442,7 +437,7 @@ def _main(module, name, applockfilename, probe_ports=True):
         else:
             lock.write(port)
         atexit.register(lambda: safe_print("Ran application exit handlers"))
-        from wxwindows import BaseApp
+        from displaycal_wx.wxwindows import BaseApp
 
         BaseApp.register_exitfunc(_exit, applockfilename, port)
         # Check for required resource files
@@ -494,19 +489,19 @@ def _main(module, name, applockfilename, probe_ports=True):
                 )
         # Initialize & run
         if module == "3DLUT-maker":
-            from wxLUT3DFrame import main
+            from displaycal_wx.wxLUT3DFrame import main
         elif module == "curve-viewer":
-            from wxLUTViewer import main
+            from displaycal_wx.wxLUTViewer import main
         elif module == "profile-info":
-            from wxProfileInfo import main
+            from displaycal_wx.wxProfileInfo import main
         elif module == "scripting-client":
-            from wxScriptingClient import main
+            from displaycal_wx.wxScriptingClient import main
         elif module == "synthprofile":
-            from wxSynthICCFrame import main
+            from displaycal_wx.wxSynthICCFrame import main
         elif module == "testchart-editor":
-            from wxTestchartEditor import main
+            from displaycal_wx.wxTestchartEditor import main
         elif module == "VRML-to-X3D-converter":
-            from wxVRML2X3D import main
+            from displaycal_wx.wxVRML2X3D import main
         elif module == "apply-profiles":
             from .profile_loader import main
         else:

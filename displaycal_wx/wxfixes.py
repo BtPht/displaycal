@@ -45,7 +45,6 @@ if wx.VERSION < wx_minversion:
     app.MainLoop()
     sys.exit()
 import wx.grid
-from util_str import safe_str
 from wx import xrc
 from wx.lib import platebtn
 from wx.lib.buttons import GenBitmapButton as _GenBitmapButton
@@ -53,6 +52,7 @@ from wx.lib.buttons import GenBitmapTextButton as _GenBitmapTextButton
 from wx.lib.buttons import ThemedGenButton as _ThemedGenButton
 
 from colormath import convert_range
+from utils.util_str import safe_str
 
 if not hasattr(wx.Window, "HasFocus"):
     # wxPython < 3.0

@@ -3,7 +3,7 @@
 
 import re
 
-from util_str import strtr
+from utils.util_str import strtr
 
 instruments = {
     # instrument names from Argyll source spectro/insttypes.c

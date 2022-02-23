@@ -16,7 +16,7 @@ except ImportError:
     build = lastmod = "0000-00-00T00:00:00.0Z"
     VERSION = None
 
-from .options import test_update
+from options import test_update
 
 if not VERSION or test_update:
     VERSION = VERSION_BASE = (0, 0, 0, 0)

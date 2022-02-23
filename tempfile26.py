@@ -153,7 +153,7 @@ def _candidate_tempdir_list():
 
     Unlike the _candidate_tempdir_list of tempfile.py from the stdlib, this one
     supports Unicode."""
-    from util_os import getenvu
+    from utils.util_os import getenvu
 
     dirlist = []
 

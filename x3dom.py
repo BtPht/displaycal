@@ -10,8 +10,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from util_io import GzipFileProper
-from util_str import StrList, create_replace_function, safe_unicode
+from utils.util_io import GzipFileProper
+from utils.util_str import StrList, create_replace_function, safe_unicode
 
 from . import colormath
 from . import localization as lang

@@ -7,7 +7,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from util_str import safe_str, safe_unicode
+from utils.util_str import safe_str, safe_unicode
 
 from . import localization as lang
 from .log import safe_print

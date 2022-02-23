@@ -7,7 +7,7 @@ import traceback
 from io import StringIO
 from os.path import basename, splitext
 
-from util_os import relpath, safe_glob, which
+from utils.util_os import relpath, safe_glob, which
 
 from .meta import name
 from .subprocess import call
@@ -24,8 +24,11 @@ if sys.platform == "win32":
     except NameError:
         try:
             import win32con
-            from pythoncom import (CLSCTX_INPROC_SERVER, CoCreateInstance,
-                                   IID_IPersistFile)
+            from pythoncom import (
+                CLSCTX_INPROC_SERVER,
+                CoCreateInstance,
+                IID_IPersistFile,
+            )
             from win32com.shell import shell
         except ImportError:
 

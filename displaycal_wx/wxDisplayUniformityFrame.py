@@ -12,22 +12,35 @@ import re
 import sys
 from time import sleep, strftime
 
-from util_os import launch_file, waccess
-
 import colormath
 import config
 import localization as lang
 import report
-from config import (get_display_number, get_display_rects, get_icon_bundle,
-                    get_verified_path, getbitmap, getcfg, setcfg)
+from config import (
+    get_display_number,
+    get_display_rects,
+    get_icon_bundle,
+    get_verified_path,
+    getbitmap,
+    getcfg,
+    setcfg,
+)
 from log import get_file_logger, safe_print
 from meta import name as appname
 from meta import version as appversion
+from utils.util_os import launch_file, waccess
 
 from .wxaddons import CustomEvent, wx
 from .wxMeasureFrame import MeasureFrame
-from .wxwindows import (BaseApp, BaseFrame, FlatShadedButton, nav_keycodes,
-                        numpad_keycodes, processing_keycodes, wx_Panel)
+from .wxwindows import (
+    BaseApp,
+    BaseFrame,
+    FlatShadedButton,
+    nav_keycodes,
+    numpad_keycodes,
+    processing_keycodes,
+    wx_Panel,
+)
 
 BGCOLOUR = wx.Colour(0x33, 0x33, 0x33)
 

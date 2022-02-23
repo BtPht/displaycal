@@ -7,8 +7,8 @@ import os
 import traceback
 from time import strftime
 
-from util_io import StringIOu as StringIO
-from util_str import safe_unicode
+from utils.util_io import StringIOu as StringIO
+from utils.util_str import safe_unicode
 
 from . import CGATS
 from . import ICCProfile as ICCP

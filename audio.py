@@ -21,8 +21,16 @@ import os
 import sys
 import threading
 import time
-from ctypes import (CFUNCTYPE, POINTER, Structure, c_int, c_uint8, c_uint16,
-                    c_uint32, c_void_p)
+from ctypes import (
+    CFUNCTYPE,
+    POINTER,
+    Structure,
+    c_int,
+    c_uint8,
+    c_uint16,
+    c_uint32,
+    c_void_p,
+)
 
 if sys.platform == "win32":
     try:
@@ -31,8 +39,8 @@ if sys.platform == "win32":
     except ImportError:
         win32api = None
 
-from util_os import dlopen, getenvu
-from util_str import safe_str, safe_unicode
+from utils.util_os import dlopen, getenvu
+from utils.util_str import safe_str, safe_unicode
 
 from .config import pydir
 from .log import safe_print

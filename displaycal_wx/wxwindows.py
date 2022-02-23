@@ -23,10 +23,6 @@ import zipfile
 from time import gmtime, sleep, strftime, time
 
 import util_str
-from util_io import StringIOu as StringIO
-from util_os import get_program_file, launch_file, waccess
-from util_str import box, safe_str, safe_unicode, wrap
-from util_xml import dict2xml
 
 import audio
 import config
@@ -52,6 +48,10 @@ from meta import name as appname
 from network import ScriptingClientSocket, get_network_addr
 from options import debug
 from ordereddict import OrderedDict
+from utils.util_io import StringIOu as StringIO
+from utils.util_os import get_program_file, launch_file, waccess
+from utils.util_str import box, safe_str, safe_unicode, wrap
+from utils.util_xml import dict2xml
 from wexpect import split_command_line
 
 from .wxaddons import (EVT_BETTERTIMER, BetterTimer, BetterWindowDisabler,

@@ -8,33 +8,54 @@ import sys
 import tempfile
 
 import numpy
-from util_decimal import float2dec
-from util_os import waccess
-from util_str import safe_unicode
 
 import colormath
 import config
 import ICCProfile as ICCP
 import localization as lang
 from argyll_cgats import cal_to_fake_profile, vcgt_to_cal
-from config import (fs_enc, get_argyll_display_number, get_data_path,
-                    get_display_profile, get_display_rects, get_verified_path,
-                    getcfg, geticon, setcfg)
+from config import (
+    fs_enc,
+    get_argyll_display_number,
+    get_data_path,
+    get_display_profile,
+    get_display_rects,
+    get_verified_path,
+    getcfg,
+    geticon,
+    setcfg,
+)
 from log import safe_print
 from meta import name as appname
 from options import debug
 from ordereddict import OrderedDict
-from worker import (Error, UnloggedError, UnloggedInfo, Worker,
-                    get_argyll_util, make_argyll_compatible_path,
-                    show_result_dialog)
+from utils.util_decimal import float2dec
+from utils.util_os import waccess
+from utils.util_str import safe_unicode
+from worker import (
+    Error,
+    UnloggedError,
+    UnloggedInfo,
+    Worker,
+    get_argyll_util,
+    make_argyll_compatible_path,
+    show_result_dialog,
+)
 
 from . import wxenhancedplot as plot
 from .wxaddons import get_platform_window_decoration_size, wx
 from .wxfixes import GenBitmapButton as BitmapButton
 from .wxfixes import wx_Panel
 from .wxMeasureFrame import MeasureFrame
-from .wxwindows import (BaseApp, BaseFrame, BitmapBackgroundPanelText,
-                        CustomCheckBox, FileDrop, InfoDialog, TooltipWindow)
+from .wxwindows import (
+    BaseApp,
+    BaseFrame,
+    BitmapBackgroundPanelText,
+    CustomCheckBox,
+    FileDrop,
+    InfoDialog,
+    TooltipWindow,
+)
 
 BGCOLOUR = "#333333"
 FGCOLOUR = "#999999"

@@ -12,9 +12,9 @@ from codecs import EncodedFile
 from hashlib import md5
 from time import localtime, strftime, time
 
-from util_io import StringIOu as StringIO
-from util_os import safe_glob
-from util_str import safe_str, safe_unicode
+from utils.util_io import StringIOu as StringIO
+from utils.util_os import safe_glob
+from utils.util_str import safe_str, safe_unicode
 
 from .meta import name as appname
 from .meta import script2pywname

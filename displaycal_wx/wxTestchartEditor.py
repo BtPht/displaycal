@@ -12,10 +12,6 @@ import time
 if sys.platform == "win32":
     import win32file
 
-from util_io import StringIOu as StringIO
-from util_os import expanduseru, is_superuser, launch_file, waccess
-from util_str import safe_str, safe_unicode
-
 import CGATS
 import colormath
 import config
@@ -26,25 +22,52 @@ import localization as lang
 from argyll_cgats import ti3_to_ti1, verify_cgats
 from argyll_RGB2XYZ import RGB2XYZ as argyll_RGB2XYZ
 from argyll_RGB2XYZ import XYZ2RGB as argyll_XYZ2RGB
-from config import (defaults, get_current_profile, get_data_path,
-                    get_display_name, get_total_patches, get_verified_path,
-                    getbitmap, getcfg, geticon, hascfg, profile_ext, setcfg,
-                    writecfg)
+from config import (
+    defaults,
+    get_current_profile,
+    get_data_path,
+    get_display_name,
+    get_total_patches,
+    get_verified_path,
+    getbitmap,
+    getcfg,
+    geticon,
+    hascfg,
+    profile_ext,
+    setcfg,
+    writecfg,
+)
 from debughelpers import handle_error
 from log import safe_print
 from meta import name as appname
 from options import debug, tc_use_alternate_preview, test, verbose
 from ordereddict import OrderedDict
-from worker import (Error, Worker, check_file_isfile, check_set_argyll_bin,
-                    get_argyll_util, get_current_profile_path,
-                    show_result_dialog)
+from utils.util_io import StringIOu as StringIO
+from utils.util_os import expanduseru, is_superuser, launch_file, waccess
+from utils.util_str import safe_str, safe_unicode
+from worker import (
+    Error,
+    Worker,
+    check_file_isfile,
+    check_set_argyll_bin,
+    get_argyll_util,
+    get_current_profile_path,
+    show_result_dialog,
+)
 
 from .wxaddons import CustomEvent, CustomGridCellEvent, wx
 from .wxfixes import GenBitmapButton as BitmapButton
 from .wxMeasureFrame import get_default_size
-from .wxwindows import (BaseApp, BaseFrame, ConfirmDialog, CustomGrid,
-                        FileBrowseBitmapButtonWithChoiceHistory, FileDrop,
-                        InfoDialog, get_gradient_panel)
+from .wxwindows import (
+    BaseApp,
+    BaseFrame,
+    ConfirmDialog,
+    CustomGrid,
+    FileBrowseBitmapButtonWithChoiceHistory,
+    FileDrop,
+    InfoDialog,
+    get_gradient_panel,
+)
 
 
 def swap_dict_keys_values(mydict):

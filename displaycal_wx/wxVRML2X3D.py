@@ -3,14 +3,13 @@
 import os
 import sys
 
-from util_os import launch_file, make_win32_compatible_long_path, waccess
-from util_str import safe_unicode
-
 import config
 import localization as lang
 import x3dom
 from meta import name as appname
 from safe_print import safe_print
+from utils.util_os import launch_file, make_win32_compatible_long_path, waccess
+from utils.util_str import safe_unicode
 
 gui = "wx" in sys.modules
 

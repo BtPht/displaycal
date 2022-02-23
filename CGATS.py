@@ -12,9 +12,9 @@ import os
 import re
 import sys
 
-from util_io import GzipFileProper
-from util_io import StringIOu as StringIO
-from util_str import safe_unicode
+from utils.util_io import GzipFileProper
+from utils.util_io import StringIOu as StringIO
+from utils.util_str import safe_unicode
 
 from . import colormath
 from .log import safe_print

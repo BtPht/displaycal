@@ -67,13 +67,39 @@ from . import ICCProfile as ICCP
 from . import audio, ccmx, colord, colormath, config
 from . import localization as lang
 from . import madvr, pyi_md5pickuphelper, report
-from .config import (appbasename, autostart, autostart_home, build, defaults,
-                     enc, exe, exe_ext, fs_enc, get_ccxx_testchart,
-                     get_current_profile, get_data_path, get_display_profile,
-                     get_total_patches, get_verified_path, getbitmap, getcfg,
-                     geticon, hascfg, initcfg, is_ccxx_testchart, is_profile,
-                     isapp, isexe, profile_ext, pydir, resfiles, script_ext,
-                     setcfg, setcfg_cond, writecfg)
+from .config import (
+    appbasename,
+    autostart,
+    autostart_home,
+    build,
+    defaults,
+    enc,
+    exe,
+    exe_ext,
+    fs_enc,
+    get_ccxx_testchart,
+    get_current_profile,
+    get_data_path,
+    get_display_profile,
+    get_total_patches,
+    get_verified_path,
+    getbitmap,
+    getcfg,
+    geticon,
+    hascfg,
+    initcfg,
+    is_ccxx_testchart,
+    is_profile,
+    isapp,
+    isexe,
+    profile_ext,
+    pydir,
+    resfiles,
+    script_ext,
+    setcfg,
+    setcfg_cond,
+    writecfg,
+)
 
 # Custom modules
 
@@ -84,23 +110,29 @@ elif sys.platform == "darwin":
     import util_mac
 
 from . import wexpect
-from .argyll_cgats import (cal_to_fake_profile, can_update_cal,
-                           extract_cal_from_profile, ti3_to_ti1,
-                           verify_ti1_rgb_xyz)
+from .argyll_cgats import (
+    cal_to_fake_profile,
+    can_update_cal,
+    extract_cal_from_profile,
+    ti3_to_ti1,
+    verify_ti1_rgb_xyz,
+)
 from .argyll_instruments import get_canonical_instrument_name, instruments
 from .argyll_names import viewconds
-from .colormath import (XYZ2CCT, CIEDCCT2xyY, XYZ2Lab, XYZ2xyY,
-                        planckianCT2xyY, xyY2CCT)
-from .debughelpers import (ResourceError, getevtobjname, getevttype,
-                           handle_error)
+from .colormath import XYZ2CCT, CIEDCCT2xyY, XYZ2Lab, XYZ2xyY, planckianCT2xyY, xyY2CCT
+from .debughelpers import ResourceError, getevtobjname, getevttype, handle_error
 from .edid import get_manufacturer_name, pnpidcache
 from .log import log, logbuffer, safe_print
-from .meta import (VERSION, VERSION_BASE, author, domain,
-                   get_latest_chglog_entry)
+from .meta import VERSION, VERSION_BASE, author, domain, get_latest_chglog_entry
 from .meta import name as appname
 from .meta import version, version_short
-from .options import (debug, force_skip_initial_instrument_detection, test,
-                      test_update, verbose)
+from .options import (
+    debug,
+    force_skip_initial_instrument_detection,
+    test,
+    test_update,
+    verbose,
+)
 from .ordereddict import OrderedDict
 from .patterngenerators import WebWinHTTPPatternGeneratorServer
 
@@ -109,27 +141,65 @@ try:
 except ImportError:
     CCPG = None.__class__
 import util_x
-from util_decimal import float2dec, stripzeros
-from util_io import LineCache, StringIOu, TarFileProper
-from util_list import index_fallback_ignorecase, intlist, natsort
-from util_os import (dlopen, expanduseru, get_program_file, getenvu,
-                     is_superuser, launch_file, listdir_re, safe_glob, waccess,
-                     which)
-from util_str import (ellipsis, make_filename_safe, safe_str, safe_unicode,
-                      strtr, universal_newlines, wrap)
 from wxLUT3DFrame import LUT3DFrame
 
+from utils.util_decimal import float2dec, stripzeros
+from utils.util_io import LineCache, StringIOu, TarFileProper
+from utils.util_list import index_fallback_ignorecase, intlist, natsort
+from utils.util_os import (
+    dlopen,
+    expanduseru,
+    get_program_file,
+    getenvu,
+    is_superuser,
+    launch_file,
+    listdir_re,
+    safe_glob,
+    waccess,
+    which,
+)
+from utils.util_str import (
+    ellipsis,
+    make_filename_safe,
+    safe_str,
+    safe_unicode,
+    strtr,
+    universal_newlines,
+    wrap,
+)
+
 from .trash import TrashAborted, TrashcanUnavailableError, trash
-from .worker import (Error, FilteredStream, Info, UnloggedError, UnloggedInfo,
-                     UnloggedWarning, Warn, Worker, _applycal_bug_workaround,
-                     check_argyll_bin, check_create_dir, check_file_isfile,
-                     check_set_argyll_bin, check_ti3, check_ti3_criteria1,
-                     check_ti3_criteria2, get_arg, get_argyll_util,
-                     get_argyll_version, get_cfg_option_from_args,
-                     get_current_profile_path, get_options_from_cal,
-                     get_options_from_profile, get_options_from_ti3,
-                     http_request, make_argyll_compatible_path,
-                     parse_argument_string, set_argyll_bin, show_result_dialog)
+from .worker import (
+    Error,
+    FilteredStream,
+    Info,
+    UnloggedError,
+    UnloggedInfo,
+    UnloggedWarning,
+    Warn,
+    Worker,
+    _applycal_bug_workaround,
+    check_argyll_bin,
+    check_create_dir,
+    check_file_isfile,
+    check_set_argyll_bin,
+    check_ti3,
+    check_ti3_criteria1,
+    check_ti3_criteria2,
+    get_arg,
+    get_argyll_util,
+    get_argyll_version,
+    get_cfg_option_from_args,
+    get_current_profile_path,
+    get_options_from_cal,
+    get_options_from_profile,
+    get_options_from_ti3,
+    http_request,
+    make_argyll_compatible_path,
+    parse_argument_string,
+    set_argyll_bin,
+    show_result_dialog,
+)
 
 try:
     from wxLUTViewer import LUTFrame
@@ -149,27 +219,63 @@ try:
 except ImportError:
     ProfileInfoFrame = None
 import wxenhancedplot as plot
-from wxaddons import (BetterWindowDisabler, CustomEvent, CustomGridCellEvent,
-                      IdFactory, PopupMenu, wx)
-from wxfixes import (BitmapWithThemedButton, PlateButton, TempXmlResource,
-                     ThemedGenButton, get_bitmap_disabled, set_bitmap_labels,
-                     set_maxsize, wx_Panel)
+from wxaddons import (
+    BetterWindowDisabler,
+    CustomEvent,
+    CustomGridCellEvent,
+    IdFactory,
+    PopupMenu,
+    wx,
+)
+from wxfixes import (
+    BitmapWithThemedButton,
+    PlateButton,
+    TempXmlResource,
+    ThemedGenButton,
+    get_bitmap_disabled,
+    set_bitmap_labels,
+    set_maxsize,
+    wx_Panel,
+)
 from wxReportFrame import ReportFrame
 from wxSynthICCFrame import SynthICCFrame
 from wxTestchartEditor import TestchartEditor
 from wxVisualWhitepointEditor import VisualWhitepointEditor
-from wxwindows import (AboutDialog, AuiBetterTabArt, AutocompleteComboBox,
-                       BaseApp, BaseFrame, BetterStaticFancyText,
-                       BitmapBackgroundPanel, BitmapBackgroundPanelText,
-                       BorderGradientButton, ConfirmDialog,
-                       CustomCellBoolRenderer, CustomGrid,
-                       FileBrowseBitmapButtonWithChoiceHistory, FileDrop,
-                       FlatShadedButton, HtmlWindow, HyperLinkCtrl, InfoDialog,
-                       LogWindow, ProgressDialog, TabButton, TooltipWindow,
-                       get_dialogs, get_gradient_panel)
+from wxwindows import (
+    AboutDialog,
+    AuiBetterTabArt,
+    AutocompleteComboBox,
+    BaseApp,
+    BaseFrame,
+    BetterStaticFancyText,
+    BitmapBackgroundPanel,
+    BitmapBackgroundPanelText,
+    BorderGradientButton,
+    ConfirmDialog,
+    CustomCellBoolRenderer,
+    CustomGrid,
+    FileBrowseBitmapButtonWithChoiceHistory,
+    FileDrop,
+    FlatShadedButton,
+    HtmlWindow,
+    HyperLinkCtrl,
+    InfoDialog,
+    LogWindow,
+    ProgressDialog,
+    TabButton,
+    TooltipWindow,
+    get_dialogs,
+    get_gradient_panel,
+)
 
-from . import (floatspin, xh_bitmapctrls, xh_fancytext, xh_filebrowsebutton,
-               xh_floatspin, xh_hstretchstatbmp)
+from . import (
+    floatspin,
+    xh_bitmapctrls,
+    xh_fancytext,
+    xh_filebrowsebutton,
+    xh_floatspin,
+    xh_hstretchstatbmp,
+)
 
 # wxPython
 try:

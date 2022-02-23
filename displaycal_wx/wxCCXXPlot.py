@@ -4,8 +4,6 @@ import math
 import os
 import sys
 
-from util_str import make_filename_safe, safe_unicode
-
 import CGATS
 import colormath
 import config
@@ -16,6 +14,7 @@ from config import getcfg
 from debughelpers import UnloggedError
 from log import safe_print
 from meta import name as appname
+from utils.util_str import make_filename_safe, safe_unicode
 from worker_base import get_argyll_util
 
 from . import wxenhancedplot as plot

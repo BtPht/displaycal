@@ -62,15 +62,27 @@ import distutils.filelist
 distutils.filelist.findall = findall  # Fix findall bug in distutils
 
 
-from util_list import intlist
-from util_os import getenvu, relpath, safe_glob
-from util_str import safe_str
+from utils.util_list import intlist
+from utils.util_os import getenvu, relpath, safe_glob
+from utils.util_str import safe_str
 
 from .defaultpaths import autostart, autostart_home
-from .meta import (appstream_id, author, author_ascii, author_email,
-                   description, domain, longdesc, name, py_maxversion,
-                   py_minversion, script2pywname, version, version_tuple,
-                   wx_minversion)
+from .meta import (
+    appstream_id,
+    author,
+    author_ascii,
+    author_email,
+    description,
+    domain,
+    longdesc,
+    name,
+    py_maxversion,
+    py_minversion,
+    script2pywname,
+    version,
+    version_tuple,
+    wx_minversion,
+)
 
 appname = name
 
