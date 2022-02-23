@@ -59,6 +59,7 @@ fs_enc = get_encodings()[1]
 
 _listdir = os.listdir
 
+
 def listdir(path):
     paths = _listdir(path)
     if isinstance(path, str):

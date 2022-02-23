@@ -28,12 +28,12 @@ from config import (
 from utils.util_os import FileLock
 from utils.util_str import safe_str, safe_unicode
 
-from .debughelpers import ResourceError, handle_error
-from .log import log, safe_print
-from .meta import VERSION, VERSION_BASE, VERSION_STRING, build
-from .meta import name as appname
-from .multiprocess import mp
-from .options import verbose
+from debughelpers import ResourceError, handle_error
+from log import log, safe_print
+from meta import VERSION, VERSION_BASE, VERSION_STRING, build
+from meta import name as appname
+from multiprocess import mp
+from options import verbose
 
 
 def _excepthook(etype, value, tb):
@@ -64,7 +64,7 @@ def _main(module, name, applockfilename, probe_ports=True):
         if VERSION > VERSION_BASE:
             version += " Beta"
         safe_print(pyname + runtype, version, build)
-    safe_print(" ".join(platform.dist()), platform.machine())
+    safe_print(platform.platform())
     safe_print("Python " + sys.version)
     cafile = os.getenv("SSL_CERT_FILE")
     if cafile:

@@ -75,15 +75,12 @@ class SafePrinter:
         fn = kwargs.get("fn", self.fn)
         encoding = kwargs.get("encoding", self.encoding)
         strargs = []
-        if encoding:
-            cls = str
-        else:
-            cls = str
+        cls = str
         for arg in args:
             if not isinstance(arg, cls):
                 arg = safe_unicode(arg)
             if isinstance(arg, str) and encoding:
-                arg = arg.encode(encoding, "asciize")
+                arg = arg  # arg.encode(encoding, "asciize")
             strargs.append(arg)
         line = sep.join(strargs).rstrip(end)
         if pad is not False:

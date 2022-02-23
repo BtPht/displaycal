@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Runtime configuration and user settings parser
 """
@@ -15,69 +13,46 @@ import string
 import sys
 from decimal import Decimal
 
-if sys.platform == "win32":
-    pass
-
 from argyll_names import intents, observers, video_encodings, viewconds
 from defaultpaths import appdata, commonappdata
 
-if sys.platform == "win32":
-    from .defaultpaths import commonprogramfiles
-elif sys.platform == "darwin":
-    from .defaultpaths import library, library_home, prefs, prefs_home
-else:
-    from .defaultpaths import (
-        xdg_config_dir_default,
-        xdg_config_home,
-        xdg_data_home,
-        xdg_data_home_default,
-        xdg_data_dirs,
-    )
+from defaultpaths import (
+    xdg_config_dir_default,
+    xdg_config_home,
+    xdg_data_home,
+    xdg_data_home_default,
+    xdg_data_dirs,
+)
 
 from utils.util_io import StringIOu as StringIO
 from utils.util_os import expanduseru, getenvu, is_superuser, listdir_re, which
 from utils.util_str import create_replace_function, safe_unicode, strtr
 
-from . import colormath
-from .defaultpaths import iccprofiles, iccprofiles_home
-from .meta import name as appname
-from .meta import version
-from .options import ascii, debug
-from .safe_print import fs_enc
+import colormath
+from defaultpaths import iccprofiles, iccprofiles_home
+from meta import name as appname
+from meta import version
+from options import ascii, debug
+from safe_print import fs_enc
 
 # Runtime configuration
 
-if ascii:
-    enc = "ASCII"
+enc = "UTF-8"
 
-exe = str(sys.executable, fs_enc)
+exe = sys.executable
 exedir = os.path.dirname(exe)
 exename = os.path.basename(exe)
 
-isexe = sys.platform != "darwin" and getattr(sys, "frozen", False)
-
-if isexe and os.getenv("_MEIPASS2"):
-    os.environ["_MEIPASS2"] = os.getenv("_MEIPASS2").replace("/", os.path.sep)
-
 pyfile = (
     exe
-    if isexe
+    if False
     else (os.path.isfile(sys.argv[0]) and sys.argv[0])
     or os.path.join(os.path.dirname(__file__), "main.py")
 )
-pypath = exe if isexe else os.path.abspath(str(pyfile, fs_enc))
-# Mac OS X: isapp should only be true for standalone, not 0install
-isapp = (
-    sys.platform == "darwin"
-    and exe.split(os.path.sep)[-3:-1] == ["Contents", "MacOS"]
-    and os.path.exists(os.path.join(exedir, "..", "Resources", "xrc"))
-)
-if isapp:
-    pyname, pyext = os.path.splitext(exe.split(os.path.sep)[-4])
-    pydir = os.path.normpath(os.path.join(exedir, "..", "Resources"))
-else:
-    pyname, pyext = os.path.splitext(os.path.basename(pypath))
-    pydir = os.path.dirname(exe if isexe else os.path.abspath(str(__file__, fs_enc)))
+pypath = os.path.abspath(pyfile)
+
+pyname, pyext = os.path.splitext(os.path.basename(pypath))
+pydir = os.path.dirname(os.path.abspath(__file__))
 
 data_dirs = [pydir]
 extra_data_dirs = []
@@ -94,64 +69,31 @@ if os.path.isdir(os.path.join(appdata, "dispcalGUI")):
     appbasename = "dispcalGUI"
     data_dirs.append(os.path.join(appdata, appname))
 datahome = os.path.join(appdata, appbasename)
-if sys.platform == "win32":
-    if pydir.lower().startswith(exedir.lower()) and pydir != exedir:
-        # We are installed in a subfolder of the executable directory (e.g.
-        # C:\Python26\Lib\site-packages\DisplayCAL) - we nee to add
-        # the executable directory to the data directories so files in
-        # subfolders of the executable directory which are not in
-        # Lib\site-packages\DisplayCAL can be found
-        # (e.g. Scripts\displaycal-apply-profiles)
-        data_dirs.append(exedir)
-    script_ext = ".cmd"
-    scale_adjustment_factor = 1.0
-    config_sys = os.path.join(commonappdata[0], appbasename)
-    confighome = os.path.join(appdata, appbasename)
-    logdir = os.path.join(datahome, "logs")
-    if appbasename != appname:
-        data_dirs.extend(os.path.join(dir_, appname) for dir_ in commonappdata)
-        data_dirs.append(os.path.join(commonprogramfiles, appname))
-    data_dirs.append(datahome)
-    data_dirs.extend(os.path.join(dir_, appbasename) for dir_ in commonappdata)
-    data_dirs.append(os.path.join(commonprogramfiles, appbasename))
-    exe_ext = ".exe"
-    profile_ext = ".icm"
-else:
-    if sys.platform == "darwin":
-        script_ext = ".command"
-        mac_create_app = True
-        scale_adjustment_factor = 1.0
-        config_sys = os.path.join(prefs, appbasename)
-        confighome = os.path.join(prefs_home, appbasename)
-        logdir = os.path.join(expanduseru("~"), "Library", "Logs", appbasename)
-        if appbasename != appname:
-            data_dirs.append(os.path.join(commonappdata[0], appname))
-        data_dirs.append(datahome)
-        data_dirs.append(os.path.join(commonappdata[0], appbasename))
-    else:
-        script_ext = ".sh"
-        scale_adjustment_factor = 1.0
-        config_sys = os.path.join(xdg_config_dir_default, appbasename)
-        confighome = os.path.join(xdg_config_home, appbasename)
-        logdir = os.path.join(datahome, "logs")
-        if appbasename != appname:
-            datahome_default = os.path.join(xdg_data_home_default, appname)
-            if not datahome_default in data_dirs:
-                data_dirs.append(datahome_default)
-            data_dirs.extend(os.path.join(dir_, appname) for dir_ in xdg_data_dirs)
-        data_dirs.append(datahome)
-        datahome_default = os.path.join(xdg_data_home_default, appbasename)
-        if not datahome_default in data_dirs:
-            data_dirs.append(datahome_default)
-        data_dirs.extend(os.path.join(dir_, appbasename) for dir_ in xdg_data_dirs)
-        extra_data_dirs.extend(
-            os.path.join(dir_, "argyllcms") for dir_ in xdg_data_dirs
-        )
-        extra_data_dirs.extend(
-            os.path.join(dir_, "color", "argyll") for dir_ in xdg_data_dirs
-        )
-    exe_ext = ""
-    profile_ext = ".icc"
+
+script_ext = ".sh"
+scale_adjustment_factor = 1.0
+config_sys = os.path.join(xdg_config_dir_default, appbasename)
+confighome = os.path.join(xdg_config_home, appbasename)
+logdir = os.path.join(datahome, "logs")
+if appbasename != appname:
+    datahome_default = os.path.join(xdg_data_home_default, appname)
+    if not datahome_default in data_dirs:
+        data_dirs.append(datahome_default)
+    data_dirs.extend(os.path.join(dir_, appname) for dir_ in xdg_data_dirs)
+data_dirs.append(datahome)
+datahome_default = os.path.join(xdg_data_home_default, appbasename)
+if not datahome_default in data_dirs:
+    data_dirs.append(datahome_default)
+data_dirs.extend(os.path.join(dir_, appbasename) for dir_ in xdg_data_dirs)
+extra_data_dirs.extend(
+    os.path.join(dir_, "argyllcms") for dir_ in xdg_data_dirs
+)
+extra_data_dirs.extend(
+    os.path.join(dir_, "color", "argyll") for dir_ in xdg_data_dirs
+)
+
+exe_ext = ""
+profile_ext = ".icc"
 
 storage = os.path.join(datahome, "storage")
 
@@ -255,7 +197,7 @@ def getbitmap(name, display_missing_icon=True, scale=True, use_mask=False):
     if not given).
 
     """
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     if not name in bitmaps:
         parts = name.split("/")
@@ -701,36 +643,28 @@ def runtimeconfig(pyfile):
 
     """
     global safe_print, safe_log
-    from .log import safe_print, setup_logging
+    from log import safe_print, setup_logging
 
     setup_logging(logdir, pyname, pyext, confighome=confighome)
     if debug:
         safe_print("[D] pydir:", pydir)
-    if isapp:
-        runtype = ".app"
-    elif isexe:
-        if debug:
-            safe_print("[D] _MEIPASS2 or pydir:", getenvu("_MEIPASS2", exedir))
-        if getenvu("_MEIPASS2", exedir) not in data_dirs:
-            data_dirs.insert(1, getenvu("_MEIPASS2", exedir))
-        runtype = exe_ext
-    else:
-        pydir_parent = os.path.dirname(pydir)
-        if debug:
-            safe_print(
-                "[D] dirname(os.path.abspath(sys.argv[0])):",
-                os.path.dirname(os.path.abspath(sys.argv[0])),
-            )
-            safe_print("[D] pydir parent:", pydir_parent)
-        if (
-            os.path.dirname(os.path.abspath(sys.argv[0])).decode(fs_enc) == pydir_parent
-            and pydir_parent not in data_dirs
-        ):
-            # Add the parent directory of the package directory to our list
-            # of data directories if it is the directory containing the
-            # currently run script (e.g. when running from source)
-            data_dirs.insert(1, pydir_parent)
-        runtype = pyext
+
+    pydir_parent = os.path.dirname(pydir)
+    if debug:
+        safe_print(
+            "[D] dirname(os.path.abspath(sys.argv[0])):",
+            os.path.dirname(os.path.abspath(sys.argv[0])),
+        )
+        safe_print("[D] pydir parent:", pydir_parent)
+    if (
+        os.path.dirname(os.path.abspath(sys.argv[0])) == pydir_parent
+        and pydir_parent not in data_dirs
+    ):
+        # Add the parent directory of the package directory to our list
+        # of data directories if it is the directory containing the
+        # currently run script (e.g. when running from source)
+        data_dirs.insert(1, pydir_parent)
+    runtype = pyext
     for dir_ in sys.path:
         if not isinstance(dir_, str):
             dir_ = str(dir_, fs_enc)

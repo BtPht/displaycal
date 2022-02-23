@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import traceback
 
 from utils.util_str import box, safe_unicode
-
-from . import config
-from .config import fs_enc
-from .log import logbuffer, safe_print
-from .meta import name as appname
-from .meta import wx_recversion
-from .options import debug
+from log import safe_print
+from meta import wx_recversion
+from options import debug
 
 wxEventTypes = {}
 
@@ -30,7 +25,7 @@ def getevtobjname(event, window=None):
 def getevttype(event):
     """Get and return the event object's type."""
     if not wxEventTypes:
-        from wxaddons import wx
+        from displaycal_wx.wxaddons import wx
 
         try:
             for name in dir(wx):
@@ -76,7 +71,7 @@ def handle_error(error, parent=None, silent=False, tb=True):
         safe_print(box(msg))
     if not silent:
         try:
-            from wxaddons import wx
+            from displaycal_wx.wxaddons import wx
 
             if wx.VERSION < wx_recversion:
                 msg += (
