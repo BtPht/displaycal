@@ -36,8 +36,8 @@ If you need support for Python 2 or Python 3.3 please use version 0.19.1
 from pychromecast import get_chromecasts
 from pychromecast.controllers import BaseController
 
-import localization as lang
-from log import safe_print
+from . import localization as lang
+from .log import safe_print
 from util_str import safe_unicode
 
 
@@ -124,12 +124,12 @@ class ChromeCastPatternGenerator(object):
 
 
 if __name__ == "__main__":
-	import config
+	from . import config
 
 	config.initcfg()
 	lang.init()
 
-	pg = ChromeCastPatternGenerator(u"Smörebröd")
+	pg = ChromeCastPatternGenerator("Smörebröd")
 
 	# Find our ChromeCast and connect to it, then launch the pattern generator
 	# app on the ChromeCast device

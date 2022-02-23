@@ -9,7 +9,7 @@ License: wxPython license
 
 """
 
-from __future__ import with_statement
+
 import colorsys
 import os
 import re
@@ -20,7 +20,7 @@ if sys.platform == "darwin":
 	from platform import mac_ver
 from time import sleep
 
-from wxfixes import wx
+from .wxfixes import wx
 
 from wx.lib.agw import aui
 from wx.lib.intctrl import IntCtrl
@@ -35,9 +35,9 @@ from util_list import intlist
 from util_str import wrap
 from worker import (Error, UnloggedError, Warn, Worker, get_argyll_util,
                     show_result_dialog)
-from wxfixes import (wx_Panel, GenBitmapButton as BitmapButton,
+from .wxfixes import (wx_Panel, GenBitmapButton as BitmapButton,
                      get_bitmap_disabled, get_bitmap_hover, get_bitmap_pressed)
-from wxwindows import FlatShadedButton, HStretchStaticBitmap, TaskBarNotification
+from .wxwindows import FlatShadedButton, HStretchStaticBitmap, TaskBarNotification
 import localization as lang
 import ICCProfile as ICCP
 try:
@@ -1650,7 +1650,7 @@ class ProfileManager(object):
             try:
                 display_profile = ICCP.get_display_profile(display_no)
             except (ICCP.ICCProfileInvalidError, IOError,
-                    IndexError), exception:
+                    IndexError) as exception:
                 safe_print("Could not get display profile for display %i" %
                            (display_no + 1), "@ %i, %i, %ix%i:" %
                            geometry, exception)
@@ -1671,7 +1671,7 @@ class ProfileManager(object):
                                   ICCP.VideoCardGammaType):
                         values = profile.tags.vcgt.getNormalizedValues()
                         RGB = []
-                        for i in xrange(3):
+                        for i in range(3):
                             RGB.append(int(round(values[-1][i] * 255)))
                         (self._window._colour.r,
                          self._window._colour.g,
@@ -1761,7 +1761,7 @@ class ProfileManager(object):
                 if display_name:
                     display_name = display_name.replace("[PRIMARY]",
                                                         lang.getstr("display.primary"))
-                    self._window.SetTitle(display_name + u" ‒ " +
+                    self._window.SetTitle(display_name + " ‒ " +
                                           lang.getstr("whitepoint.visual_editor"))
         else:
             msg = lang.getstr("whitepoint.visual_editor.display_changed.warning")
@@ -2643,7 +2643,7 @@ class VisualWhitepointEditor(wx.Frame):
 
 
 if __name__ == "__main__":
-    from wxwindows import BaseApp
+    from .wxwindows import BaseApp
     initcfg()
     lang.init()
     app = BaseApp(0)

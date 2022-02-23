@@ -5,7 +5,7 @@ import os
 import wx
 import wx.xrc as xrc
 
-from config import getbitmap
+from .config import getbitmap
 
 
 class BitmapButton(xrc.XmlResourceHandler):

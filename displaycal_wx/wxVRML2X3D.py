@@ -15,9 +15,9 @@ gui = "wx" in sys.modules
 
 if gui:
 	from worker import Worker, show_result_dialog
-	from wxaddons import wx
-	from wxfixes import GenBitmapButton as BitmapButton
-	from wxwindows import BaseApp, BaseFrame, FileDrop
+	from .wxaddons import wx
+	from .wxfixes import GenBitmapButton as BitmapButton
+	from .wxwindows import BaseApp, BaseFrame, FileDrop
 
 
 	class VRML2X3DFrame(BaseFrame):
@@ -141,7 +141,7 @@ def main():
 		if result is None:
 			safe_print("No filename given.")
 		if sys.stdout.isatty() and not "--batch" in sys.argv[1:]:
-			raw_input("Press RETURN to exit")
+			input("Press RETURN to exit")
 		sys.exit(int(not result))
 	else:
 		view = not "--no-view" in sys.argv[1:]

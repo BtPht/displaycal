@@ -116,7 +116,7 @@ _active = []
 
 def _cleanup():
     for inst in _active[:]:
-        res = inst._internal_poll(_deadstate=sys.maxint)
+        res = inst._internal_poll(_deadstate=sys.maxsize)
         if res is not None:
             try:
                 _active.remove(inst)
@@ -160,7 +160,7 @@ def _args_from_interpreter_flags():
         'py3k_warning': '3',
     }
     args = []
-    for flag, opt in flag_opt_map.items():
+    for flag, opt in list(flag_opt_map.items()):
         v = getattr(sys.flags, flag)
         if v > 0:
             args.append('-' + opt * v)
@@ -349,7 +349,7 @@ class Popen(object):
         """Create new Popen instance."""
         _cleanup()
 
-        if not isinstance(bufsize, (int, long)):
+        if not isinstance(bufsize, int):
             raise TypeError("bufsize must be an integer")
 
         if mswindows:
@@ -415,7 +415,7 @@ class Popen(object):
                 except EnvironmentError:
                     pass
 
-            raise exc_type, exc_value, exc_trace
+            raise exc_type(exc_value).with_traceback(exc_trace)
 
         if mswindows:
             if p2cwrite is not None:
@@ -445,7 +445,7 @@ class Popen(object):
         return data
 
 
-    def __del__(self, _maxint=sys.maxint):
+    def __del__(self, _maxint=sys.maxsize):
         # If __init__ hasn't had a chance to execute (e.g. if it
         # was passed an undeclared keyword argument), we don't
         # have a _child_created attribute at all.
@@ -521,7 +521,7 @@ class Popen(object):
                     p2cread, _ = _subprocess.CreatePipe(None, 0)
             elif stdin == PIPE:
                 p2cread, p2cwrite = _subprocess.CreatePipe(None, 0)
-            elif isinstance(stdin, (int, long)):
+            elif isinstance(stdin, int):
                 p2cread = msvcrt.get_osfhandle(stdin)
             else:
                 # Assuming file-like object
@@ -538,7 +538,7 @@ class Popen(object):
                     _, c2pwrite = _subprocess.CreatePipe(None, 0)
             elif stdout == PIPE:
                 c2pread, c2pwrite = _subprocess.CreatePipe(None, 0)
-            elif isinstance(stdout, (int, long)):
+            elif isinstance(stdout, int):
                 c2pwrite = msvcrt.get_osfhandle(stdout)
             else:
                 # Assuming file-like object
@@ -557,7 +557,7 @@ class Popen(object):
                 errread, errwrite = _subprocess.CreatePipe(None, 0)
             elif stderr == STDOUT:
                 errwrite = c2pwrite
-            elif isinstance(stderr, (int, long)):
+            elif isinstance(stderr, int):
                 errwrite = msvcrt.get_osfhandle(stderr)
             else:
                 # Assuming file-like object
@@ -605,7 +605,7 @@ class Popen(object):
                            errread, errwrite):
             """Execute program (MS Windows version)"""
 
-            if not isinstance(args, types.StringTypes):
+            if not isinstance(args, (str,)):
                 args = list2cmdline(args)
 
             # Process startup details
@@ -652,7 +652,7 @@ class Popen(object):
                                          env,
                                          cwd,
                                          startupinfo)
-            except pywintypes.error, e:
+            except pywintypes.error as e:
                 # Translate pywintypes.error to WindowsError, which is
                 # a subclass of OSError.  FIXME: We should really
                 # translate errno using _sys_errlist (or similar), but
@@ -815,7 +815,7 @@ class Popen(object):
             elif stdin == PIPE:
                 p2cread, p2cwrite = self.pipe_cloexec()
                 to_close.update((p2cread, p2cwrite))
-            elif isinstance(stdin, (int, long)):
+            elif isinstance(stdin, int):
                 p2cread = stdin
             else:
                 # Assuming file-like object
@@ -826,7 +826,7 @@ class Popen(object):
             elif stdout == PIPE:
                 c2pread, c2pwrite = self.pipe_cloexec()
                 to_close.update((c2pread, c2pwrite))
-            elif isinstance(stdout, (int, long)):
+            elif isinstance(stdout, int):
                 c2pwrite = stdout
             else:
                 # Assuming file-like object
@@ -842,7 +842,7 @@ class Popen(object):
                     errwrite = c2pwrite
                 else: # child's stdout is not set, use parent's stdout
                     errwrite = sys.__stdout__.fileno()
-            elif isinstance(stderr, (int, long)):
+            elif isinstance(stderr, int):
                 errwrite = stderr
             else:
                 # Assuming file-like object
@@ -883,7 +883,7 @@ class Popen(object):
                 os.closerange(3, but)
                 os.closerange(but + 1, MAXFD)
             else:
-                for i in xrange(3, MAXFD):
+                for i in range(3, MAXFD):
                     if i == but:
                         continue
                     try:
@@ -915,7 +915,7 @@ class Popen(object):
                            errread, errwrite):
             """Execute program (POSIX version)"""
 
-            if isinstance(args, types.StringTypes):
+            if isinstance(args, (str,)):
                 args = [args]
             else:
                 args = list(args)
@@ -1186,7 +1186,7 @@ class Popen(object):
             while fd2file:
                 try:
                     ready = poller.poll()
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1235,7 +1235,7 @@ class Popen(object):
             while read_set or write_set:
                 try:
                     rlist, wlist, xlist = select.select(read_set, write_set, [])
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1294,8 +1294,8 @@ def _demo_posix():
     # Example 1: Simple redirection: Get process list
     #
     plist = Popen(["ps"], stdout=PIPE).communicate()[0]
-    print "Process list:"
-    print plist
+    print("Process list:")
+    print(plist)
 
     #
     # Example 2: Change uid before executing child
@@ -1307,42 +1307,42 @@ def _demo_posix():
     #
     # Example 3: Connecting several subprocesses
     #
-    print "Looking for 'hda'..."
+    print("Looking for 'hda'...")
     p1 = Popen(["dmesg"], stdout=PIPE)
     p2 = Popen(["grep", "hda"], stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 4: Catch execution error
     #
-    print
-    print "Trying a weird file..."
+    print()
+    print("Trying a weird file...")
     try:
-        print Popen(["/this/path/does/not/exist"]).communicate()
-    except OSError, e:
+        print(Popen(["/this/path/does/not/exist"]).communicate())
+    except OSError as e:
         if e.errno == errno.ENOENT:
-            print "The file didn't exist.  I thought so..."
-            print "Child traceback:"
-            print e.child_traceback
+            print("The file didn't exist.  I thought so...")
+            print("Child traceback:")
+            print(e.child_traceback)
         else:
-            print "Error", e.errno
+            print("Error", e.errno)
     else:
-        print >>sys.stderr, "Gosh.  No error."
+        print("Gosh.  No error.", file=sys.stderr)
 
 
 def _demo_windows():
     #
     # Example 1: Connecting several subprocesses
     #
-    print "Looking for 'PROMPT' in set output..."
+    print("Looking for 'PROMPT' in set output...")
     p1 = Popen("set", stdout=PIPE, shell=True)
     p2 = Popen('find "PROMPT"', stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 2: Simple execution of program
     #
-    print "Executing calc..."
+    print("Executing calc...")
     p = Popen("calc")
     p.wait()
 

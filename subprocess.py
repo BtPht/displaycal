@@ -1,9 +1,9 @@
 import os
 import sys
 
-import subprocess26
-from subprocess26 import Popen as _Popen, list2cmdline
-from subprocess26 import _args_from_interpreter_flags
+from . import subprocess26
+from .subprocess26 import Popen as _Popen, list2cmdline
+from .subprocess26 import _args_from_interpreter_flags
 
 
 class Popen(_Popen):
@@ -14,9 +14,9 @@ class Popen(_Popen):
 	def __init__(self, *args, **kwargs):
 		try:
 			_Popen.__init__(self, *args, **kwargs)
-		except EnvironmentError, exception:
+		except EnvironmentError as exception:
 			if not exception.filename:
-				if isinstance(args[0], basestring):
+				if isinstance(args[0], str):
 					cmd = args[0].split()[0]
 				else:
 					cmd = args[0][0]
@@ -27,4 +27,4 @@ class Popen(_Popen):
 subprocess26.Popen = Popen
 
 
-from subprocess26 import *
+from .subprocess26 import *

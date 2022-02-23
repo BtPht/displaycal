@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
+
 from time import sleep
 import atexit
 import errno
@@ -10,14 +10,14 @@ import os
 import platform
 import socket
 import sys
-import subprocess as sp
+from . import subprocess as sp
 import threading
 if sys.platform == "darwin":
 	from platform import mac_ver
 	import posix
 
 # Python version check
-from meta import py_minversion, py_maxversion
+from .meta import py_minversion, py_maxversion
 
 pyver = sys.version_info[:2]
 if pyver < py_minversion or pyver > py_maxversion:
@@ -26,15 +26,15 @@ if pyver < py_minversion or pyver > py_maxversion:
 						".".join(str(n) for n in py_maxversion),
 					    sys.version.split()[0]))
 
-from config import (autostart_home, confighome, datahome, enc, exe, exe_ext,
+from .config import (autostart_home, confighome, datahome, enc, exe, exe_ext,
 					exedir, exename, get_data_path, getcfg, fs_enc, initcfg,
 					isapp, isexe, logdir, pydir, pyname, pypath, resfiles,
 					runtype, appbasename)
-from debughelpers import ResourceError, handle_error
-from log import log, safe_print
-from meta import VERSION, VERSION_BASE, VERSION_STRING, build, name as appname
-from multiprocess import mp
-from options import debug, verbose
+from .debughelpers import ResourceError, handle_error
+from .log import log, safe_print
+from .meta import VERSION, VERSION_BASE, VERSION_STRING, build, name as appname
+from .multiprocess import mp
+from .options import debug, verbose
 from util_os import FileLock
 from util_str import safe_str, safe_unicode
 if sys.platform == "win32":
@@ -70,7 +70,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 		safe_print("Mac OS X %s %s" % (mac_ver()[0], mac_ver()[-1]))
 	elif sys.platform == "win32":
 		machine = platform.machine()
-		safe_print(*filter(lambda v: v, win_ver()) +
+		safe_print(*[v for v in win_ver() if v] +
 				   ({"AMD64": "x86_64"}.get(machine, machine), ))
 	else:
 		# Linux
@@ -82,18 +82,18 @@ def _main(module, name, applockfilename, probe_ports=True):
 	# Enable faulthandler
 	try:
 		import faulthandler
-	except Exception, exception:
+	except Exception as exception:
 		safe_print(exception)
 	else:
 		try:
 			faulthandler.enable(open(os.path.join(logdir, pyname +
 														  "-fault.log"), "w"))
-		except Exception, exception:
+		except Exception as exception:
 			safe_print(exception)
 		else:
 			safe_print("Faulthandler", getattr(faulthandler, "__version__", ""))
 	from wxaddons import wx
-	if u"phoenix" in wx.PlatformInfo:
+	if "phoenix" in wx.PlatformInfo:
 		pass
 		# py2exe helper so wx.xml gets picked up
 		# from wx import xml
@@ -104,7 +104,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 		# HighDPI support
 		try:
 			shcore = ctypes.windll.shcore
-		except Exception, exception:
+		except Exception as exception:
 			safe_print("Warning - could not load shcore:", exception)
 		else:
 			if hasattr(shcore, "SetProcessDpiAwareness"):
@@ -112,7 +112,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 					# 1 = System DPI aware (wxWpython currently does not
 					# support per-monitor DPI)
 					shcore.SetProcessDpiAwareness(1)
-				except Exception, exception:
+				except Exception as exception:
 					safe_print("Warning - SetProcessDpiAwareness() failed:",
 							   exception)
 			else:
@@ -143,7 +143,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 							if pid:
 								try:
 									pid = int(pid)
-								except ValueError, exception:
+								except ValueError as exception:
 									# This shouldn't happen
 									safe_print("Warning - couldn't parse PID "
 											   "as int: %r (%s line %i)" %
@@ -158,7 +158,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 						if port:
 							try:
 								port = int(port)
-							except ValueError, exception:
+							except ValueError as exception:
 								# This shouldn't happen
 								safe_print("Warning - couldn't parse port as int: %r "
 										   "(%s line %i)" % (port, lockfilename, ln))
@@ -169,7 +169,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 							lock2pids_ports[lockfilename].append((pid, port))
 				if not lock or lockfilename != applockfilename:
 					lockfile.unlock()
-			except EnvironmentError, exception:
+			except EnvironmentError as exception:
 				# This shouldn't happen
 				safe_print("Warning - could not read lockfile %s:" %
 						   lockfilename, exception)
@@ -236,13 +236,13 @@ def _main(module, name, applockfilename, probe_ports=True):
 						import win32ts
 						try:
 							osid = win32ts.ProcessIdToSessionId(opid)
-						except pywintypes.error, exception:
+						except pywintypes.error as exception:
 							safe_print("Enumerating processes failed:",
 									   exception)
 							osid = None
 						try:
 							processes = win32ts.WTSEnumerateProcesses()
-						except pywintypes.error, exception:
+						except pywintypes.error as exception:
 							safe_print("Enumerating processes failed:",
 									   exception)
 						else:
@@ -267,7 +267,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 											try:
 												with open(lockfilename, "w"):
 													pass
-											except EnvironmentError, exception:
+											except EnvironmentError as exception:
 												safe_print("Warning - could "
 														   "not create dummy "
 														   "lockfile %s: %r" %
@@ -292,7 +292,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 														 stderr=sp.STDOUT,
 														 startupinfo=startupinfo)
 											stdout, stderr = p.communicate()
-										except Exception, exception:
+										except Exception as exception:
 											safe_print(exception)
 										else:
 											safe_print(stdout)
@@ -318,7 +318,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 					break
 			if incoming is not None:
 				# Other instance running?
-				import localization as lang
+				from . import localization as lang
 				lang.init()
 				if incoming == "ok":
 					# Successfully sent our request
@@ -347,14 +347,14 @@ def _main(module, name, applockfilename, probe_ports=True):
 			sys._appsocket = appsocket.socket
 			if getcfg("app.allow_network_clients"):
 				host = ""
-			used_ports = [pid_port[1] for pids_ports in lock2pids_ports.values() for pid_port in pids_ports]
+			used_ports = [pid_port[1] for pids_ports in list(lock2pids_ports.values()) for pid_port in pids_ports]
 			candidate_ports = [0]
 			if not defaultport in used_ports:
 				candidate_ports.insert(0, defaultport)
 			for port in candidate_ports:
 				try:
 					sys._appsocket.bind((host, port))
-				except socket.error, exception:
+				except socket.error as exception:
 					if port == 0:
 						safe_print("Warning - could not bind to %s:%s:" %
 								   (host, port), exception)
@@ -363,21 +363,21 @@ def _main(module, name, applockfilename, probe_ports=True):
 				else:
 					try:
 						sys._appsocket.settimeout(.2)
-					except socket.error, exception:
+					except socket.error as exception:
 						safe_print("Warning - could not set socket "
 								   "timeout:", exception)
 						del sys._appsocket
 						break
 					try:
 						sys._appsocket.listen(1)
-					except socket.error, exception:
+					except socket.error as exception:
 						safe_print("Warning - could not listen on "
 								   "socket:", exception)
 						del sys._appsocket
 						break
 					try:
 						port = sys._appsocket.getsockname()[1]
-					except socket.error, exception:
+					except socket.error as exception:
 						safe_print("Warning - could not get socket "
 								   "address:", exception)
 						del sys._appsocket
@@ -407,7 +407,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 		for filename in mod2res.get(module, resfiles):
 			path = get_data_path(os.path.sep.join(filename.split("/")))
 			if not path or not os.path.isfile(path):
-				import localization as lang
+				from . import localization as lang
 				lang.init()
 				raise ResourceError(lang.getstr("resources.notfound.error") + 
 									"\n" + filename)
@@ -415,7 +415,7 @@ def _main(module, name, applockfilename, probe_ports=True):
 		if not os.path.exists(datahome):
 			try:
 				os.makedirs(datahome)
-			except Exception, exception:
+			except Exception as exception:
 				handle_error(UserWarning("Warning - could not create "
 										 "directory '%s'" % datahome))
 		elif sys.platform == "darwin":
@@ -447,9 +447,9 @@ def _main(module, name, applockfilename, probe_ports=True):
 		elif module == "VRML-to-X3D-converter":
 			from wxVRML2X3D import main
 		elif module == "apply-profiles":
-			from profile_loader import main
+			from .profile_loader import main
 		else:
-			from DisplayCAL import main
+			from .DisplayCAL import main
 	# Run main after releasing lock
 	main()
 
@@ -465,11 +465,11 @@ def main(module=None):
 	applockfilename = os.path.join(confighome, "%s.lock" % name)
 	try:
 		_main(module, name, applockfilename)
-	except Exception, exception:
+	except Exception as exception:
 		if isinstance(exception, ResourceError):
 			error = exception
 		else:
-			error = Error(u"Fatal error: " +
+			error = Error("Fatal error: " +
 						  safe_unicode(exception))
 		handle_error(error)
 		_exit(applockfilename, getattr(sys, "_appsocket_port", ""))
@@ -498,7 +498,7 @@ def _update_lockfile(lockfilename, oport, lock):
 		# Each lockfile may contain multiple ports of running instances
 		try:
 			pids_ports = lock.read().splitlines()
-		except EnvironmentError, exception:
+		except EnvironmentError as exception:
 			safe_print("Warning - could not read lockfile %s: %r" %
 					   (lockfilename, exception))
 			filtered_pids_ports = []
@@ -507,7 +507,7 @@ def _update_lockfile(lockfilename, oport, lock):
 
 			# Determine if instances still running. If not still running,
 			# remove from list of ports
-			for i in reversed(xrange(len(pids_ports))):
+			for i in reversed(range(len(pids_ports))):
 				pid_port = pids_ports[i]
 				if ":" in pid_port:
 					# DisplayCAL >= 3.8.8.2 with localhost blocked
@@ -542,13 +542,13 @@ def _update_lockfile(lockfilename, oport, lock):
 					pids_ports[i] = ""
 				appsocket.close()
 			# Filtered PIDs & ports (only used for checking)
-			filtered_pids_ports = filter(lambda pid_port: pid_port, pids_ports)
+			filtered_pids_ports = [pid_port for pid_port in pids_ports if pid_port]
 			if filtered_pids_ports:
 				# Write updated lockfile
 				try:
 					lock.seek(0)
 					lock.truncate(0)
-				except EnvironmentError, exception:
+				except EnvironmentError as exception:
 					safe_print("Warning - could not update lockfile %s: %r" %
 							   (lockfilename, exception))
 				else:
@@ -557,7 +557,7 @@ def _update_lockfile(lockfilename, oport, lock):
 				lock.close()
 				try:
 					os.remove(lockfilename)
-				except EnvironmentError, exception:
+				except EnvironmentError as exception:
 					safe_print("Warning - could not remove lockfile %s: %r" %
 							   (lockfilename, exception))
 
@@ -604,7 +604,7 @@ class AppLock(object):
 	def __iter__(self):
 		return self._lockfile
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return bool(self._lock)
 
 	def lock(self):
@@ -614,7 +614,7 @@ class AppLock(object):
 				os.makedirs(lockdir)
 			# Create lockfile
 			self._lockfile = open(self._lockfilename, self._mode)
-		except EnvironmentError, exception:
+		except EnvironmentError as exception:
 			# This shouldn't happen
 			safe_print("Error - could not open lockfile %s:" % self._lockfilename,
 					   exception)
@@ -622,9 +622,9 @@ class AppLock(object):
 			try:
 				self._lock = FileLock(self._lockfile, self._exclusive,
 									  self._blocking)
-			except FileLock.LockingError, exception:
+			except FileLock.LockingError as exception:
 				pass
-			except EnvironmentError, exception:
+			except EnvironmentError as exception:
 				# This shouldn't happen
 				safe_print("Error - could not lock lockfile %s:" %
 						   self._lockfile.name, exception)
@@ -636,14 +636,14 @@ class AppLock(object):
 		if self._lockfile:
 			try:
 				self._lockfile.close()
-			except EnvironmentError, exception:
+			except EnvironmentError as exception:
 				# This shouldn't happen
 				safe_print("Error - could not close lockfile %s:" %
 						   self._lockfile.name, exception)
 		if self._lock:
 			try:
 				self._lock.unlock()
-			except FileLock.UnlockingError, exception:
+			except FileLock.UnlockingError as exception:
 				# This shouldn't happen
 				safe_print("Warning - could not unlock lockfile %s:" %
 						   self._lockfile.name, exception)
@@ -652,7 +652,7 @@ class AppLock(object):
 		if self._lockfile:
 			try:
 				self._lockfile.write("%s\n" % contents)
-			except EnvironmentError, exception:
+			except EnvironmentError as exception:
 				# This shouldn't happen
 				safe_print("Error - could not write to lockfile %s:" %
 						   self._lockfile.name, exception)
@@ -664,20 +664,20 @@ class AppSocket(object):
 		try:
 			self.socket = socket.socket(socket.AF_INET,
 										socket.SOCK_STREAM)
-		except socket.error, exception:
+		except socket.error as exception:
 			# This shouldn't happen
 			safe_print("Warning - could not create TCP socket:", exception)
 
 	def __getattr__(self, name):
 		return getattr(self.socket, name)
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return hasattr(self, "socket")
 
 	def connect(self, host, port):
 		try:
 			self.socket.connect((host, port))
-		except socket.error, exception:
+		except socket.error as exception:
 			# Other instance probably died
 			safe_print("Connection to %s:%s failed:" % (host, port), exception)
 			return False
@@ -688,7 +688,7 @@ class AppSocket(object):
 		while not "\4" in incoming:
 			try:
 				data = self.socket.recv(1024)
-			except socket.error, exception:
+			except socket.error as exception:
 				if exception.errno == errno.EWOULDBLOCK:
 					sleep(.05)
 					continue
@@ -702,7 +702,7 @@ class AppSocket(object):
 	def send(self, data):
 		try:
 			self.socket.sendall(data + "\n")
-		except socket.error, exception:
+		except socket.error as exception:
 			# Connection lost?
 			safe_print("Warning - could not send data %r:" % data, exception)
 			return False

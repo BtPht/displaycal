@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import __builtin__
+import builtins
 import locale
 import os
 import re
 import sys
 
-from config import data_dirs, defaults, getcfg, storage
-from debughelpers import handle_error
-from lazydict import LazyDict_YAML_UltraLite
-from log import safe_print
-from options import debug_localization as debug
+from .config import data_dirs, defaults, getcfg, storage
+from .debughelpers import handle_error
+from .lazydict import LazyDict_YAML_UltraLite
+from .log import safe_print
+from .options import debug_localization as debug
 from util_os import expanduseru
 from util_str import safe_unicode
 
@@ -29,8 +29,8 @@ def init(set_wx_locale=False):
 		if os.path.exists(langdir) and os.path.isdir(langdir):
 			try:
 				langfiles = os.listdir(langdir)
-			except Exception, exception:
-				safe_print(u"Warning - directory '%s' listing failed: %s" % 
+			except Exception as exception:
+				safe_print("Warning - directory '%s' listing failed: %s" % 
 						   tuple(safe_unicode(s) for s in (langdir, exception)))
 			else:
 				for filename in langfiles:
@@ -114,7 +114,7 @@ def getstr(id_str, strvars=None, lcode=None, default=None):
 				lstr %= tuple(strvars)
 		return lstr
 	else:
-		if (debug and id_str and not isinstance(id_str, unicode) and
+		if (debug and id_str and not isinstance(id_str, str) and
 			not " " in id_str):
 			usage[id_str] = 0
 		return default or id_str
@@ -138,8 +138,8 @@ catalog = {}
 
 if debug:
 	import atexit
-	from config import confighome
-	from jsondict import JSONDict
+	from .config import confighome
+	from .jsondict import JSONDict
 
 	usage = JSONDict()
 	usage_path = os.path.join(confighome, "localization_usage.json")

@@ -15,7 +15,7 @@ if os.getenv("GTK_CSD", "0") != "0":
 
 # wxversion will be removed in Phoenix
 try:
-	import wxversion
+	from . import wxversion
 except ImportError:
 	pass
 else:
@@ -67,7 +67,7 @@ if not hasattr(platebtn, "PB_STYLE_DROPARROW"):
 	platebtn.PB_STYLE_DROPARROW = 16
 
 
-if u"phoenix" in wx.PlatformInfo:
+if "phoenix" in wx.PlatformInfo:
 	# Phoenix compatibility
 
 	from wx.lib.agw import aui
@@ -486,7 +486,7 @@ def BitmapButtonDisable(self):
 	"""
 	self.Enable(False)
 
-if not u"phoenix" in wx.PlatformInfo:
+if not "phoenix" in wx.PlatformInfo:
 	wx.BitmapButton.Enable = BitmapButtonEnable
 	wx.BitmapButton.Disable = BitmapButtonDisable
 
@@ -736,20 +736,20 @@ def GridGetSelection(self):
 	# rows
 	rows = self.GetSelectedRows()
 	for row in rows:
-		for i in xrange(numcols):
+		for i in range(numcols):
 			sel.append((row, i))
 	# cols
 	cols = self.GetSelectedCols()
 	for col in cols:
-		for i in xrange(numrows):
+		for i in range(numrows):
 			sel.append((i, col))
 	# block
 	tl = self.GetSelectionBlockTopLeft()
 	br = self.GetSelectionBlockBottomRight()
 	if tl and br:
-		for n in xrange(min(len(tl), len(br))):
-			for i in xrange(tl[n][0], br[n][0] + 1): # rows
-				for j in xrange(tl[n][1], br[n][1] + 1): # cols
+		for n in range(min(len(tl), len(br))):
+			for i in range(tl[n][0], br[n][0] + 1): # rows
+				for j in range(tl[n][1], br[n][1] + 1): # cols
 					sel.append((i, j))
 	# single selected cells
 	sel.extend(self.GetSelectedCells())
@@ -782,7 +782,7 @@ def get_dc_font_scale(dc):
 	if wx.VERSION < (2, 9):
 		# On Linux, we need to correct the font size by a certain factor if
 		# wx.GCDC is used, to make text the same size as if wx.GCDC weren't used
-		screenppi = map(float, wx.ScreenDC().GetPPI())
+		screenppi = list(map(float, wx.ScreenDC().GetPPI()))
 		ppi = dc.GetPPI()
 		scale *= (screenppi[0] / ppi[0] + screenppi[1] / ppi[1]) / 2.0
 	return (scale * pointsize[0] + scale * pointsize[1]) / 2.0
@@ -858,7 +858,7 @@ def get_bitmap_hover(bitmap, ctrl=None):
 	for i, byte in enumerate(databuffer):
 		RGB[i % 3] = ord(byte)
 		if i % 3 == 2:
-			RGBv = RGB.values()
+			RGBv = list(RGB.values())
 			if not is_bw:
 				RGBv_max = max(RGBv)
 				if minv == 256 and alphabuffer[j] > "\x20":
@@ -867,7 +867,7 @@ def get_bitmap_hover(bitmap, ctrl=None):
 					# value as a crude means to determine if the graphic
 					# contains a black outline.
 					minv = min(RGBv_max, minv)
-			for k in xrange(3):
+			for k in range(3):
 				if is_bw:
 					v = color[k]
 				else:
@@ -972,11 +972,10 @@ def set_bitmap_labels(btn, disabled=True, focus=None, pressed=True):
 
 def get_dialogs(modal=False):
 	""" If there are any dialogs open, return them """
-	return filter(lambda window: window and
+	return [window for window in wx.GetTopLevelWindows() if window and
 								 isinstance(window, wx.Dialog) and
 								 window.IsShown() and
-								 (not modal or window.IsModal()),
-				  wx.GetTopLevelWindows())
+								 (not modal or window.IsModal())]
 
 
 # wx.DirDialog and wx.FileDialog are normally not returned by
@@ -1369,7 +1368,7 @@ class PlateButton(platebtn.PlateButton):
 		self._bmp["hilite"] = None
 		if sys.platform == "darwin":
 			# Use Sierra-like color scheme
-			from wxaddons import gamma_encode
+			from .wxaddons import gamma_encode
 			color = wx.Colour(*gamma_encode(0, 105, 217))
 		else:
 			color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
@@ -1579,7 +1578,7 @@ class TempXmlResource(object):
 		if scale > 1 or "gtk3" in wx.PlatformInfo:
 			if not TempXmlResource._temp:
 				try:
-					TempXmlResource._temp = tempfile.mkdtemp(prefix=appname + u"-XRC-")
+					TempXmlResource._temp = tempfile.mkdtemp(prefix=appname + "-XRC-")
 				except:
 					pass
 			if TempXmlResource._temp and os.path.isdir(TempXmlResource._temp):
@@ -1614,7 +1613,7 @@ class TempXmlResource(object):
 									   os.path.basename(xmlpath))
 				with open(xmlpath, "wb") as xmlfile:
 					xmlfile.write(xml)
-				from wxwindows import BaseApp
+				from .wxwindows import BaseApp
 				BaseApp.register_exitfunc(self._cleanup)
 		self.xmlpath = xmlpath
 		self.res = xrc.XmlResource(xmlpath)

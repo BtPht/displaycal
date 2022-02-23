@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import demjson_compat
+from . import demjson_compat
 
-from lazydict import LazyDict
+from .lazydict import LazyDict
 
 
 class JSONDict(LazyDict):
