@@ -9,13 +9,9 @@ import re
 import sys
 
 try:
-    from __version__ import (
-        BUILD_DATE as build,
-        LASTMOD as lastmod,
-        VERSION,
-        VERSION_BASE,
-        VERSION_STRING,
-    )
+    from __version__ import BUILD_DATE as build
+    from __version__ import LASTMOD as lastmod
+    from __version__ import VERSION, VERSION_BASE, VERSION_STRING
 except ImportError:
     build = lastmod = "0000-00-00T00:00:00.0Z"
     VERSION = None

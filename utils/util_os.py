@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import fnmatch
 import ctypes
 import errno
+import fnmatch
 import glob
+import importlib
 import locale
 import os
 import re
@@ -13,7 +14,6 @@ import subprocess as sp
 import sys
 import tempfile
 import time
-import importlib
 
 if sys.platform not in ("darwin", "win32"):
     # Linux
@@ -49,12 +49,12 @@ else:
         importlib.reload(win32api)
 
 if sys.platform == "win32":
+    import pywintypes
+    import win32con
+    import win32file
+    import winerror
     from win32file import *
     from winioctlcon import FSCTL_GET_REPARSE_POINT
-    import win32file
-    import win32con
-    import pywintypes
-    import winerror
 
 # Cache used for safe_shell_filter() function
 _cache = {}
@@ -74,8 +74,9 @@ if sys.platform == "win32":
     # Add support for long paths (> 260 chars)
     # and retry ERROR_SHARING_VIOLATION
     import builtins
-    import winerror
+
     import win32api
+    import winerror
 
     _open = builtins.open
 

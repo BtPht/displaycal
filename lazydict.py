@@ -5,9 +5,10 @@ import codecs
 import json
 import os
 
+from util_str import safe_str, safe_unicode
+
 from .config import get_data_path
 from .debughelpers import handle_error
-from util_str import safe_str, safe_unicode
 
 
 def unquote(string, raise_exception=True):
@@ -631,11 +632,11 @@ def test():
     from io import StringIO
     from time import time
 
-    from .jsondict import JSONDict
-
     # PyYAML
     import yaml
     from yaml import CSafeLoader
+
+    from .jsondict import JSONDict
 
     def y(doc):
         try:

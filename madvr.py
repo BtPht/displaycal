@@ -3,11 +3,6 @@
 # See developers/interfaces/madTPG.h in the madVR package
 
 
-from configparser import RawConfigParser
-from io import StringIO
-from binascii import unhexlify
-from time import sleep, time
-from zlib import crc32
 import ctypes
 import errno
 import getpass
@@ -17,12 +12,19 @@ import socket
 import struct
 import sys
 import threading
+from binascii import unhexlify
+from configparser import RawConfigParser
+from io import StringIO
+from time import sleep, time
+from zlib import crc32
 
 if sys.platform == "win32":
     import winreg
 
 if sys.platform == "win32":
     import win32api
+
+from util_str import safe_str, safe_unicode
 
 from . import ICCProfile as ICCP
 from . import colormath
@@ -31,11 +33,10 @@ from . import localization as lang
 from . import worker_base
 from .imfile import tiff_get_header
 from .log import safe_print as log_safe_print
-from .meta import name as appname, version
+from .meta import name as appname
+from .meta import version
 from .network import get_network_addr, get_valid_host
 from .ordereddict import OrderedDict
-from util_str import safe_str, safe_unicode
-
 
 CALLBACK = ctypes.CFUNCTYPE(
     None,

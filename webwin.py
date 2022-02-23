@@ -6,14 +6,14 @@ Re-implementation of Argyll's webwin in pure python.
 """
 
 import http.server
-from io import StringIO
 import shutil
 import threading
 import time
+from io import StringIO
 from urllib.parse import unquote
 
-from .meta import name as appname, version as appversion
-
+from .meta import name as appname
+from .meta import version as appversion
 
 WEBDISP_HTML = (
     r"""<!DOCTYPE html>

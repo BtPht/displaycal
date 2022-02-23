@@ -33,8 +33,8 @@ __all__ = [
 
 # Imports.
 
-import os as _os
 import errno as _errno
+import os as _os
 from random import Random as _Random
 
 try:

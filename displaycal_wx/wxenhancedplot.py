@@ -110,8 +110,9 @@ Zooming controls with mouse (when enabled):
 
 import functools
 import string as _string
-import time as _time
 import sys
+import time as _time
+
 import wx
 
 # Needs Numeric or numarray or NumPy

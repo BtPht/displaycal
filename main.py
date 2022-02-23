@@ -1,4 +1,3 @@
-from time import sleep
 import atexit
 import errno
 import glob
@@ -7,15 +6,17 @@ import os
 import platform
 import socket
 import sys
-from . import subprocess as sp
 import threading
+from time import sleep
+
+from . import subprocess as sp
 
 if sys.platform == "darwin":
-    from platform import mac_ver
     import posix
+    from platform import mac_ver
 
 # Python version check
-from .meta import py_minversion, py_maxversion
+from .meta import py_maxversion, py_minversion
 
 pyver = sys.version_info[:2]
 if pyver < py_minversion or pyver > py_maxversion:
@@ -28,40 +29,24 @@ if pyver < py_minversion or pyver > py_maxversion:
         )
     )
 
-from .config import (
-    autostart_home,
-    confighome,
-    datahome,
-    enc,
-    exe,
-    exe_ext,
-    exedir,
-    exename,
-    get_data_path,
-    getcfg,
-    fs_enc,
-    initcfg,
-    isapp,
-    isexe,
-    logdir,
-    pydir,
-    pyname,
-    pypath,
-    resfiles,
-    runtype,
-    appbasename,
-)
-from .debughelpers import ResourceError, handle_error
-from .log import log, safe_print
-from .meta import VERSION, VERSION_BASE, VERSION_STRING, build, name as appname
-from .multiprocess import mp
-from .options import debug, verbose
 from util_os import FileLock
 from util_str import safe_str, safe_unicode
 
+from .config import (appbasename, autostart_home, confighome, datahome, enc,
+                     exe, exe_ext, exedir, exename, fs_enc, get_data_path,
+                     getcfg, initcfg, isapp, isexe, logdir, pydir, pyname,
+                     pypath, resfiles, runtype)
+from .debughelpers import ResourceError, handle_error
+from .log import log, safe_print
+from .meta import VERSION, VERSION_BASE, VERSION_STRING, build
+from .meta import name as appname
+from .multiprocess import mp
+from .options import debug, verbose
+
 if sys.platform == "win32":
-    from util_win import win_ver
     import ctypes
+
+    from util_win import win_ver
 
 
 def _excepthook(etype, value, tb):

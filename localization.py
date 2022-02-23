@@ -6,13 +6,14 @@ import os
 import re
 import sys
 
+from util_os import expanduseru
+from util_str import safe_unicode
+
 from .config import data_dirs, defaults, getcfg, storage
 from .debughelpers import handle_error
 from .lazydict import LazyDict_YAML_UltraLite
 from .log import safe_print
 from .options import debug_localization as debug
-from util_os import expanduseru
-from util_str import safe_unicode
 
 
 def init(set_wx_locale=False):
@@ -145,6 +146,7 @@ catalog = {}
 
 if debug:
     import atexit
+
     from .config import confighome
     from .jsondict import JSONDict
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from hashlib import md5
 import codecs
 import math
 import os
@@ -8,6 +7,7 @@ import string
 import struct
 import sys
 import warnings
+from hashlib import md5
 
 if sys.platform == "win32":
     from threading import _MainThread, currentThread
@@ -31,10 +31,11 @@ elif sys.platform == "darwin":
     import re
     from . import subprocess as sp
 
+from util_str import make_ascii_printable, safe_str, strtr
+
 from . import config
 from .config import enc
 from .log import log, safe_print
-from util_str import make_ascii_printable, safe_str, strtr
 
 if sys.platform == "win32":
     import util_win

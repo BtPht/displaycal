@@ -7,7 +7,6 @@ import os
 import sys
 import time
 
-
 CCMX_TEMPLATE = """CCMX   
 
 DESCRIPTOR "%(Name)s"

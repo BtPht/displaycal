@@ -10,6 +10,7 @@ from io import StringIO
 from time import time
 
 from safe_print import safe_print
+
 from .util_str import universal_newlines
 
 

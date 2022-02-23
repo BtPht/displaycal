@@ -63,36 +63,40 @@ http://pexpect.sourceforge.net/
 $Id: pexpect.py 507 2007-12-27 02:40:52Z noah $
 """
 
-import os, sys, time
-import select
-import string
-import re
-import struct
-import types
 import errno
-import traceback
+import os
+import re
+import select
 import signal
+import string
+import struct
+import sys
+import time
+import traceback
+import types
+
 from . import subprocess
 
 if sys.platform != 'win32':
-    import pty
-    import tty
-    import termios
-    import resource
     import fcntl
+    import pty
+    import resource
+    import termios
+    import tty
 else:
-    from io import StringIO
     from ctypes import windll
+    from io import StringIO
+
     import pywintypes
-    from win32com.shell.shellcon import CSIDL_APPDATA
-    from win32com.shell.shell import SHGetSpecialFolderPath
-    from win32console import *
-    from win32process import *
-    from win32con import *
-    from win32gui import *
     import win32api
     import win32file
     import winerror
+    from win32com.shell.shell import SHGetSpecialFolderPath
+    from win32com.shell.shellcon import CSIDL_APPDATA
+    from win32con import *
+    from win32console import *
+    from win32gui import *
+    from win32process import *
 
 __version__ = '2.3'
 __revision__ = '$Revision: 399 $'
@@ -100,6 +104,7 @@ __all__ = ['ExceptionPexpect', 'EOF', 'TIMEOUT', 'spawn', 'run', 'which',
     'split_command_line', '__version__', '__revision__']
 
 from .meta import name as appname
+
 
 # Exception classes used by this module.
 class ExceptionPexpect(Exception):

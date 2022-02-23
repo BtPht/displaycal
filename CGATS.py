@@ -7,13 +7,18 @@ Copyright (C) 2008 Florian Hoech
 """
 
 
-import math, os, re, sys
+import math
+import os
+import re
+import sys
+
+from util_io import GzipFileProper
+from util_io import StringIOu as StringIO
+from util_str import safe_unicode
 
 from . import colormath
 from .log import safe_print
 from .options import debug, verbose
-from util_io import GzipFileProper, StringIOu as StringIO
-from util_str import safe_unicode
 
 
 def get_device_value_labels(color_rep=None):

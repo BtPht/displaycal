@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from ctypes import wintypes
 import ctypes
 import os
+from ctypes import wintypes
 
 from .win_structs import NTSTATUS, UNICODE_STRING
 

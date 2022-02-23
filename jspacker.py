@@ -9,7 +9,9 @@
 ##
 ##  Ported to Python by Florian Schulze
 
-import os, re, sys
+import os
+import re
+import sys
 
 # a multi-pattern parser
 

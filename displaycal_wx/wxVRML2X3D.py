@@ -3,18 +3,20 @@
 import os
 import sys
 
-from meta import name as appname
-from safe_print import safe_print
 from util_os import launch_file, make_win32_compatible_long_path, waccess
 from util_str import safe_unicode
+
 import config
 import localization as lang
 import x3dom
+from meta import name as appname
+from safe_print import safe_print
 
 gui = "wx" in sys.modules
 
 if gui:
     from worker import Worker, show_result_dialog
+
     from .wxaddons import wx
     from .wxfixes import GenBitmapButton as BitmapButton
     from .wxwindows import BaseApp, BaseFrame, FileDrop

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import codecs
-import exceptions
 import locale
 import re
 import string
 import sys
 import unicodedata
+
+import exceptions
 
 try:
     from functools import reduce

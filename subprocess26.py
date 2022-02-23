@@ -37,12 +37,13 @@ import sys
 
 mswindows = sys.platform == "win32"
 
-import os
-import types
-import traceback
-import gc
-import signal
 import errno
+import gc
+import os
+import signal
+import traceback
+import types
+
 
 # Exception classes used by this module.
 class CalledProcessError(Exception):
@@ -66,8 +67,9 @@ class CalledProcessError(Exception):
 
 
 if mswindows:
-    import threading
     import msvcrt
+    import threading
+
     import _subprocess
 
     class STARTUPINFO:
@@ -112,15 +114,9 @@ CTRL_BREAK_EVENT = 1
 STILL_ACTIVE = 259
 
 if mswindows:
-    from _subprocess import (
-        CREATE_NEW_CONSOLE,
-        STD_INPUT_HANDLE,
-        STD_OUTPUT_HANDLE,
-        STD_ERROR_HANDLE,
-        SW_HIDE,
-        STARTF_USESTDHANDLES,
-        STARTF_USESHOWWINDOW,
-    )
+    from _subprocess import (CREATE_NEW_CONSOLE, STARTF_USESHOWWINDOW,
+                             STARTF_USESTDHANDLES, STD_ERROR_HANDLE,
+                             STD_INPUT_HANDLE, STD_OUTPUT_HANDLE, SW_HIDE)
 
     CREATE_NEW_PROCESS_GROUP = 512
 

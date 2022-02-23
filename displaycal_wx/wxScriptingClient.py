@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 
 
-from time import sleep
 import errno
 import os
 import socket
 import sys
 import threading
+from time import sleep
 
+import wx.lib.delayedresult as delayedresult
+from util_str import safe_str, safe_unicode, universal_newlines
+
+import config
+import localization as lang
 from config import confighome, getcfg, geticon, initcfg, setcfg, writecfg
 from meta import name as appname
 from safe_print import safe_print
-from util_str import safe_str, safe_unicode, universal_newlines
 from wexpect import split_command_line
+
 from .wxaddons import wx
 from .wxfixes import GenBitmapButton
 from .wxwindows import BaseApp, SimpleTerminal, numpad_keycodes
-import config
-import localization as lang
-
-import wx.lib.delayedresult as delayedresult
-
 
 ERRORCOLOR = "#FF3300"
 RESPONSECOLOR = "#CCCCCC"

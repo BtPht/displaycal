@@ -3,8 +3,8 @@
 
 from datetime import datetime
 from html.parser import HTMLParser
+
 htmlparser = HTMLParser()
-from time import gmtime, sleep, strftime, time
 import errno
 import math
 import os
@@ -20,56 +20,63 @@ import threading
 import warnings
 import xml.parsers.expat
 import zipfile
+from time import gmtime, sleep, strftime, time
 
-import demjson_compat as demjson
-
-import ICCProfile as ICCP
-import audio
-import config
-from config import (defaults, getbitmap, getcfg, geticon, get_data_path,
-					get_default_dpi, get_verified_path, hascfg, pyname, setcfg,
-					confighome, appbasename, logdir, set_default_app_dpi)
-from debughelpers import (Error, DownloadError, Info, UnloggedError,
-						  UnloggedInfo, UnloggedWarning, Warn, getevtobjname,
-						  getevttype, handle_error)
-from log import log as log_, safe_print
-from meta import name as appname
-from options import debug
-from ordereddict import OrderedDict
-from network import ScriptingClientSocket, get_network_addr
+import util_str
 from util_io import StringIOu as StringIO
 from util_os import get_program_file, launch_file, waccess
 from util_str import box, safe_str, safe_unicode, wrap
 from util_xml import dict2xml
-from .wxaddons import (CustomEvent, FileDrop as _FileDrop, gamma_encode,
-					  get_parent_frame, get_platform_window_decoration_size, wx,
-					  BetterWindowDisabler, BetterTimer, EVT_BETTERTIMER)
-from wexpect import split_command_line
-from .wxfixes import (GenBitmapButton, GenButton, GTKMenuItemGetFixedLabel,
-					 PlateButton, ThemedGenButton, adjust_font_size_for_gcdc,
-					 get_bitmap_disabled, get_dc_font_size, get_gcdc_font_size,
-					 platebtn, set_bitmap_labels, wx_Panel, get_dialogs,
-					 set_maxsize)
-from lib.agw import labelbook, pygauge
-from lib.agw.gradientbutton import GradientButton, CLICK, HOVER
-from lib.agw.fourwaysplitter import (_TOLERANCE, FLAG_CHANGED, FLAG_PRESSED,
-									 NOWHERE, FourWaySplitter,
-									 FourWaySplitterEvent)
-import localization as lang
-import util_str
 
+import audio
+import config
+import demjson_compat as demjson
 import floatspin
+import ICCProfile as ICCP
+import localization as lang
+from config import (appbasename, confighome, defaults, get_data_path,
+                    get_default_dpi, get_verified_path, getbitmap, getcfg,
+                    geticon, hascfg, logdir, pyname, set_default_app_dpi,
+                    setcfg)
+from debughelpers import (DownloadError, Error, Info, UnloggedError,
+                          UnloggedInfo, UnloggedWarning, Warn, getevtobjname,
+                          getevttype, handle_error)
+from lib.agw import labelbook, pygauge
+from lib.agw.fourwaysplitter import (_TOLERANCE, FLAG_CHANGED, FLAG_PRESSED,
+                                     NOWHERE, FourWaySplitter,
+                                     FourWaySplitterEvent)
+from lib.agw.gradientbutton import CLICK, HOVER, GradientButton
+from log import log as log_
+from log import safe_print
+from meta import name as appname
+from network import ScriptingClientSocket, get_network_addr
+from options import debug
+from ordereddict import OrderedDict
+from wexpect import split_command_line
+
+from .wxaddons import (EVT_BETTERTIMER, BetterTimer, BetterWindowDisabler,
+                       CustomEvent)
+from .wxaddons import FileDrop as _FileDrop
+from .wxaddons import (gamma_encode, get_parent_frame,
+                       get_platform_window_decoration_size, wx)
+from .wxfixes import (GenBitmapButton, GenButton, GTKMenuItemGetFixedLabel,
+                      PlateButton, ThemedGenButton, adjust_font_size_for_gcdc,
+                      get_bitmap_disabled, get_dc_font_size, get_dialogs,
+                      get_gcdc_font_size, platebtn, set_bitmap_labels,
+                      set_maxsize, wx_Panel)
+
 try:
 	from wx.lib.agw import aui
 	from wx.lib.agw.aui import AuiDefaultTabArt
 except ImportError:
 	from wx import aui
 	from wx.aui import PyAuiTabArt as AuiDefaultTabArt
-import wx.lib.filebrowsebutton as filebrowse
-from wx.lib.agw import hyperlink
-from wx.lib import fancytext
-from wx.lib.statbmp import GenStaticBitmap
+
 import wx.html
+import wx.lib.filebrowsebutton as filebrowse
+from wx.lib import fancytext
+from wx.lib.agw import hyperlink
+from wx.lib.statbmp import GenStaticBitmap
 
 taskbar = None
 if sys.platform == "win32" and sys.getwindowsversion() >= (6, 1):

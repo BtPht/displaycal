@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from time import sleep
 import os
 import sys
 import threading
 import types
-
-from colormath import specialpow
-from .wxfixes import wx, GenButton, PlateButton, get_dialogs
+from time import sleep
 
 import wx.grid
-from lib.agw.gradientbutton import GradientButton
+
 import floatspin
+from colormath import specialpow
+from lib.agw.gradientbutton import GradientButton
+
+from .wxfixes import GenButton, PlateButton, get_dialogs, wx
 
 
 def AdjustMinMax(self, minvalue=0.0, maxvalue=1.0):

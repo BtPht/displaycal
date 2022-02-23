@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import comtypes.gen.TaskbarLib as tbl
 import comtypes.client as cc
-
+import comtypes.gen.TaskbarLib as tbl
 
 TBPF_NOPROGRESS = 0
 TBPF_INDETERMINATE = 0x1

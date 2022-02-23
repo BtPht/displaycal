@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from time import strftime
 import codecs
 import os
 import re
 import shutil
 import sys
+from time import strftime
 
+from util_str import safe_unicode
+
+from . import jspacker
+from . import localization as lang
 from .config import get_data_path, initcfg
 from .meta import version_short
 from .safe_print import safe_print
-from util_str import safe_unicode
-from . import jspacker
-from . import localization as lang
 
 
 def create(report_path, placeholders2data, pack=True, templatename="report"):

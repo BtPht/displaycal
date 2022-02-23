@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from copy import copy
-from hashlib import md5
 import atexit
 import binascii
 import ctypes
@@ -15,9 +13,10 @@ import struct
 import sys
 import warnings
 import zlib
-
-from time import localtime, mktime, strftime
 from collections import UserString
+from copy import copy
+from hashlib import md5
+from time import localtime, mktime, strftime
 from weakref import WeakValueDictionary
 
 if sys.platform == "win32":
@@ -49,9 +48,7 @@ except ImportError:
             return None
 
     colord = Colord()
-from . import colormath
-from . import edid
-from . import imfile
+from . import colormath, edid, imfile
 from .colormath import NumberTuple
 from .defaultpaths import iccprofiles, iccprofiles_home
 from .encoding import get_encodings
@@ -62,14 +59,16 @@ try:
     from .log import safe_print
 except ImportError:
     from .safe_print import safe_print
+
 from util_decimal import float2dec
 from util_list import intlist
 from util_str import hexunescape, safe_str, safe_unicode
 
 if sys.platform not in ("darwin", "win32"):
+    from util_x import get_display
+
     from .defaultpaths import xdg_config_dirs, xdg_config_home
     from .edid import get_edid
-    from util_x import get_display
 
     try:
         from . import xrandr
@@ -83,7 +82,8 @@ elif sys.platform == "win32":
         # WCS only available under Vista and later
         mscms = None
     else:
-        from .win_handles import get_process_handles, get_handle_name, get_handle_type
+        from .win_handles import (get_handle_name, get_handle_type,
+                                  get_process_handles)
 
         mscms = util_win._get_mscms_windll()
 

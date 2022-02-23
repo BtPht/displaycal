@@ -5,7 +5,7 @@ import platform
 import re
 import sys
 
-from util_dbus import DBusObject, DBusException, BUSTYPE_SESSION
+from util_dbus import BUSTYPE_SESSION, DBusException, DBusObject
 from util_x import get_display as _get_x_display
 
 if sys.platform == "darwin":

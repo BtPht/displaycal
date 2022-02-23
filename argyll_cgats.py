@@ -7,16 +7,17 @@ import os
 import traceback
 from time import strftime
 
-from .debughelpers import Error
-from .options import debug
-from .ordereddict import OrderedDict
-from .safe_print import safe_print
 from util_io import StringIOu as StringIO
 from util_str import safe_unicode
+
 from . import CGATS
 from . import ICCProfile as ICCP
 from . import colormath
 from . import localization as lang
+from .debughelpers import Error
+from .options import debug
+from .ordereddict import OrderedDict
+from .safe_print import safe_print
 
 cals = {}
 

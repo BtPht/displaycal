@@ -3,12 +3,14 @@
 import sys
 import traceback
 
+from util_str import box, safe_unicode
+
 from . import config
 from .config import fs_enc
 from .log import logbuffer, safe_print
-from .meta import name as appname, wx_recversion
+from .meta import name as appname
+from .meta import wx_recversion
 from .options import debug
-from util_str import box, safe_unicode
 
 wxEventTypes = {}
 

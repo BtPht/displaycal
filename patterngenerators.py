@@ -1,21 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from socketserver import TCPServer
-from socket import (
-    AF_INET,
-    SHUT_RDWR,
-    SO_BROADCAST,
-    SO_REUSEADDR,
-    SOCK_DGRAM,
-    SOCK_STREAM,
-    SOL_SOCKET,
-    error,
-    gethostname,
-    gethostbyname,
-    socket,
-    timeout,
-)
-from time import sleep
 import errno
 import http.client
 import json
@@ -23,16 +7,22 @@ import select
 import struct
 import sys
 import threading
-import urllib.request, urllib.parse, urllib.error
+import urllib.error
 import urllib.parse
+import urllib.request
+from socket import (AF_INET, SHUT_RDWR, SO_BROADCAST, SO_REUSEADDR, SOCK_DGRAM,
+                    SOCK_STREAM, SOL_SOCKET, error, gethostbyname, gethostname,
+                    socket, timeout)
+from socketserver import TCPServer
+from time import sleep
 
-from . import localization as lang
-from .log import safe_print
-from .network import get_network_addr
 from util_http import encode_multipart_formdata
 from util_str import safe_unicode
-from . import webwin
 
+from . import localization as lang
+from . import webwin
+from .log import safe_print
+from .network import get_network_addr
 
 _lock = threading.RLock()
 

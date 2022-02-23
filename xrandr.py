@@ -1,16 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from ctypes import (
-    POINTER,
-    Structure,
-    c_int,
-    c_long,
-    c_ubyte,
-    c_ulong,
-    cdll,
-    pointer,
-    util,
-)
+from ctypes import (POINTER, Structure, c_int, c_long, c_ubyte, c_ulong, cdll,
+                    pointer, util)
 
 libx11pth = util.find_library("X11")
 if not libx11pth:

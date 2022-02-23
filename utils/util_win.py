@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from ctypes import wintypes
 import ctypes
-import _ctypes
-import winreg
 import os
 import platform
 import struct
 import sys
+import winreg
+from ctypes import POINTER, byref, sizeof, windll, wintypes
+from ctypes.wintypes import DWORD, HANDLE, LPWSTR
 
+import _ctypes
 import pywintypes
 import win32api
 import win32con
@@ -16,11 +17,9 @@ import win32process
 import winerror
 from win32com.shell import shell as win32com_shell
 
-from ctypes import POINTER, byref, sizeof, windll
-from ctypes.wintypes import HANDLE, DWORD, LPWSTR
+from win_structs import UNICODE_STRING
 
 from .util_os import quote_args
-from win_structs import UNICODE_STRING
 
 if not hasattr(ctypes, "c_bool"):
     # Python 2.5

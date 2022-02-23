@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from queue import Empty
 import atexit
 import errno
 import logging
@@ -10,6 +9,7 @@ import multiprocessing.managers
 import multiprocessing.pool
 import sys
 import threading
+from queue import Empty
 
 
 def cpu_count(limit_by_total_vmem=True):

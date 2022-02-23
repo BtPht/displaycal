@@ -1,55 +1,46 @@
 # -*- coding: utf-8 -*-
 
 
-import exceptions
 import os
 import re
 import shutil
 import sys
 
+import exceptions
+
 if sys.platform == "win32":
     import win32api
 
-from argyll_cgats import cal_to_fake_profile
-from argyll_names import video_encodings
-from config import (
-    defaults,
-    get_data_path,
-    get_verified_path,
-    getcfg,
-    geticon,
-    hascfg,
-    profile_ext,
-    setcfg,
-)
-from log import safe_print
-from meta import name as appname, version
-from options import debug
 from util_decimal import stripzeros
 from util_os import islink, readlink, safe_glob, waccess
 from util_str import safe_unicode, strtr
-from worker import (
-    Error,
-    Info,
-    UnloggedInfo,
-    get_current_profile_path,
-    show_result_dialog,
-)
-import ICCProfile as ICCP
+from wx import xrc
+
 import colormath
 import config
+import floatspin
+import ICCProfile as ICCP
 import localization as lang
 import madvr
 import worker
-from worker import UnloggedWarning, check_set_argyll_bin, get_options_from_profile
-from .wxwindows import BaseApp, BaseFrame, ConfirmDialog, FileDrop, InfoDialog, wx
-from .wxfixes import TempXmlResource
-import floatspin
+import xh_bitmapctrls
 import xh_filebrowsebutton
 import xh_floatspin
-import xh_bitmapctrls
+from argyll_cgats import cal_to_fake_profile
+from argyll_names import video_encodings
+from config import (defaults, get_data_path, get_verified_path, getcfg,
+                    geticon, hascfg, profile_ext, setcfg)
+from log import safe_print
+from meta import name as appname
+from meta import version
+from options import debug
+from worker import (Error, Info, UnloggedInfo, UnloggedWarning,
+                    check_set_argyll_bin, get_current_profile_path,
+                    get_options_from_profile, show_result_dialog)
 
-from wx import xrc
+from .wxfixes import TempXmlResource
+from .wxwindows import (BaseApp, BaseFrame, ConfirmDialog, FileDrop,
+                        InfoDialog, wx)
 
 
 class LUT3DFrame(BaseFrame):

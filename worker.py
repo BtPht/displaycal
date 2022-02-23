@@ -2,11 +2,9 @@
 
 # stdlib
 
-from binascii import hexlify
 import atexit
 import ctypes
 import datetime
-import exceptions
 import getpass
 import http.client
 import math
@@ -15,99 +13,109 @@ import os
 import pipes
 import platform
 import re
-import socket
 import shutil
+import socket
 import string
 import struct
-from . import subprocess as sp
 import sys
-from . import tempfile
 import textwrap
 import threading
 import traceback
-import urllib.request, urllib.parse, urllib.error
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
 import urllib.parse
+import urllib.request
 import warnings
 import zipfile
 import zlib
+from binascii import hexlify
 from collections import UserString
 from hashlib import md5, sha256
 from threading import _MainThread, currentThread
 from time import sleep, strftime, time
+
+import exceptions
+
+from . import subprocess as sp
+from . import tempfile
+
 if sys.platform == "darwin":
-	from platform import mac_ver
 	from _thread import start_new_thread
+	from platform import mac_ver
 elif sys.platform == "win32":
-	from ctypes import windll
 	import winreg
+	from ctypes import windll
 else:
 	import grp
 
 # 3rd party
 if sys.platform == "win32":
-	from win32com.shell import shell as win32com_shell
 	import pythoncom
+	import pywintypes
 	import win32api
 	import win32con
 	import win32event
-	import pywintypes
 	import winerror
+	from win32com.shell import shell as win32com_shell
 
 # custom
-from . import CGATS
-from . import ICCProfile as ICCP
-from . import audio
-from . import colormath
-from . import config
-from . import defaultpaths
-from . import imfile
-from . import localization as lang
-from . import wexpect
-from .argyll_cgats import (add_dispcal_options_to_cal, add_options_to_ti3,
-						  cal_to_fake_profile, cal_to_vcgt,
-						  extract_cal_from_profile, extract_cal_from_ti3,
-						  extract_device_gray_primaries, extract_fix_copy_cal,
-						  ti3_to_ti1, verify_cgats, verify_ti1_rgb_xyz)
-from .argyll_instruments import (get_canonical_instrument_name,
-								instruments as all_instruments)
-from .argyll_names import (names as argyll_names, altnames as argyll_altnames, 
-						  optional as argyll_optional, viewconds, intents,
-						  observers)
-from .colormath import VidRGB_to_eeColor, eeColor_to_VidRGB
-from .config import (autostart, autostart_home, script_ext, defaults, enc, exe,
-					exedir, exe_ext, fs_enc, getcfg, geticon, get_data_path,
-					get_total_patches, get_verified_path, isapp, isexe,
-					is_ccxx_testchart, logdir, profile_ext, pydir, setcfg,
-					setcfg_cond, split_display_name, writecfg, appbasename)
-from .debughelpers import (Error, DownloadError, Info, UnloggedError,
-						  UnloggedInfo, UnloggedWarning, UntracedError, Warn,
-						  handle_error)
-from .defaultpaths import (cache, get_known_folder_path, iccprofiles_home,
-						  iccprofiles_display_home, appdata)
-from .edid import WMIError, get_edid
-from .log import DummyLogger, LogFile, get_file_logger, log, safe_print
-from . import madvr
-from .meta import VERSION, VERSION_BASE, domain, name as appname, version
-from .multiprocess import cpu_count, pool_slice
-from .options import (always_fail_download, debug, eecolor65, experimental, test,
-					 test_badssl, test_require_sensor_cal, verbose)
-from .ordereddict import OrderedDict
-from .network import LoggingHTTPRedirectHandler, NoHTTPRedirectHandler
-from .patterngenerators import (PrismaPatternGeneratorClient,
-							   ResolveLSPatternGeneratorServer,
-							   ResolveCMPatternGeneratorServer,
-							   WebWinHTTPPatternGeneratorServer)
-from .trash import trash
 from util_decimal import stripzeros
 from util_http import encode_multipart_formdata
 from util_io import (EncodedWriter, Files, GzipFileProper, LineBufferedStream,
-					 LineCache, StringIOu as StringIO, TarFileProper)
+                     LineCache)
+from util_io import StringIOu as StringIO
+from util_io import TarFileProper
 from util_list import intlist, natsort
+
+from . import CGATS
+from . import ICCProfile as ICCP
+from . import audio, colormath, config, defaultpaths, imfile
+from . import localization as lang
+from . import madvr, wexpect
+from .argyll_cgats import (add_dispcal_options_to_cal, add_options_to_ti3,
+                           cal_to_fake_profile, cal_to_vcgt,
+                           extract_cal_from_profile, extract_cal_from_ti3,
+                           extract_device_gray_primaries, extract_fix_copy_cal,
+                           ti3_to_ti1, verify_cgats, verify_ti1_rgb_xyz)
+from .argyll_instruments import get_canonical_instrument_name
+from .argyll_instruments import instruments as all_instruments
+from .argyll_names import altnames as argyll_altnames
+from .argyll_names import intents
+from .argyll_names import names as argyll_names
+from .argyll_names import observers
+from .argyll_names import optional as argyll_optional
+from .argyll_names import viewconds
+from .colormath import VidRGB_to_eeColor, eeColor_to_VidRGB
+from .config import (appbasename, autostart, autostart_home, defaults, enc,
+                     exe, exe_ext, exedir, fs_enc, get_data_path,
+                     get_total_patches, get_verified_path, getcfg, geticon,
+                     is_ccxx_testchart, isapp, isexe, logdir, profile_ext,
+                     pydir, script_ext, setcfg, setcfg_cond,
+                     split_display_name, writecfg)
+from .debughelpers import (DownloadError, Error, Info, UnloggedError,
+                           UnloggedInfo, UnloggedWarning, UntracedError, Warn,
+                           handle_error)
+from .defaultpaths import (appdata, cache, get_known_folder_path,
+                           iccprofiles_display_home, iccprofiles_home)
+from .edid import WMIError, get_edid
+from .log import DummyLogger, LogFile, get_file_logger, log, safe_print
+from .meta import VERSION, VERSION_BASE, domain
+from .meta import name as appname
+from .meta import version
+from .multiprocess import cpu_count, pool_slice
+from .network import LoggingHTTPRedirectHandler, NoHTTPRedirectHandler
+from .options import (always_fail_download, debug, eecolor65, experimental,
+                      test, test_badssl, test_require_sensor_cal, verbose)
+from .ordereddict import OrderedDict
+from .patterngenerators import (PrismaPatternGeneratorClient,
+                                ResolveCMPatternGeneratorServer,
+                                ResolveLSPatternGeneratorServer,
+                                WebWinHTTPPatternGeneratorServer)
+from .trash import trash
+
 if sys.platform == "darwin":
-	from util_mac import (mac_app_activate, mac_terminal_do_script, 
-						  mac_terminal_set_colors, osascript,
-						  get_machine_attributes, get_model_id)
+	from util_mac import (get_machine_attributes, get_model_id, mac_app_activate,
+	                      mac_terminal_do_script, mac_terminal_set_colors,
+	                      osascript)
 elif sys.platform == "win32":
 	import util_win
 	from util_win import run_as_admin, shell_exec, win_ver
@@ -120,33 +128,38 @@ else:
 	# Linux
 	from .defaultpaths import xdg_data_home
 	try:
-		from util_dbus import (DBusObject, DBusException, BUSTYPE_SESSION,
-							   dbus_session, dbus_system)
+		from util_dbus import (BUSTYPE_SESSION, DBusException, DBusObject,
+		                       dbus_session, dbus_system)
 	except ImportError:
 		dbus_session = None
 		dbus_system = None
-from . import colord
 from util_os import (dlopen, expanduseru, fname_ext, getenvu, is_superuser,
-					 launch_file, make_win32_compatible_long_path, mksfile,
-					 mkstemp_bypath, quote_args, safe_glob, which)
+                     launch_file, make_win32_compatible_long_path, mksfile,
+                     mkstemp_bypath, quote_args, safe_glob, which)
+
+from . import colord
+
 if sys.platform not in ("darwin", "win32"):
 	from util_os import getgroups
 if sys.platform == "win32" and sys.getwindowsversion() >= (6, ):
 	from util_os import win64_disable_file_system_redirection
-from util_str import (make_filename_safe, safe_basestring, safe_asciize,
-					  safe_str, safe_unicode, strtr, universal_newlines)
-from .worker_base import (MP_Xicclu, WorkerBase, Xicclu, _mp_generate_B2A_clut,
-						 _mp_xicclu,
-						 check_argyll_bin, get_argyll_util, get_argyll_utilname,
-						 get_argyll_version_string as
-						 base_get_argyll_version_string,
-						 parse_argyll_version_string, printcmdline)
+
+from util_str import (make_filename_safe, safe_asciize, safe_basestring,
+                      safe_str, safe_unicode, strtr, universal_newlines)
 from wxaddons import BetterCallLater, BetterWindowDisabler, wx
-from wxwindows import (ConfirmDialog, HtmlInfoDialog, InfoDialog,
-					   ProgressDialog, SimpleTerminal, show_result_dialog)
 from wxDisplayAdjustmentFrame import DisplayAdjustmentFrame
 from wxDisplayUniformityFrame import DisplayUniformityFrame
 from wxUntetheredFrame import UntetheredFrame
+from wxwindows import (ConfirmDialog, HtmlInfoDialog, InfoDialog,
+                       ProgressDialog, SimpleTerminal, show_result_dialog)
+
+from .worker_base import (MP_Xicclu, WorkerBase, Xicclu, _mp_generate_B2A_clut,
+                          _mp_xicclu, check_argyll_bin, get_argyll_util,
+                          get_argyll_utilname)
+from .worker_base import \
+    get_argyll_version_string as base_get_argyll_version_string
+from .worker_base import parse_argyll_version_string, printcmdline
+
 RDSMM = None
 if sys.platform not in ("darwin", "win32"):
 	try:

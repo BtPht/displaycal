@@ -188,9 +188,10 @@ def Property(func):
 # Beginning Of FLOATSPIN wxPython Code
 # ----------------------------------------------------------------------
 
-import wx
 import locale
 from math import ceil, floor
+
+import wx
 
 # Set The Styles For The Underline wx.TextCtrl
 FS_READONLY = 1

@@ -1,30 +1,31 @@
 # -*- coding: utf-8 -*-
 
-from time import gmtime, strftime
 import math
 import os
 import sys
+from time import gmtime, strftime
 
-from config import get_data_path, initcfg, getcfg, geticon, hascfg, setcfg
-from log import safe_print
-from meta import name as appname
+from util_list import natsort_key_factory
 from util_str import strtr
-from worker import Error, get_current_profile_path, show_result_dialog
+from wx import xrc
+
 import CGATS
-import ICCProfile as ICCP
 import config
+import ICCProfile as ICCP
 import localization as lang
 import worker
-from util_list import natsort_key_factory
-from .wxTestchartEditor import TestchartEditor
-from .wxwindows import BaseApp, BaseFrame, FileDrop, InfoDialog, wx
-from .wxfixes import TempXmlResource
+import xh_bitmapctrls
 import xh_fancytext
 import xh_filebrowsebutton
 import xh_hstretchstatbmp
-import xh_bitmapctrls
+from config import get_data_path, getcfg, geticon, hascfg, initcfg, setcfg
+from log import safe_print
+from meta import name as appname
+from worker import Error, get_current_profile_path, show_result_dialog
 
-from wx import xrc
+from .wxfixes import TempXmlResource
+from .wxTestchartEditor import TestchartEditor
+from .wxwindows import BaseApp, BaseFrame, FileDrop, InfoDialog, wx
 
 
 class ReportFrame(BaseFrame):

@@ -7,26 +7,23 @@ import sys
 if sys.platform not in ("darwin", "win32"):
     # Linux
     import codecs
-    import locale
     import gettext
+    import locale
 
     LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
 
 elif sys.platform == "win32":
     try:
         from win32com.shell.shell import SHGetSpecialFolderPath
-        from win32com.shell.shellcon import (
-            CSIDL_APPDATA,
-            CSIDL_COMMON_APPDATA,
-            CSIDL_COMMON_STARTUP,
-            CSIDL_LOCAL_APPDATA,
-            CSIDL_PROFILE,
-            CSIDL_PROGRAMS,
-            CSIDL_COMMON_PROGRAMS,
-            CSIDL_PROGRAM_FILES_COMMON,
-            CSIDL_STARTUP,
-            CSIDL_SYSTEM,
-        )
+        from win32com.shell.shellcon import (CSIDL_APPDATA,
+                                             CSIDL_COMMON_APPDATA,
+                                             CSIDL_COMMON_PROGRAMS,
+                                             CSIDL_COMMON_STARTUP,
+                                             CSIDL_LOCAL_APPDATA,
+                                             CSIDL_PROFILE,
+                                             CSIDL_PROGRAM_FILES_COMMON,
+                                             CSIDL_PROGRAMS, CSIDL_STARTUP,
+                                             CSIDL_SYSTEM)
     except ImportError:
         import ctypes
 

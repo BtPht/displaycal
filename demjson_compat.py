@@ -5,10 +5,9 @@ demjson 1.3 compatibilty module
 
 """
 
-from io import StringIO
 import json
 import sys
-
+from io import StringIO
 
 DEBUG = False
 

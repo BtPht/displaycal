@@ -26,7 +26,8 @@
 # under the terms of the GNU GPL v3, as an alternative to the X11/MIT license.
 
 # Python 2.6/2.7 compatibility
-import ctypes, sys
+import ctypes
+import sys
 from ctypes import windll, wintypes
 from uuid import UUID
 

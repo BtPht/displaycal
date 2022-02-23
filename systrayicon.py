@@ -15,10 +15,10 @@ import win32api
 import win32con
 import win32gui
 import winerror
+from wxaddons import IdFactory, wx
 
 from .log import safe_print
 from .options import debug, verbose
-from wxaddons import wx, IdFactory
 
 
 class Menu(wx.EvtHandler):

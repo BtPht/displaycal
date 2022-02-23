@@ -6,17 +6,20 @@ import os
 import re
 import socket
 import string
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 
-from .config import get_data_path
-from .defaultpaths import cache as cachepath
-from .meta import domain
-from .options import verbose, debug
-from .log import safe_print as _safe_print
 from util_io import GzipFileProper
 from util_str import StrList, create_replace_function, safe_unicode
+
 from . import colormath
 from . import localization as lang
+from .config import get_data_path
+from .defaultpaths import cache as cachepath
+from .log import safe_print as _safe_print
+from .meta import domain
+from .options import debug, verbose
 
 
 class VRMLParseError(Exception):

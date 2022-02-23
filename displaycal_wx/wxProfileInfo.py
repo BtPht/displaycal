@@ -1,68 +1,44 @@
 # -*- coding: utf-8 -*-
 
 
-import re
-import subprocess as sp
 import math
 import os
+import re
+import subprocess as sp
 import sys
 import tempfile
 
-from config import (
-    defaults,
-    fs_enc,
-    get_argyll_display_number,
-    get_data_path,
-    get_display_profile,
-    get_display_rects,
-    getbitmap,
-    getcfg,
-    geticon,
-    get_verified_path,
-    profile_ext,
-    setcfg,
-    writecfg,
-)
-from log import safe_print
-from meta import name as appname
-from options import debug
-from ordereddict import OrderedDict
 from util_io import GzipFileProper
 from util_list import intlist
 from util_os import launch_file, make_win32_compatible_long_path, waccess
 from util_str import safe_unicode, strtr, universal_newlines, wrap
-from worker import (
-    Error,
-    UnloggedError,
-    UnloggedInfo,
-    check_set_argyll_bin,
-    get_argyll_util,
-    make_argyll_compatible_path,
-    show_result_dialog,
-)
-from .wxaddons import get_platform_window_decoration_size, wx
-from .wxLUTViewer import LUTCanvas, LUTFrame
-from .wxVRML2X3D import vrmlfile2x3dfile
-from .wxwindows import (
-    BaseApp,
-    BaseFrame,
-    BitmapBackgroundPanelText,
-    CustomCheckBox,
-    CustomGrid,
-    CustomRowLabelRenderer,
-    ConfirmDialog,
-    FileDrop,
-    InfoDialog,
-    SimpleBook,
-    TwoWaySplitter,
-)
-from .wxfixes import GenBitmapButton as BitmapButton, wx_Panel, set_maxsize
+
 import colormath
 import config
-from . import wxenhancedplot as plot
-import localization as lang
 import ICCProfile as ICCP
+import localization as lang
 import x3dom
+from config import (defaults, fs_enc, get_argyll_display_number, get_data_path,
+                    get_display_profile, get_display_rects, get_verified_path,
+                    getbitmap, getcfg, geticon, profile_ext, setcfg, writecfg)
+from log import safe_print
+from meta import name as appname
+from options import debug
+from ordereddict import OrderedDict
+from worker import (Error, UnloggedError, UnloggedInfo, check_set_argyll_bin,
+                    get_argyll_util, make_argyll_compatible_path,
+                    show_result_dialog)
+
+from . import wxenhancedplot as plot
+from .wxaddons import get_platform_window_decoration_size, wx
+from .wxfixes import GenBitmapButton as BitmapButton
+from .wxfixes import set_maxsize, wx_Panel
+from .wxLUTViewer import LUTCanvas, LUTFrame
+from .wxVRML2X3D import vrmlfile2x3dfile
+from .wxwindows import (BaseApp, BaseFrame, BitmapBackgroundPanelText,
+                        ConfirmDialog, CustomCheckBox, CustomGrid,
+                        CustomRowLabelRenderer, FileDrop, InfoDialog,
+                        SimpleBook, TwoWaySplitter)
 
 BGCOLOUR = "#333333"
 FGCOLOUR = "#999999"

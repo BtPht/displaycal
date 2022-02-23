@@ -7,19 +7,19 @@ Runtime configuration and user settings parser
 import configparser
 
 configparser.DEFAULTSECT = "Default"
-from decimal import Decimal
 import locale
 import math
 import os
 import re
 import string
 import sys
+from decimal import Decimal
 from time import gmtime, strftime, timezone
 
 if sys.platform == "win32":
     import winreg
 
-from .argyll_names import observers, viewconds, intents, video_encodings
+from .argyll_names import intents, observers, video_encodings, viewconds
 from .defaultpaths import appdata, commonappdata
 
 if sys.platform == "win32":
@@ -34,15 +34,20 @@ else:
         xdg_data_home_default,
         xdg_data_dirs,
     )
-from .defaultpaths import autostart, autostart_home, home, iccprofiles, iccprofiles_home
-from .meta import name as appname, build, lastmod, version
+
+from util_io import StringIOu as StringIO
+from util_os import (expanduseru, expandvarsu, getenvu, is_superuser,
+                     listdir_re, which)
+from util_str import create_replace_function, safe_unicode, strtr
+
+from . import colormath, encodedstdio
+from .defaultpaths import (autostart, autostart_home, home, iccprofiles,
+                           iccprofiles_home)
+from .meta import build, lastmod
+from .meta import name as appname
+from .meta import version
 from .options import ascii, debug, verbose
 from .safe_print import enc, fs_enc, original_codepage
-from util_io import StringIOu as StringIO
-from util_os import expanduseru, expandvarsu, getenvu, is_superuser, listdir_re, which
-from util_str import create_replace_function, safe_unicode, strtr
-from . import colormath
-from . import encodedstdio
 
 # Runtime configuration
 
@@ -700,7 +705,7 @@ def runtimeconfig(pyfile):
 
     """
     global safe_print, safe_log
-    from .log import setup_logging, safe_print, safe_log
+    from .log import safe_log, safe_print, setup_logging
 
     setup_logging(logdir, pyname, pyext, confighome=confighome)
     if debug:

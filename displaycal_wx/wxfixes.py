@@ -6,7 +6,8 @@ import shutil
 import sys
 import tempfile
 
-from meta import name as appname, wx_minversion
+from meta import name as appname
+from meta import wx_minversion
 
 if os.getenv("GTK_CSD", "0") != "0":
     # Work-around double window decorations, see
@@ -44,15 +45,14 @@ if wx.VERSION < wx_minversion:
     app.MainLoop()
     sys.exit()
 import wx.grid
-from wx.lib.buttons import GenBitmapButton as _GenBitmapButton
-from wx.lib.buttons import ThemedGenButton as _ThemedGenButton
-from wx.lib.buttons import GenBitmapTextButton as _GenBitmapTextButton
-from wx.lib import platebtn
+from util_str import safe_str
 from wx import xrc
+from wx.lib import platebtn
+from wx.lib.buttons import GenBitmapButton as _GenBitmapButton
+from wx.lib.buttons import GenBitmapTextButton as _GenBitmapTextButton
+from wx.lib.buttons import ThemedGenButton as _ThemedGenButton
 
 from colormath import convert_range
-from util_str import safe_str
-
 
 if not hasattr(wx.Window, "HasFocus"):
     # wxPython < 3.0
@@ -75,9 +75,9 @@ if not hasattr(platebtn, "PB_STYLE_DROPARROW"):
 if "phoenix" in wx.PlatformInfo:
     # Phoenix compatibility
 
-    from wx.lib.agw import aui
-    from wx.lib import embeddedimage
     import wx.adv
+    from wx.lib import embeddedimage
+    from wx.lib.agw import aui
 
     # Deprecated items
 

@@ -20,13 +20,13 @@ with this program; if not, see <http://www.gnu.org/licenses/>
 """
 
 
+import datetime
+import decimal
 import sys
+from io import StringIO
 
 # Standard modules
 
-from io import StringIO
-import datetime
-import decimal
 
 Decimal = decimal.Decimal
 import json as json_module
@@ -36,111 +36,71 @@ import platform
 
 if sys.platform == "darwin":
     from platform import mac_ver
+
 import re
 import shutil
 import socket
-from . import subprocess as sp
 import threading
 import traceback
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 import zipfile
+
+from . import subprocess as sp
 
 if sys.platform == "win32":
     import winreg
-from hashlib import md5
-from time import gmtime, localtime, sleep, strftime, strptime, struct_time
-from zlib import crc32
 
 # Import the useful webbrowser module for platform-independent results
 import webbrowser
+from hashlib import md5
+from time import gmtime, localtime, sleep, strftime, strptime, struct_time
+from zlib import crc32
 
 # Set no delay time to open the web page
 webbrowser.PROCESS_CREATION_DELAY = 0
 
 # Config
-from . import config
-from .config import (
-    appbasename,
-    autostart,
-    autostart_home,
-    build,
-    script_ext,
-    defaults,
-    enc,
-    exe,
-    exe_ext,
-    fs_enc,
-    getbitmap,
-    geticon,
-    get_ccxx_testchart,
-    get_current_profile,
-    get_display_profile,
-    get_data_path,
-    getcfg,
-    get_total_patches,
-    get_verified_path,
-    hascfg,
-    is_ccxx_testchart,
-    is_profile,
-    initcfg,
-    isapp,
-    isexe,
-    profile_ext,
-    pydir,
-    resfiles,
-    setcfg,
-    setcfg_cond,
-    writecfg,
-)
+from . import CGATS
+from . import ICCProfile as ICCP
+from . import audio, ccmx, colord, colormath, config
+from . import localization as lang
+from . import madvr, pyi_md5pickuphelper, report
+from .config import (appbasename, autostart, autostart_home, build, defaults,
+                     enc, exe, exe_ext, fs_enc, get_ccxx_testchart,
+                     get_current_profile, get_data_path, get_display_profile,
+                     get_total_patches, get_verified_path, getbitmap, getcfg,
+                     geticon, hascfg, initcfg, is_ccxx_testchart, is_profile,
+                     isapp, isexe, profile_ext, pydir, resfiles, script_ext,
+                     setcfg, setcfg_cond, writecfg)
 
 # Custom modules
 
-from . import CGATS
-from . import ICCProfile as ICCP
-from . import audio
-from . import ccmx
-from . import colord
-from . import colormath
-from . import localization as lang
-from . import madvr
-from . import pyi_md5pickuphelper
-from . import report
 
 if sys.platform == "win32":
     import util_win
 elif sys.platform == "darwin":
     import util_mac
+
 from . import wexpect
-from .argyll_cgats import (
-    cal_to_fake_profile,
-    can_update_cal,
-    ti3_to_ti1,
-    extract_cal_from_profile,
-    verify_ti1_rgb_xyz,
-)
+from .argyll_cgats import (cal_to_fake_profile, can_update_cal,
+                           extract_cal_from_profile, ti3_to_ti1,
+                           verify_ti1_rgb_xyz)
 from .argyll_instruments import get_canonical_instrument_name, instruments
 from .argyll_names import viewconds
-from .colormath import CIEDCCT2xyY, planckianCT2xyY, xyY2CCT, XYZ2CCT, XYZ2Lab, XYZ2xyY
-from .debughelpers import ResourceError, getevtobjname, getevttype, handle_error
-from .edid import pnpidcache, get_manufacturer_name
+from .colormath import (XYZ2CCT, CIEDCCT2xyY, XYZ2Lab, XYZ2xyY,
+                        planckianCT2xyY, xyY2CCT)
+from .debughelpers import (ResourceError, getevtobjname, getevttype,
+                           handle_error)
+from .edid import get_manufacturer_name, pnpidcache
 from .log import log, logbuffer, safe_print
-from .meta import (
-    VERSION,
-    VERSION_BASE,
-    author,
-    name as appname,
-    domain,
-    version,
-    version_short,
-    get_latest_chglog_entry,
-)
-from .options import (
-    debug,
-    force_skip_initial_instrument_detection,
-    test,
-    test_update,
-    verbose,
-)
+from .meta import (VERSION, VERSION_BASE, author, domain,
+                   get_latest_chglog_entry)
+from .meta import name as appname
+from .meta import version, version_short
+from .options import (debug, force_skip_initial_instrument_detection, test,
+                      test_update, verbose)
 from .ordereddict import OrderedDict
 from .patterngenerators import WebWinHTTPPatternGeneratorServer
 
@@ -148,64 +108,28 @@ try:
     from .chromecast_patterngenerator import ChromeCastPatternGenerator as CCPG
 except ImportError:
     CCPG = None.__class__
-from .trash import trash, TrashAborted, TrashcanUnavailableError
+import util_x
 from util_decimal import float2dec, stripzeros
 from util_io import LineCache, StringIOu, TarFileProper
 from util_list import index_fallback_ignorecase, intlist, natsort
-from util_os import (
-    dlopen,
-    expanduseru,
-    get_program_file,
-    getenvu,
-    is_superuser,
-    launch_file,
-    listdir_re,
-    safe_glob,
-    waccess,
-    which,
-)
-from util_str import (
-    ellipsis,
-    make_filename_safe,
-    safe_str,
-    safe_unicode,
-    strtr,
-    universal_newlines,
-    wrap,
-)
-import util_x
-from .worker import (
-    Error,
-    Info,
-    UnloggedError,
-    UnloggedInfo,
-    UnloggedWarning,
-    Warn,
-    Worker,
-    check_create_dir,
-    check_file_isfile,
-    check_set_argyll_bin,
-    check_ti3,
-    check_ti3_criteria1,
-    check_ti3_criteria2,
-    get_arg,
-    get_argyll_util,
-    get_cfg_option_from_args,
-    get_options_from_cal,
-    get_argyll_version,
-    get_current_profile_path,
-    get_options_from_profile,
-    get_options_from_ti3,
-    make_argyll_compatible_path,
-    parse_argument_string,
-    set_argyll_bin,
-    show_result_dialog,
-    check_argyll_bin,
-    http_request,
-    FilteredStream,
-    _applycal_bug_workaround,
-)
+from util_os import (dlopen, expanduseru, get_program_file, getenvu,
+                     is_superuser, launch_file, listdir_re, safe_glob, waccess,
+                     which)
+from util_str import (ellipsis, make_filename_safe, safe_str, safe_unicode,
+                      strtr, universal_newlines, wrap)
 from wxLUT3DFrame import LUT3DFrame
+
+from .trash import TrashAborted, TrashcanUnavailableError, trash
+from .worker import (Error, FilteredStream, Info, UnloggedError, UnloggedInfo,
+                     UnloggedWarning, Warn, Worker, _applycal_bug_workaround,
+                     check_argyll_bin, check_create_dir, check_file_isfile,
+                     check_set_argyll_bin, check_ti3, check_ti3_criteria1,
+                     check_ti3_criteria2, get_arg, get_argyll_util,
+                     get_argyll_version, get_cfg_option_from_args,
+                     get_current_profile_path, get_options_from_cal,
+                     get_options_from_profile, get_options_from_ti3,
+                     http_request, make_argyll_compatible_path,
+                     parse_argument_string, set_argyll_bin, show_result_dialog)
 
 try:
     from wxLUTViewer import LUTFrame
@@ -224,61 +148,28 @@ try:
     from wxProfileInfo import ProfileInfoFrame
 except ImportError:
     ProfileInfoFrame = None
+import wxenhancedplot as plot
+from wxaddons import (BetterWindowDisabler, CustomEvent, CustomGridCellEvent,
+                      IdFactory, PopupMenu, wx)
+from wxfixes import (BitmapWithThemedButton, PlateButton, TempXmlResource,
+                     ThemedGenButton, get_bitmap_disabled, set_bitmap_labels,
+                     set_maxsize, wx_Panel)
 from wxReportFrame import ReportFrame
 from wxSynthICCFrame import SynthICCFrame
 from wxTestchartEditor import TestchartEditor
 from wxVisualWhitepointEditor import VisualWhitepointEditor
-from wxaddons import (
-    wx,
-    BetterWindowDisabler,
-    CustomEvent,
-    CustomGridCellEvent,
-    IdFactory,
-    PopupMenu,
-)
-from wxfixes import (
-    ThemedGenButton,
-    BitmapWithThemedButton,
-    set_bitmap_labels,
-    TempXmlResource,
-    wx_Panel,
-    PlateButton,
-    get_bitmap_disabled,
-    set_maxsize,
-)
-from wxwindows import (
-    AboutDialog,
-    AuiBetterTabArt,
-    BaseApp,
-    BaseFrame,
-    BetterStaticFancyText,
-    BorderGradientButton,
-    BitmapBackgroundPanel,
-    BitmapBackgroundPanelText,
-    ConfirmDialog,
-    CustomGrid,
-    CustomCellBoolRenderer,
-    FileBrowseBitmapButtonWithChoiceHistory,
-    FileDrop,
-    FlatShadedButton,
-    HtmlWindow,
-    HyperLinkCtrl,
-    InfoDialog,
-    LogWindow,
-    ProgressDialog,
-    TabButton,
-    TooltipWindow,
-    get_gradient_panel,
-    get_dialogs,
-    AutocompleteComboBox,
-)
-from . import floatspin
-import wxenhancedplot as plot
-from . import xh_fancytext
-from . import xh_filebrowsebutton
-from . import xh_floatspin
-from . import xh_hstretchstatbmp
-from . import xh_bitmapctrls
+from wxwindows import (AboutDialog, AuiBetterTabArt, AutocompleteComboBox,
+                       BaseApp, BaseFrame, BetterStaticFancyText,
+                       BitmapBackgroundPanel, BitmapBackgroundPanelText,
+                       BorderGradientButton, ConfirmDialog,
+                       CustomCellBoolRenderer, CustomGrid,
+                       FileBrowseBitmapButtonWithChoiceHistory, FileDrop,
+                       FlatShadedButton, HtmlWindow, HyperLinkCtrl, InfoDialog,
+                       LogWindow, ProgressDialog, TabButton, TooltipWindow,
+                       get_dialogs, get_gradient_panel)
+
+from . import (floatspin, xh_bitmapctrls, xh_fancytext, xh_filebrowsebutton,
+               xh_floatspin, xh_hstretchstatbmp)
 
 # wxPython
 try:
@@ -290,6 +181,7 @@ try:
 except ImportError:
     # Fall back to wx.aui under ancient wxPython versions
     from wx import aui
+
 from wx import xrc
 from wx.lib import delayedresult, platebtn
 from wx.lib.art import flagart
@@ -19230,7 +19122,9 @@ class StartupFrame(start_cls):
                 # We want to color convert the screenshot to wx Rec. 709
                 # gamma 1.8 to get rid of visible color differences.
                 try:
-                    import PIL, PIL.Image, PIL.ImageCms
+                    import PIL
+                    import PIL.Image
+                    import PIL.ImageCms
                 except ImportError as exception:
                     PIL = None
                     safe_print("Info: Couldn't import PIL:", exception)

@@ -16,34 +16,26 @@ sound.Play(fade_ms=1000)
 
 """
 
-from ctypes import (
-    CFUNCTYPE,
-    POINTER,
-    Structure,
-    c_int,
-    c_uint8,
-    c_uint16,
-    c_uint32,
-    c_void_p,
-)
 import ctypes.util
 import os
 import sys
 import threading
 import time
+from ctypes import (CFUNCTYPE, POINTER, Structure, c_int, c_uint8, c_uint16,
+                    c_uint32, c_void_p)
 
 if sys.platform == "win32":
     try:
-        import win32api
         import pywintypes
+        import win32api
     except ImportError:
         win32api = None
 
-from .config import pydir
-from .log import safe_print
 from util_os import dlopen, getenvu
 from util_str import safe_str, safe_unicode
 
+from .config import pydir
+from .log import safe_print
 
 _ch = {}
 _initialized = False
@@ -531,6 +523,7 @@ class _Sound(object):
 
 if __name__ == "__main__":
     import wx
+
     from .config import get_data_path
 
     sound = Sound(get_data_path("theme/engine_hum_loop.wav"), True)

@@ -1,33 +1,32 @@
 # -*- coding: utf-8 -*-
 
 
-from binascii import hexlify
 import os
 import re
-from . import subprocess as sp
 import sys
 import time
 import warnings
+from binascii import hexlify
 from time import sleep
 
+from . import subprocess as sp
 from .options import use_colord_gi
 
 try:
     # XXX D-Bus API is more complete currently
     if not use_colord_gi:
         raise ImportError("")
-    from gi.repository import Colord
-    from gi.repository import Gio
+    from gi.repository import Colord, Gio
 except ImportError:
     Colord = None
     Gio = None
 else:
     cancellable = Gio.Cancellable.new()
 
-from util_dbus import DBusObject, DBusException, BUSTYPE_SYSTEM
-
+from util_dbus import BUSTYPE_SYSTEM, DBusException, DBusObject
 from util_os import which
 from util_str import safe_str, safe_unicode
+
 from . import localization as lang
 
 if sys.platform not in ("darwin", "win32"):

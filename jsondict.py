@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from . import demjson_compat
-
 from .lazydict import LazyDict
 
 

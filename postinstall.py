@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from io import StringIO
-from .subprocess import call
-from os.path import basename, splitext
 import os
 import shutil
 import sys
 import traceback
+from io import StringIO
+from os.path import basename, splitext
+
+from util_os import relpath, safe_glob, which
 
 from .meta import name
-from util_os import relpath, safe_glob, which
+from .subprocess import call
 
 recordfile_name = "INSTALLED_FILES"
 
@@ -22,13 +23,10 @@ if sys.platform == "win32":
         # this function is only available within bdist_wininst installers
     except NameError:
         try:
-            from pythoncom import (
-                CoCreateInstance,
-                CLSCTX_INPROC_SERVER,
-                IID_IPersistFile,
-            )
-            from win32com.shell import shell
             import win32con
+            from pythoncom import (CLSCTX_INPROC_SERVER, CoCreateInstance,
+                                   IID_IPersistFile)
+            from win32com.shell import shell
         except ImportError:
 
             def create_shortcut(*args):

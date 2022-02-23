@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from codecs import EncodedFile
-from hashlib import md5
 import atexit
 import logging
 import logging.handlers
@@ -10,15 +8,20 @@ import os
 import re
 import sys
 import warnings
+from codecs import EncodedFile
+from hashlib import md5
 from time import localtime, strftime, time
 
-from .meta import name as appname, script2pywname
-from .multiprocess import mp
-from .options import debug
-from .safe_print import SafePrinter, safe_print as _safe_print
 from util_io import StringIOu as StringIO
 from util_os import safe_glob
 from util_str import safe_str, safe_unicode
+
+from .meta import name as appname
+from .meta import script2pywname
+from .multiprocess import mp
+from .options import debug
+from .safe_print import SafePrinter
+from .safe_print import safe_print as _safe_print
 
 logging.raiseExceptions = 0
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import os
+import sys
 
 if sys.platform == "win32":
-    from win32com.shell import shell, shellcon
     import pythoncom
     import win32api
+    from win32com.shell import shell, shellcon
 
     def recycle(path):
         path = os.path.join(
@@ -67,7 +67,7 @@ else:
     from urllib.parse import quote
     import shutil
 
-from util_os import getenvu, expanduseru
+from util_os import expanduseru, getenvu
 
 
 class TrashAborted(Exception):

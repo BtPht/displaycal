@@ -24,10 +24,6 @@ the wrapper script in the root directory of the source tar.gz/zip
 """
 
 
-from configparser import ConfigParser
-from distutils.command.install import install
-from distutils.util import change_root, get_platform
-from fnmatch import fnmatch
 import codecs
 import ctypes.util
 import distutils.core
@@ -35,10 +31,15 @@ import os
 import platform
 import re
 import shutil
-from . import subprocess as sp
 import sys
+from configparser import ConfigParser
+from distutils.command.install import install
+from distutils.util import change_root, get_platform
+from fnmatch import fnmatch
 from time import strftime
 from types import StringType
+
+from . import subprocess as sp
 
 
 # Borrowed from setuptools
@@ -61,26 +62,15 @@ import distutils.filelist
 distutils.filelist.findall = findall  # Fix findall bug in distutils
 
 
-from .defaultpaths import autostart, autostart_home
-from .meta import (
-    author,
-    author_ascii,
-    description,
-    longdesc,
-    domain,
-    name,
-    py_maxversion,
-    py_minversion,
-    version,
-    version_tuple,
-    wx_minversion,
-    author_email,
-    script2pywname,
-    appstream_id,
-)
 from util_list import intlist
 from util_os import getenvu, relpath, safe_glob
 from util_str import safe_str
+
+from .defaultpaths import autostart, autostart_home
+from .meta import (appstream_id, author, author_ascii, author_email,
+                   description, domain, longdesc, name, py_maxversion,
+                   py_minversion, script2pywname, version, version_tuple,
+                   wx_minversion)
 
 appname = name
 
@@ -467,7 +457,7 @@ def setup():
         except ImportError:
             pass
         try:
-            from setuptools import setup, Extension
+            from setuptools import Extension, setup
 
             setuptools = True
             print("using setuptools")
@@ -499,7 +489,7 @@ def setup():
         distutils.filelist.findall = findall
 
     if not setuptools:
-        from distutils.core import setup, Extension
+        from distutils.core import Extension, setup
 
         print("using distutils")
 
@@ -1727,7 +1717,8 @@ setup(ext_modules=[Extension("%s.lib%s.RealDisplaySizeMM", sources=%r,
         if (
             (bdist_bbfreeze and sys.platform == "win32") or do_py2exe
         ) and sys.version_info[:2] >= (2, 6):
-            from vc90crt import name as vc90crt_name, vc90crt_copy_files
+            from vc90crt import name as vc90crt_name
+            from vc90crt import vc90crt_copy_files
 
             if do_py2exe:
                 vc90crt_copy_files(dist_dir)
