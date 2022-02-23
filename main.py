@@ -9,9 +9,6 @@ import sys
 import threading
 from time import sleep
 
-if sys.platform == "darwin":
-    from platform import mac_ver
-
 from config import (
     appbasename,
     confighome,
@@ -37,11 +34,6 @@ from .meta import VERSION, VERSION_BASE, VERSION_STRING, build
 from .meta import name as appname
 from .multiprocess import mp
 from .options import verbose
-
-if sys.platform == "win32":
-    import ctypes
-
-    from utils.util_win import win_ver
 
 
 def _excepthook(etype, value, tb):
@@ -72,18 +64,7 @@ def _main(module, name, applockfilename, probe_ports=True):
         if VERSION > VERSION_BASE:
             version += " Beta"
         safe_print(pyname + runtype, version, build)
-    if sys.platform == "darwin":
-        # Python's platform.platform output is useless under Mac OS X
-        # (e.g. 'Darwin-15.0.0-x86_64-i386-64bit' for Mac OS X 10.11 El Capitan)
-        safe_print("Mac OS X %s %s" % (mac_ver()[0], mac_ver()[-1]))
-    elif sys.platform == "win32":
-        machine = platform.machine()
-        safe_print(
-            *[v for v in win_ver() if v] + ({"AMD64": "x86_64"}.get(machine, machine),)
-        )
-    else:
-        # Linux
-        safe_print(" ".join(platform.dist()), platform.machine())
+    safe_print(" ".join(platform.dist()), platform.machine())
     safe_print("Python " + sys.version)
     cafile = os.getenv("SSL_CERT_FILE")
     if cafile:
@@ -109,22 +90,6 @@ def _main(module, name, applockfilename, probe_ports=True):
     safe_print("wxPython " + wx.version())
     safe_print("Encoding: " + enc)
     safe_print("File system encoding: " + fs_enc)
-    if sys.platform == "win32" and sys.getwindowsversion() >= (6, 2):
-        # HighDPI support
-        try:
-            shcore = ctypes.windll.shcore
-        except Exception as exception:
-            safe_print("Warning - could not load shcore:", exception)
-        else:
-            if hasattr(shcore, "SetProcessDpiAwareness"):
-                try:
-                    # 1 = System DPI aware (wxWpython currently does not
-                    # support per-monitor DPI)
-                    shcore.SetProcessDpiAwareness(1)
-                except Exception as exception:
-                    safe_print("Warning - SetProcessDpiAwareness() failed:", exception)
-            else:
-                safe_print("Warning - SetProcessDpiAwareness not found in shcore")
     initcfg(module)
     host = "127.0.0.1"
     defaultport = getcfg("app.port")

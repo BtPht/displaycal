@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
-import locale
 import os
 import sys
 
 from utils.util_str import safe_unicode
 
-from .encoding import get_encoding, get_encodings
+from encoding import get_encoding, get_encodings
 
 original_codepage = None
 
@@ -19,24 +16,7 @@ _conwidth = None
 def _get_console_width():
     global _conwidth
     if _conwidth is None:
-        _conwidth = 80
-        try:
-            if sys.platform == "win32":
-                import struct
-                from ctypes import create_string_buffer, windll
-
-                # Use stderr handle so that pipes don't affect the reported size
-                stderr_handle = windll.kernel32.GetStdHandle(-12)
-                buf = create_string_buffer(22)
-                consinfo = windll.kernel32.GetConsoleScreenBufferInfo(
-                    stderr_handle, buf
-                )
-                if consinfo:
-                    _conwidth = struct.unpack("hhhhHhhhhhh", buf.raw)[0]
-            else:
-                _conwidth = int(os.getenv("COLUMNS"))
-        except:
-            pass
+        _conwidth = int(os.getenv("COLUMNS", default=80))
     return _conwidth
 
 

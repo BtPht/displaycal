@@ -237,7 +237,7 @@ else:
                     obj.GETTEXT_PACKAGE, locale_dir, codeset="UTF-8"
                 )
             except IOError as exception:
-                from .log import safe_print
+                from log import safe_print
 
                 safe_print("XDG:", exception)
                 obj.translation = gettext.NullTranslations()

@@ -91,14 +91,6 @@ pypath = os.path.abspath(__file__)
 pydir = os.path.dirname(pypath)
 basedir = os.path.dirname(pydir)
 
-if sys.platform in ("darwin", "win32"):
-    # Adjust PATH so ctypes.util.find_library can find SDL2 DLLs (if present)
-    pth = getenvu("PATH")
-    libpth = os.path.join(pydir, "lib")
-    if not pth.startswith(libpth + os.pathsep):
-        pth = libpth + os.pathsep + pth
-        os.environ["PATH"] = safe_str(pth)
-
 config = {
     "data": ["tests/*.icc"],
     "doc": [
