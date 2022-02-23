@@ -179,13 +179,14 @@ or no range::
 
 """
 
+
 def Property(func):
     return property(**func())
 
 
-#----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Beginning Of FLOATSPIN wxPython Code
-#----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 
 import wx
 import locale
@@ -204,20 +205,20 @@ FS_RIGHT = 8
 # Define The FloatSpin Event
 wxEVT_FLOATSPIN = wx.NewEventType()
 
-#-----------------------------------#
+# -----------------------------------#
 #        FloatSpinEvent
-#-----------------------------------#
+# -----------------------------------#
 
 EVT_FLOATSPIN = wx.PyEventBinder(wxEVT_FLOATSPIN, 1)
-""" Emitted when the user changes the value of :class:`FloatSpin`, either with the mouse or""" \
-""" with the keyboard. """
+""" Emitted when the user changes the value of :class:`FloatSpin`, either with the mouse or""" """ with the keyboard. """
 
 # ---------------------------------------------------------------------------- #
 # Class FloatSpinEvent
 # ---------------------------------------------------------------------------- #
 
+
 class FloatSpinEvent(wx.PyCommandEvent):
-    """ This event will be sent when a ``EVT_FLOATSPIN`` event is mapped in the parent. """
+    """This event will be sent when a ``EVT_FLOATSPIN`` event is mapped in the parent."""
 
     def __init__(self, eventType, eventId=1, nSel=-1, nOldSel=-1):
         """
@@ -232,7 +233,6 @@ class FloatSpinEvent(wx.PyCommandEvent):
         wx.PyCommandEvent.__init__(self, eventType, eventId)
         self._eventType = eventType
 
-
     def SetPosition(self, pos):
         """
         Sets event position.
@@ -242,16 +242,15 @@ class FloatSpinEvent(wx.PyCommandEvent):
 
         self._position = pos
 
-
     def GetPosition(self):
-        """ Returns event position. """
+        """Returns event position."""
 
         return self._position
 
 
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # FloatTextCtrl
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 
 class FloatTextCtrl(wx.TextCtrl):
@@ -259,11 +258,18 @@ class FloatTextCtrl(wx.TextCtrl):
     A class which holds a :class:`TextCtrl`, one of the two building blocks
     of :class:`FloatSpin`.
     """
-    
-    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=wx.TE_NOHIDESEL | wx.TE_PROCESS_ENTER,
-                 validator=wx.DefaultValidator,
-                 name=wx.TextCtrlNameStr):
+
+    def __init__(
+        self,
+        parent,
+        id=wx.ID_ANY,
+        value="",
+        pos=wx.DefaultPosition,
+        size=wx.DefaultSize,
+        style=wx.TE_NOHIDESEL | wx.TE_PROCESS_ENTER,
+        validator=wx.DefaultValidator,
+        name=wx.TextCtrlNameStr,
+    ):
         """
         Default class constructor.
         Used internally. Do not call directly this class in your code!
@@ -278,7 +284,7 @@ class FloatTextCtrl(wx.TextCtrl):
         :param `style`: the window style;
         :param `validator`: the window validator;
         :param `name`: the window name.
-        
+
         """
 
         wx.TextCtrl.__init__(self, parent, id, value, pos, size, style, validator, name)
@@ -290,7 +296,6 @@ class FloatTextCtrl(wx.TextCtrl):
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
         self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
-
 
     def OnDestroy(self, event):
         """
@@ -305,7 +310,6 @@ class FloatTextCtrl(wx.TextCtrl):
             self._parent._textctrl = None
             self._parent = None
 
-
     def OnKeyDown(self, event):
         """
         Handles the ``wx.EVT_KEYDOWN`` event for :class:`FloatTextCtrl`.
@@ -316,12 +320,10 @@ class FloatTextCtrl(wx.TextCtrl):
         if self._parent:
             self._parent.OnKeyDown(event)
 
-
     def OnFocus(self, event):
         self._value = self.Value
         self.RestoreSelection()
         event.Skip()
-
 
     def OnKillFocus(self, event):
         """
@@ -331,7 +333,7 @@ class FloatTextCtrl(wx.TextCtrl):
 
         :note: This method synchronizes the :class:`SpinButton` and the :class:`TextCtrl`
          when focus is lost.
-         """
+        """
 
         self._selection = self.GetSelection()
         if self._parent and self.Value != self._value:
@@ -344,7 +346,7 @@ class FloatTextCtrl(wx.TextCtrl):
         """
         Restores the selection under Mac OS X, selects all under other platforms
         (consistent with default wx.TextCtrl behaviour)
-        
+
         """
 
         if "__WXMAC__" in wx.PlatformInfo and self._selection != (-1, -1):
@@ -353,10 +355,11 @@ class FloatTextCtrl(wx.TextCtrl):
             self.SelectAll()
 
 
-#---------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # FloatSpin
 # This Is The Main Class Implementation
 # ---------------------------------------------------------------------------- #
+
 
 class FloatSpin(wx.PyControl):
     """
@@ -369,10 +372,21 @@ class FloatSpin(wx.PyControl):
 
     _spinwidth = 0
 
-    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
-                 size=(95,-1), style=0, value=0.0, min_val=None, max_val=None,
-                 increment=1.0, digits=-1, agwStyle=FS_LEFT,
-                 name="FloatSpin"):
+    def __init__(
+        self,
+        parent,
+        id=wx.ID_ANY,
+        pos=wx.DefaultPosition,
+        size=(95, -1),
+        style=0,
+        value=0.0,
+        min_val=None,
+        max_val=None,
+        increment=1.0,
+        digits=-1,
+        agwStyle=FS_LEFT,
+        name="FloatSpin",
+    ):
         """
         Default class constructor.
 
@@ -403,9 +417,16 @@ class FloatSpin(wx.PyControl):
 
         """
 
-        wx.PyControl.__init__(self, parent, id, pos, size, style|wx.NO_BORDER|
-                              wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
-                              wx.DefaultValidator, name)
+        wx.PyControl.__init__(
+            self,
+            parent,
+            id,
+            pos,
+            size,
+            style | wx.NO_BORDER | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            wx.DefaultValidator,
+            name,
+        )
 
         # Don't call SetRange here, because it will try to modify
         # self._value whose value doesn't exist yet.
@@ -423,7 +444,7 @@ class FloatSpin(wx.PyControl):
         self._enabled = True
 
         # start Philip Semanchuk addition
-        # The textbox & spin button are drawn slightly differently 
+        # The textbox & spin button are drawn slightly differently
         # depending on the platform. The difference is most pronounced
         # under OS X.
         if "__WXMAC__" in wx.PlatformInfo:
@@ -461,22 +482,37 @@ class FloatSpin(wx.PyControl):
 
         self._validkeycode = [43, 44, 45, 46, 69, 101]
         self._validkeycode.extend(list(range(48, 58)))
-        self._validkeycode.extend([wx.WXK_BACK, wx.WXK_DELETE, wx.WXK_LEFT,
-                                   wx.WXK_RIGHT,
-                                   wx.WXK_NUMPAD0, wx.WXK_NUMPAD1,
-                                   wx.WXK_NUMPAD2, wx.WXK_NUMPAD3,
-                                   wx.WXK_NUMPAD4, wx.WXK_NUMPAD5,
-                                   wx.WXK_NUMPAD6, wx.WXK_NUMPAD7,
-                                   wx.WXK_NUMPAD8, wx.WXK_NUMPAD9,
-                                   wx.WXK_NUMPAD_ADD, wx.WXK_NUMPAD_DECIMAL,
-                                   wx.WXK_NUMPAD_SEPARATOR,
-                                   wx.WXK_NUMPAD_SUBTRACT])
+        self._validkeycode.extend(
+            [
+                wx.WXK_BACK,
+                wx.WXK_DELETE,
+                wx.WXK_LEFT,
+                wx.WXK_RIGHT,
+                wx.WXK_NUMPAD0,
+                wx.WXK_NUMPAD1,
+                wx.WXK_NUMPAD2,
+                wx.WXK_NUMPAD3,
+                wx.WXK_NUMPAD4,
+                wx.WXK_NUMPAD5,
+                wx.WXK_NUMPAD6,
+                wx.WXK_NUMPAD7,
+                wx.WXK_NUMPAD8,
+                wx.WXK_NUMPAD9,
+                wx.WXK_NUMPAD_ADD,
+                wx.WXK_NUMPAD_DECIMAL,
+                wx.WXK_NUMPAD_SEPARATOR,
+                wx.WXK_NUMPAD_SUBTRACT,
+            ]
+        )
 
-        self._spinbutton = wx.SpinButton(self, wx.ID_ANY, wx.DefaultPosition,
-                                         size=(-1, height),
-                                         style=wx.SP_ARROW_KEYS | wx.SP_VERTICAL |
-                                         wx.SP_WRAP)
-        self._spinbutton.SetRange(-2 ** 32 / 2.0, 2 ** 32 / 2.0 - 1)
+        self._spinbutton = wx.SpinButton(
+            self,
+            wx.ID_ANY,
+            wx.DefaultPosition,
+            size=(-1, height),
+            style=wx.SP_ARROW_KEYS | wx.SP_VERTICAL | wx.SP_WRAP,
+        )
+        self._spinbutton.SetRange(-(2**32) / 2.0, 2**32 / 2.0 - 1)
         self._spinbutton.AcceptsFocusFromKeyboard = lambda: False
         if "gtk3" in wx.PlatformInfo:
             if not FloatSpin._spinwidth:
@@ -497,19 +533,24 @@ class FloatSpin(wx.PyControl):
         if agwStyle & FS_READONLY:
             txtstyle = txtstyle | wx.TE_READONLY
 
-        self._textctrl = FloatTextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
-                                       (width-self._spinbutton.GetSize().GetWidth(), height),
-                                       txtstyle)
+        self._textctrl = FloatTextCtrl(
+            self,
+            wx.ID_ANY,
+            "",
+            wx.DefaultPosition,
+            (width - self._spinbutton.GetSize().GetWidth(), height),
+            txtstyle,
+        )
 
         # start Philip Semanchuk addition
-        # Setting the textctrl's size in the ctor also sets its min size. 
-        # But the textctrl is entirely controlled by the parent floatspin 
+        # Setting the textctrl's size in the ctor also sets its min size.
+        # But the textctrl is entirely controlled by the parent floatspin
         # control and should accept whatever size its parent dictates, so
         # here we tell it to forget its min size.
         self._textctrl.SetMinSize(wx.DefaultSize)
-        # Setting the spin buttons's size in the ctor also sets its min size. 
+        # Setting the spin buttons's size in the ctor also sets its min size.
         # Under OS X that results in a rendering artifact because spin buttons
-        # are a little shorter than textboxes. 
+        # are a little shorter than textboxes.
         # Setting the min size to the default allows OS X to draw the spin
         # button correctly. However, Windows and KDE take the call to
         # SetMinSize() as a cue to size the spin button taller than the
@@ -535,7 +576,7 @@ class FloatSpin(wx.PyControl):
             self.Bind(wx.EVT_SPIN_DOWN, self.OnSpinDown)
             self._spinbutton.Bind(wx.EVT_LEFT_DOWN, self.OnSpinMouseDown)
             self._spinbutton.Bind(wx.EVT_LEFT_UP, self.OnSpinMouseUp)
-            
+
         self._textctrl.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
         self._textctrl.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self._spinbutton.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
@@ -550,7 +591,6 @@ class FloatSpin(wx.PyControl):
             # start Philip Semanchuk move
             self.SetBestSize((width, height))
             # end Philip Semanchuk move
-
 
     def OnDestroy(self, event):
         """
@@ -570,13 +610,12 @@ class FloatSpin(wx.PyControl):
         self._spinbutton.Destroy()
         self._spinbutton = None
 
-
     def DoGetBestSize(self):
         """
         Gets the size which best suits the window: for a control, it would be the
         minimal size which doesn't truncate the control, for a panel - the same
         size as it would have after a call to `Fit()`.
-        
+
         :note: Overridden from :class:`PyControl`.
         """
 
@@ -595,9 +634,8 @@ class FloatSpin(wx.PyControl):
 
         return self._spinctrl_bestsize
 
-
     def DoSendEvent(self):
-        """ Send the event to the parent. """
+        """Send the event to the parent."""
 
         event = wx.CommandEvent(wx.wxEVT_COMMAND_SPINCTRL_UPDATED, self.GetId())
         event.SetEventObject(self)
@@ -613,21 +651,18 @@ class FloatSpin(wx.PyControl):
         eventOut.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(eventOut)
 
-
     def Disable(self):
         self.Enable(False)
 
-
     def Enable(self, enable=True):
-        """ Enable the child controls. This is needed under wxMac """
+        """Enable the child controls. This is needed under wxMac"""
 
         wx.PyControl.Enable(self, enable)
         self._enabled = enable
-        
+
         if self._textctrl:
             self._textctrl.Enable(enable)
         self._spinbutton.Enable(enable)
-
 
     @Property
     def Enabled():
@@ -639,10 +674,8 @@ class FloatSpin(wx.PyControl):
 
         return locals()
 
-
     def IsEnabled(self):
         return self._enabled
-
 
     def OnSpinMouseDown(self, event):
         """
@@ -655,17 +688,16 @@ class FloatSpin(wx.PyControl):
 
         modifier = FixedPoint(str(1.0), 20)
         if event.ShiftDown():
-            modifier = modifier*2.0
+            modifier = modifier * 2.0
         if event.ControlDown():
-            modifier = modifier*10.0
+            modifier = modifier * 10.0
         if event.AltDown():
-            modifier = modifier*100.0
+            modifier = modifier * 100.0
 
         self._spinmodifier = modifier
 
         self._ignore_spin_event = False
         event.Skip()
-
 
     def OnSpinMouseUp(self, event):
         """
@@ -687,7 +719,6 @@ class FloatSpin(wx.PyControl):
         self._ignore_spin_event = False
         event.Skip()
 
-
     def OnSpinUp(self, event):
         """
         Handles the ``wx.EVT_SPIN_UP`` event for :class:`FloatSpin`.
@@ -702,16 +733,15 @@ class FloatSpin(wx.PyControl):
         if self._textctrl and self._textctrl.IsModified():
             self.SyncSpinToText(False)
 
-        if self.InRange(self._value + self._increment*self._spinmodifier):
+        if self.InRange(self._value + self._increment * self._spinmodifier):
 
-            self._value = self._value + self._increment*self._spinmodifier
+            self._value = self._value + self._increment * self._spinmodifier
         elif self._max is not None:
             self._value = self._max
         self.SetValue(self._value)
         if "__WXMAC__" in wx.PlatformInfo:
             self._textctrl.SelectAll()
         self.DoSendEvent()
-
 
     def OnSpinDown(self, event):
         """
@@ -727,16 +757,15 @@ class FloatSpin(wx.PyControl):
         if self._textctrl and self._textctrl.IsModified():
             self.SyncSpinToText(False)
 
-        if self.InRange(self._value - self._increment*self._spinmodifier):
+        if self.InRange(self._value - self._increment * self._spinmodifier):
 
-            self._value = self._value - self._increment*self._spinmodifier
+            self._value = self._value - self._increment * self._spinmodifier
         elif self._min is not None:
             self._value = self._min
         self.SetValue(self._value)
         if "__WXMAC__" in wx.PlatformInfo:
             self._textctrl.SelectAll()
         self.DoSendEvent()
-
 
     def OnTextEnter(self, event):
         """
@@ -750,7 +779,6 @@ class FloatSpin(wx.PyControl):
         self.SyncSpinToText(True)
         event.Skip()
 
-
     def OnKeyDown(self, event):
         """
         Handles the ``wx.EVT_KEYDOWN`` event for :class:`FloatSpin`.
@@ -762,11 +790,11 @@ class FloatSpin(wx.PyControl):
 
         modifier = FixedPoint(str(1.0), 20)
         if event.ShiftDown():
-            modifier = modifier*2.0
+            modifier = modifier * 2.0
         if event.ControlDown():
-            modifier = modifier*10.0
+            modifier = modifier * 10.0
         if event.AltDown():
-            modifier = modifier*100.0
+            modifier = modifier * 100.0
 
         keycode = event.GetKeyCode()
 
@@ -775,7 +803,7 @@ class FloatSpin(wx.PyControl):
             if self._textctrl and self._textctrl.IsModified():
                 self.SyncSpinToText(False)
 
-            self.SetValue(self._value + self._increment*modifier)
+            self.SetValue(self._value + self._increment * modifier)
             self.DoSendEvent()
 
         elif keycode == wx.WXK_DOWN:
@@ -783,7 +811,7 @@ class FloatSpin(wx.PyControl):
             if self._textctrl and self._textctrl.IsModified():
                 self.SyncSpinToText(False)
 
-            self.SetValue(self._value - self._increment*modifier)
+            self.SetValue(self._value - self._increment * modifier)
             self.DoSendEvent()
 
         elif keycode == wx.WXK_PAGEUP:
@@ -791,7 +819,7 @@ class FloatSpin(wx.PyControl):
             if self._textctrl and self._textctrl.IsModified():
                 self.SyncSpinToText(False)
 
-            self.SetValue(self._value + 10.0*self._increment*modifier)
+            self.SetValue(self._value + 10.0 * self._increment * modifier)
             self.DoSendEvent()
 
         elif keycode == wx.WXK_PAGEDOWN:
@@ -799,7 +827,7 @@ class FloatSpin(wx.PyControl):
             if self._textctrl and self._textctrl.IsModified():
                 self.SyncSpinToText(False)
 
-            self.SetValue(self._value - 10.0*self._increment*modifier)
+            self.SetValue(self._value - 10.0 * self._increment * modifier)
             self.DoSendEvent()
 
         elif keycode == wx.WXK_SPACE:
@@ -824,18 +852,25 @@ class FloatSpin(wx.PyControl):
         elif keycode in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
 
             default = self.TopLevelParent.DefaultItem
-            if (default and default.Enabled and default.IsShownOnScreen() and
-                isinstance(default, wx.Button)):
-                default.ProcessEvent(wx.PyCommandEvent(wx.EVT_BUTTON.typeId,
-                                                       default.GetId()))
+            if (
+                default
+                and default.Enabled
+                and default.IsShownOnScreen()
+                and isinstance(default, wx.Button)
+            ):
+                default.ProcessEvent(
+                    wx.PyCommandEvent(wx.EVT_BUTTON.typeId, default.GetId())
+                )
 
         else:
-            if (not event.CmdDown() and not event.ControlDown() and
-                keycode not in self._validkeycode):
+            if (
+                not event.CmdDown()
+                and not event.ControlDown()
+                and keycode not in self._validkeycode
+            ):
                 return
 
             event.Skip()
-
 
     def OnMouseWheel(self, event):
         """
@@ -846,21 +881,21 @@ class FloatSpin(wx.PyControl):
 
         modifier = FixedPoint(str(1.0), 20)
         if event.ShiftDown():
-            modifier = modifier*2.0
+            modifier = modifier * 2.0
         if event.ControlDown():
-            modifier = modifier*10.0
+            modifier = modifier * 10.0
         if event.AltDown():
-            modifier = modifier*100.0
+            modifier = modifier * 100.0
 
         if self._textctrl and self._textctrl.IsModified():
             self.SyncSpinToText(False)
 
         if event.GetWheelRotation() > 0:
-            self.SetValue(self._value + self._increment*modifier)
+            self.SetValue(self._value + self._increment * modifier)
 
         else:
 
-            self.SetValue(self._value - self._increment*modifier)
+            self.SetValue(self._value - self._increment * modifier)
 
         if self._textctrl:
             if "__WXMAC__" in wx.PlatformInfo:
@@ -870,7 +905,6 @@ class FloatSpin(wx.PyControl):
                 self._textctrl.SetSelection(0, 0)
 
         self.DoSendEvent()
-
 
     def OnSize(self, event):
         """
@@ -883,24 +917,23 @@ class FloatSpin(wx.PyControl):
         """
         # start Philip Semanchuk addition
         event_width = event.GetSize().width
-        
+
         self._textctrl.SetPosition((self._text_left, self._text_top))
-        
+
         text_width, text_height = self._textctrl.Size
-        
+
         spin_width, _ = self._spinbutton.Size
-        
+
         text_width = event_width - (spin_width + self._gap + self._text_left)
 
         self._textctrl.SetSize(wx.Size(text_width, event.GetSize().height))
-        
-        # The spin button is always snug against the right edge of the 
+
+        # The spin button is always snug against the right edge of the
         # control.
         self._spinbutton.SetPosition((event_width - spin_width, self._spin_top))
-        
+
         event.Skip()
         # end Philip Semanchuk addition
-
 
     def ReplaceDoubleZero(self, strs):
         """
@@ -923,13 +956,12 @@ class FloatSpin(wx.PyControl):
 
         return strs
 
-
     def SetValue(self, value):
         """
         Sets the :class:`FloatSpin` value.
 
         :param `value`: the new value.
-        """        
+        """
         if not self._textctrl or not self.InRange(value):
             return
 
@@ -937,15 +969,15 @@ class FloatSpin(wx.PyControl):
 
             finite, snap_value = self.IsFinite(value)
 
-            if not finite: # FIXME What To Do About A Failure?
+            if not finite:  # FIXME What To Do About A Failure?
 
-                if (snap_value - floor(snap_value) < ceil(snap_value) - snap_value):
-                    value = self._defaultvalue + floor(snap_value)*self._increment
+                if snap_value - floor(snap_value) < ceil(snap_value) - snap_value:
+                    value = self._defaultvalue + floor(snap_value) * self._increment
                 else:
-                    value = self._defaultvalue + ceil(snap_value)*self._increment
+                    value = self._defaultvalue + ceil(snap_value) * self._increment
 
         decimal = locale.localeconv()["decimal_point"]
-        strs = ("%100." + str(self._digits) + self._textformat[1])%value
+        strs = ("%100." + str(self._digits) + self._textformat[1]) % value
         strs = strs.replace(".", decimal)
         strs = strs.replace(",", ".")
         strs = strs.strip()
@@ -961,8 +993,9 @@ class FloatSpin(wx.PyControl):
         min_val = self._min if self._min is not None else self._spinbutton.Min
         max_val = self._max if self._max is not None else self._spinbutton.Max
         # Scale the value to the spinbutton range
-        spinvalue = int(round(((value - min_val) / float(max_val - min_val)) *
-                              self._spinbutton.Max))
+        spinvalue = int(
+            round(((value - min_val) / float(max_val - min_val)) * self._spinbutton.Max)
+        )
         # Setting the spin button value causes a EVT_SPIN event to be generated
         # under GTK, which we need to ignore
         self._ignore_spin_event = True
@@ -974,12 +1007,10 @@ class FloatSpin(wx.PyControl):
             self._textctrl.DiscardEdits()
             self._value = value
 
-
     def GetValue(self):
-        """ Returns the :class:`FloatSpin` value. """
+        """Returns the :class:`FloatSpin` value."""
 
         return float(self._value)
-
 
     def SetRangeDontClampValue(self, min_val, max_val):
         """
@@ -993,15 +1024,14 @@ class FloatSpin(wx.PyControl):
         :note: This method doesn't modify the current value.
         """
 
-        if (min_val != None):
+        if min_val != None:
             self._min = FixedPoint(str(min_val), 20)
         else:
             self._min = None
-        if (max_val != None):
+        if max_val != None:
             self._max = FixedPoint(str(max_val), 20)
         else:
             self._max = None
-
 
     def SetRange(self, min_val, max_val):
         """
@@ -1024,15 +1054,14 @@ class FloatSpin(wx.PyControl):
          or no range::
 
              SetRange(min_val=None, max_val=None)
-        
+
         """
 
         self.SetRangeDontClampValue(min_val, max_val)
 
         value = self.ClampValue(self._value)
-        if (value != self._value):
+        if value != self._value:
             self.SetValue(value)
-
 
     def ClampValue(self, var):
         """
@@ -1040,21 +1069,20 @@ class FloatSpin(wx.PyControl):
         been specified.
 
         :param `var`: the value to be clamped.
-        
+
         :return: A clamped copy of `var`.
         """
 
-        if (self._min != None):
-            if (var < self._min):
+        if self._min != None:
+            if var < self._min:
                 var = self._min
                 return var
 
-        if (self._max != None):
-            if (var > self._max):
+        if self._max != None:
+            if var > self._max:
                 var = self._max
-                
-        return var
 
+        return var
 
     def SetIncrement(self, increment):
         """
@@ -1063,18 +1091,18 @@ class FloatSpin(wx.PyControl):
         :param `increment`: a floating point number specifying the :class:`FloatSpin` increment.
         """
 
-        if increment < 1./10.0**self._digits:
-            raise Exception("\nERROR: Increment Should Be Greater Or Equal To 1/(10**digits).")
+        if increment < 1.0 / 10.0**self._digits:
+            raise Exception(
+                "\nERROR: Increment Should Be Greater Or Equal To 1/(10**digits)."
+            )
 
         self._increment = FixedPoint(str(increment), 20)
         self.SetValue(self._value)
 
-
     def GetIncrement(self):
-        """ Returns the increment for every ``EVT_FLOATSPIN`` event. """
+        """Returns the increment for every ``EVT_FLOATSPIN`` event."""
 
         return self._increment
-
 
     def SetDigits(self, digits=-1):
         """
@@ -1090,18 +1118,16 @@ class FloatSpin(wx.PyControl):
             if incr.find(".") < 0:
                 digits = 0
             else:
-                digits = len(incr[incr.find(".")+1:])
+                digits = len(incr[incr.find(".") + 1 :])
 
         self._digits = digits
 
         self.SetValue(self._value)
 
-
     def GetDigits(self):
-        """ Returns the number of digits shown. """
+        """Returns the number of digits shown."""
 
         return self._digits
-
 
     def SetFormat(self, fmt="%f"):
         """
@@ -1111,20 +1137,22 @@ class FloatSpin(wx.PyControl):
 
          ====== =================================
          Format Description
-         ====== =================================         
+         ====== =================================
          'e'    Floating point exponential format (lowercase)
          'E'    Floating point exponential format (uppercase)
          'f'    Floating point decimal format
          'F'    Floating point decimal format
          'g'    Floating point format. Uses lowercase exponential format if exponent is less than -4 or not less than precision, decimal format otherwise
          'G'    Floating point format. Uses uppercase exponential format if exponent is less than -4 or not less than precision, decimal format otherwise
-         ====== =================================         
+         ====== =================================
 
         """
 
         if fmt not in ["%f", "%g", "%e", "%E", "%F", "%G"]:
-            raise Exception('\nERROR: Bad Float Number Format: ' + repr(fmt) + '. It Should Be ' \
-                            'One Of "%f", "%g", "%e", "%E", "%F", "%G"')
+            raise Exception(
+                "\nERROR: Bad Float Number Format: " + repr(fmt) + ". It Should Be "
+                'One Of "%f", "%g", "%e", "%E", "%F", "%G"'
+            )
 
         self._textformat = fmt
 
@@ -1132,7 +1160,6 @@ class FloatSpin(wx.PyControl):
             self.SetDigits()
         else:
             self.SetValue(self._value)
-
 
     def GetFormat(self):
         """
@@ -1142,7 +1169,6 @@ class FloatSpin(wx.PyControl):
         """
 
         return self._textformat
-
 
     def SetDefaultValue(self, defaultvalue):
         """
@@ -1155,31 +1181,27 @@ class FloatSpin(wx.PyControl):
         if self.InRange(defaultvalue):
             self._defaultvalue = FixedPoint(str(defaultvalue), 20)
 
-
     def GetDefaultValue(self):
-        """ Returns the :class:`FloatSpin` default value. """
+        """Returns the :class:`FloatSpin` default value."""
 
         return self._defaultvalue
 
-
     def IsDefaultValue(self):
-        """ Returns whether the current value is the default value or not. """
+        """Returns whether the current value is the default value or not."""
 
         return self._value == self._defaultvalue
 
-
     def SetToDefaultValue(self):
-        """ Sets :class:`FloatSpin` value to its default value. """
+        """Sets :class:`FloatSpin` value to its default value."""
 
         self.SetValue(self._defaultvalue)
-
 
     def SetSnapToTicks(self, forceticks=True):
         """
         Force the value to always be divisible by the increment. Initially ``False``.
 
         :param `forceticks`: ``True`` to force the snap to ticks option, ``False`` otherwise.
-        
+
         :note: This uses the default value as the basis, you will get strange results
          for very large differences between the current value and default value
          when the increment is very small.
@@ -1190,12 +1212,10 @@ class FloatSpin(wx.PyControl):
             self._snapticks = forceticks
             self.SetValue(self._value)
 
-
     def GetSnapToTicks(self):
-        """ Returns whether the snap to ticks option is active or not. """
+        """Returns whether the snap to ticks option is active or not."""
 
         return self._snapticks
-
 
     def OnFocus(self, event):
         """
@@ -1208,7 +1228,6 @@ class FloatSpin(wx.PyControl):
             self._textctrl.SetFocus()
 
         event.Skip()
-
 
     def SyncSpinToText(self, send_event=True, force_valid=True):
         """
@@ -1254,7 +1273,6 @@ class FloatSpin(wx.PyControl):
             # textctrl is out of sync, discard and reset
             self.SetValue(self.GetValue())
 
-
     def SetFont(self, font=None):
         """
         Sets the underlying :class:`TextCtrl` font.
@@ -1270,15 +1288,13 @@ class FloatSpin(wx.PyControl):
 
         return self._textctrl.SetFont(font)
 
-
     def GetFont(self):
-        """ Returns the underlying :class:`TextCtrl` font. """
+        """Returns the underlying :class:`TextCtrl` font."""
 
         if not self._textctrl:
             return self.GetFont()
 
         return self._textctrl.GetFont()
-
 
     def GetMin(self):
         """
@@ -1288,7 +1304,6 @@ class FloatSpin(wx.PyControl):
 
         return self._min
 
-
     def GetMax(self):
         """
         Returns the maximum value for :class:`FloatSpin`. It can be a
@@ -1297,12 +1312,10 @@ class FloatSpin(wx.PyControl):
 
         return self._max
 
-
     def HasRange(self):
-        """ Returns whether :class:`FloatSpin` range has been set or not. """
+        """Returns whether :class:`FloatSpin` range has been set or not."""
 
         return (self._min != None) or (self._max != None)
-
 
     def InRange(self, value):
         """
@@ -1311,22 +1324,20 @@ class FloatSpin(wx.PyControl):
         :param `value`: the value to test.
         """
 
-        if (not self.HasRange()):
+        if not self.HasRange():
             return True
-        if (self._min != None):
-            if (value < self._min):
+        if self._min != None:
+            if value < self._min:
                 return False
-        if (self._max != None):
-            if (value > self._max):
+        if self._max != None:
+            if value > self._max:
                 return False
         return True
 
-
     def GetTextCtrl(self):
-        """ Returns the underlying :class:`TextCtrl`. """
+        """Returns the underlying :class:`TextCtrl`."""
 
         return self._textctrl
-
 
     def IsFinite(self, value):
         """
@@ -1336,7 +1347,7 @@ class FloatSpin(wx.PyControl):
         """
 
         try:
-            snap_value = (value - self._defaultvalue)/self._increment
+            snap_value = (value - self._defaultvalue) / self._increment
             finite = True
         except:
             finite = False
@@ -1345,7 +1356,7 @@ class FloatSpin(wx.PyControl):
         return finite, snap_value
 
 
-if wx.VERSION >= (3, ):
+if wx.VERSION >= (3,):
 
     # Use wx.SpinCtrlDouble
 
@@ -1355,11 +1366,21 @@ if wx.VERSION >= (3, ):
 
         _spinwidth = 0
 
-        def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
-                     size=(95,-1), style=wx.SP_ARROW_KEYS | wx.ALIGN_RIGHT,
-                     value=0.0, min_val=None, max_val=None,
-                     increment=1.0, digits=-1, agwStyle=FS_LEFT,
-                     name="FloatSpin"):
+        def __init__(
+            self,
+            parent,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=(95, -1),
+            style=wx.SP_ARROW_KEYS | wx.ALIGN_RIGHT,
+            value=0.0,
+            min_val=None,
+            max_val=None,
+            increment=1.0,
+            digits=-1,
+            agwStyle=FS_LEFT,
+            name="FloatSpin",
+        ):
             if "gtk3" in wx.PlatformInfo:
                 if not FloatSpin._spinwidth:
                     spin = wx.SpinCtrl(parent, -1)
@@ -1377,12 +1398,22 @@ if wx.VERSION >= (3, ):
             if agwStyle & FS_READONLY:
                 style = style | wx.TE_READONLY
 
-            wx.SpinCtrlDouble.__init__(self, parent, id, str(value), pos, size,
-                                       style, min_val or 0, max_val or 100,
-                                       value, increment, name)
+            wx.SpinCtrlDouble.__init__(
+                self,
+                parent,
+                id,
+                str(value),
+                pos,
+                size,
+                style,
+                min_val or 0,
+                max_val or 100,
+                value,
+                increment,
+                name,
+            )
             if digits > -1:
                 self.SetDigits(digits)
-
 
 
 # Class FixedPoint, version 0.0.4.
@@ -1417,6 +1448,7 @@ __version__ = 0, 0, 4
 DEFAULT_PRECISION = 2
 """ The default value for the number of decimal digits carried after the decimal point.  This only has effect at compile-time. """
 
+
 class FixedPoint(object):
     """
     FixedPoint objects support decimal arithmetic with a fixed number of
@@ -1429,7 +1461,7 @@ class FixedPoint(object):
     Note that if the precision of a FixedPoint is reduced via :meth:`FixedPoint.set_precision() <FixedPoint.set_precision>`,
     information may be lost to rounding.
 
-    Example::    
+    Example::
 
         >>> x = FixedPoint("5.55")  # precision defaults to 2
         >>> print x
@@ -1501,7 +1533,7 @@ class FixedPoint(object):
         :param `value`: the initial value;
         :param `precision`: must be an int >= 0, and defaults to ``DEFAULT_PRECISION``.
         """
-        
+
         self.n = self.p = 0
         self.set_precision(precision)
         p = self.p
@@ -1530,6 +1562,7 @@ class FixedPoint(object):
         if isinstance(value, type(42.0)):
             # XXX ignoring infinities and NaNs and overflows for now
             import math
+
             f, e = math.frexp(abs(value))
             assert f == 0 or 0.5 <= f < 1.0
             # |value| = f * 2**e exactly
@@ -1562,9 +1595,8 @@ class FixedPoint(object):
             self.n = n
             return
 
-        if isinstance(value, type(42-42j)):
-            raise TypeError("can't convert complex to FixedPoint: " +
-                            repr(value))
+        if isinstance(value, type(42 - 42j)):
+            raise TypeError("can't convert complex to FixedPoint: " + repr(value))
 
         # can we coerce to a float?
         yes = 1
@@ -1588,7 +1620,6 @@ class FixedPoint(object):
 
         raise TypeError("can't convert to FixedPoint: " + repr(value))
 
-
     def get_precision(self):
         """
         Return the precision of this :class:`FixedPoint`.
@@ -1598,7 +1629,6 @@ class FixedPoint(object):
         """
 
         return self.p
-
 
     def set_precision(self, precision=DEFAULT_PRECISION):
         """
@@ -1614,8 +1644,7 @@ class FixedPoint(object):
         try:
             p = int(precision)
         except:
-            raise TypeError("precision not convertable to int: " +
-                            repr(precision))
+            raise TypeError("precision not convertable to int: " + repr(precision))
         if p < 0:
             raise ValueError("precision must be >= 0: " + repr(precision))
 
@@ -1625,9 +1654,8 @@ class FixedPoint(object):
             self.n = _roundquotient(self.n, _tento(self.p - p))
         self.p = p
 
-
     def __str__(self):
-        
+
         n, p = self.n, self.p
         i, f = divmod(abs(n), _tento(p))
         if p:
@@ -1635,31 +1663,25 @@ class FixedPoint(object):
             frac = "0" * (p - len(frac)) + frac
         else:
             frac = ""
-        return "-"[:n<0] + \
-               repr(i)[:-1] + \
-               "." + frac
-
+        return "-"[: n < 0] + repr(i)[:-1] + "." + frac
 
     def __repr__(self):
 
         return "FixedPoint" + repr((str(self), self.p))
 
-
     def copy(self):
-        """ Create a copy of the current :class:`FixedPoint`. """
-        
+        """Create a copy of the current :class:`FixedPoint`."""
+
         return _mkFP(self.n, self.p)
 
     __copy__ = __deepcopy__ = copy
 
-
     def __cmp__(self, other):
-        
-        if (other is None):
+
+        if other is None:
             return 1
         xn, yn, p = _norm(self, other)
         return cmp(xn, yn)
-
 
     def __hash__(self):
         # caution!  == values must have equal hashes, and a FixedPoint
@@ -1766,12 +1788,12 @@ class FixedPoint(object):
         Returns fractional portion as a :class:`FixedPoint`.
 
         :note: In :class:`FixedPoint`,
-        
+
          this equality holds true::
-        
+
                 x = x.frac() + long(x)
 
-            
+
         """
         return self - int(self)
 
@@ -1785,14 +1807,17 @@ class FixedPoint(object):
             n = n / 10
         return n, p
 
+
 # return 10L**n
+
 
 def _tento(n, cache={}):
     try:
         return cache[n]
     except KeyError:
-        answer = cache[n] = 10 ** n
+        answer = cache[n] = 10**n
         return answer
+
 
 # return xn, yn, p s.t.
 # p = max(x.p, y.p)
@@ -1804,8 +1829,8 @@ def _tento(n, cache={}):
 #
 # Note that this is called a lot, so default-arg tricks are helpful.
 
-def _norm(x, y, isinstance=isinstance, FixedPoint=FixedPoint,
-                _tento=_tento):
+
+def _norm(x, y, isinstance=isinstance, FixedPoint=FixedPoint, _tento=_tento):
     assert isinstance(x, FixedPoint)
     if not isinstance(y, FixedPoint):
         y = FixedPoint(y, x.p)
@@ -1821,15 +1846,18 @@ def _norm(x, y, isinstance=isinstance, FixedPoint=FixedPoint,
         p = xp  # same as yp
     return xn, yn, p
 
+
 def _mkFP(n, p, FixedPoint=FixedPoint):
     f = FixedPoint()
     f.n = n
     f.p = p
     return f
 
+
 # divide x by y, rounding to int via nearest-even
 # y must be > 0
 # XXX which rounding modes are useful?
+
 
 def _roundquotient(x, y):
     assert y > 0
@@ -1840,6 +1868,7 @@ def _roundquotient(x, y):
         n = n + 1
     return n
 
+
 # crud for parsing strings
 import re
 
@@ -1849,7 +1878,8 @@ import re
 # by an optional fraction, or a decimal point followed by at least
 # one digit.  Yuck.
 
-_parser = re.compile(r"""
+_parser = re.compile(
+    r"""
     \s*
     (?P<sign>[-+])?
     (
@@ -1859,29 +1889,32 @@ _parser = re.compile(r"""
     )
     ([eE](?P<exp>[-+]? \d+))?
     \s* $
-""", re.VERBOSE).match
+""",
+    re.VERBOSE,
+).match
 
 del re
 
 # return n, p s.t. float string value == n * 10**p exactly
+
 
 def _string2exact(s):
     m = _parser(s)
     if m is None:
         raise ValueError("can't parse as number: " + repr(s))
 
-    exp = m.group('exp')
+    exp = m.group("exp")
     if exp is None:
         exp = 0
     else:
         exp = int(exp)
 
-    intpart = m.group('int')
+    intpart = m.group("int")
     if intpart is None:
         intpart = "0"
-        fracpart = m.group('onlyfrac')
+        fracpart = m.group("onlyfrac")
     else:
-        fracpart = m.group('frac')
+        fracpart = m.group("frac")
         if fracpart is None or fracpart == "":
             fracpart = "0"
     assert intpart
@@ -1892,15 +1925,16 @@ def _string2exact(s):
     i = i * _tento(nfrac) + f
     exp = exp - nfrac
 
-    if m.group('sign') == "-":
+    if m.group("sign") == "-":
         i = -i
 
     return i, exp
 
+
 def get_all_keyboard_focusable_children(parent):
     """
     Get all keyboard focusable children of parent
-    
+
     """
 
     children = []
@@ -1919,12 +1953,13 @@ def get_all_keyboard_focusable_children(parent):
                     children.extend(get_all_keyboard_focusable_children(child))
     return children
 
+
 def focus_next_keyboard_focusable_control(control):
     """
     Focus the next control in tab order that can gain focus.
-    
+
     If the shift key is held down, tab order is reversed.
-    
+
     """
 
     # Find the last panel in the hierarchy of parents
@@ -1940,7 +1975,7 @@ def focus_next_keyboard_focusable_control(control):
             children = list(reversed(children))
         for i, child in enumerate(children):
             if child is control:
-                for next in children[i + 1:] + children[:i]:
+                for next in children[i + 1 :] + children[:i]:
                     if next is not child.Parent:
                         next.SetFocus()
                         break

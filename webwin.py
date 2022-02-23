@@ -15,7 +15,8 @@ from urllib.parse import unquote
 from .meta import name as appname, version as appversion
 
 
-WEBDISP_HTML = r"""<!DOCTYPE html>
+WEBDISP_HTML = (
+    r"""<!DOCTYPE html>
 <html>
 <head>
 <title>%s Web Display</title>
@@ -41,7 +42,9 @@ html, body {
 <div id="pattern"></div>
 </body>
 </html>
-""" % appname
+"""
+    % appname
+)
 
 WEBDISP_JS = r"""if (typeof XMLHttpRequest == "undefined") {
 	XMLHttpRequest = function () {
@@ -101,58 +104,60 @@ window.onload = function() {
 
 class WebWinHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
-	"""
-	Simple HTTP request handler with GET and HEAD commands.
+    """
+    Simple HTTP request handler with GET and HEAD commands.
 
-	"""
+    """
 
-	server_version = appname + "-WebWinHTTP/" + appversion
+    server_version = appname + "-WebWinHTTP/" + appversion
 
-	def do_GET(self):
-		"""Serve a GET request."""
-		s = self.send_head()
-		if s:
-			self.wfile.write(s)
+    def do_GET(self):
+        """Serve a GET request."""
+        s = self.send_head()
+        if s:
+            self.wfile.write(s)
 
-	def do_HEAD(self):
-		"""Serve a HEAD request."""
-		self.send_head()
+    def do_HEAD(self):
+        """Serve a HEAD request."""
+        self.send_head()
 
-	def log_message(self, format, *args):
-		pass
+    def log_message(self, format, *args):
+        pass
 
-	def send_head(self):
-		"""Common code for GET and HEAD commands.
+    def send_head(self):
+        """Common code for GET and HEAD commands.
 
-		This sends the response code and MIME headers.
+        This sends the response code and MIME headers.
 
-		Return value is either a string (which has to be written
-		to the outputfile by the caller unless the command was HEAD), or
-		None, in which case the caller has nothing further to do.
+        Return value is either a string (which has to be written
+        to the outputfile by the caller unless the command was HEAD), or
+        None, in which case the caller has nothing further to do.
 
-		"""
-		if self.path == "/":
-			s = WEBDISP_HTML
-			ctype = "text/html; charset=UTF-8"
-		elif self.path == "/webdisp.js":
-			s = WEBDISP_JS
-			ctype = "application/javascript"
-		elif self.path.startswith("/ajax/messages?"):
-			curpat = "|".join(unquote(self.path.split("?").pop()).split("|")[:6])
-			while (self.server.patterngenerator.listening and
-				   self.server.patterngenerator.pattern == curpat):
-				time.sleep(0.05)
-			s = self.server.patterngenerator.pattern
-			ctype = "text/plain; charset=UTF-8"
-		else:
-			self.send_error(404)
-			return
-		if self.server.patterngenerator.listening:
-			try:
-				self.send_response(200)
-				self.send_header("Cache-Control", "no-cache")
-				self.send_header("Content-Type", ctype)
-				self.end_headers()
-				return s
-			except:
-				pass
+        """
+        if self.path == "/":
+            s = WEBDISP_HTML
+            ctype = "text/html; charset=UTF-8"
+        elif self.path == "/webdisp.js":
+            s = WEBDISP_JS
+            ctype = "application/javascript"
+        elif self.path.startswith("/ajax/messages?"):
+            curpat = "|".join(unquote(self.path.split("?").pop()).split("|")[:6])
+            while (
+                self.server.patterngenerator.listening
+                and self.server.patterngenerator.pattern == curpat
+            ):
+                time.sleep(0.05)
+            s = self.server.patterngenerator.pattern
+            ctype = "text/plain; charset=UTF-8"
+        else:
+            self.send_error(404)
+            return
+        if self.server.patterngenerator.listening:
+            try:
+                self.send_response(200)
+                self.send_header("Cache-Control", "no-cache")
+                self.send_header("Content-Type", ctype)
+                self.end_headers()
+                return s
+            except:
+                pass
