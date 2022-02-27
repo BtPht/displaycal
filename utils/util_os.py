@@ -2,10 +2,13 @@
 
 import ctypes
 import errno
+import fcntl
 import fnmatch
 import glob
+import grp
 import importlib
 import os
+import pwd
 import re
 import shutil
 import struct
@@ -13,11 +16,6 @@ import subprocess as sp
 import sys
 import tempfile
 import time
-
-
-import grp
-import pwd
-import fcntl
 
 try:
     reloaded

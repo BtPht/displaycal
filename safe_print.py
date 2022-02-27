@@ -1,9 +1,8 @@
 import os
 import sys
 
-from utils.util_str import safe_unicode
-
 from encoding import get_encoding, get_encodings
+from utils.util_str import safe_unicode
 
 original_codepage = None
 

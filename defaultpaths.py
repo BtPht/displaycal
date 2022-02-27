@@ -1,9 +1,8 @@
-import os
-import sys
-
 import codecs
 import gettext
 import locale
+import os
+import sys
 
 LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
 
@@ -51,6 +50,8 @@ def get_known_folder_path(folderid, user=True):
 
 
 home = expanduseru("~")
+
+
 class XDG:
 
     cache_home = getenvu("XDG_CACHE_HOME", expandvarsu("$HOME/.cache"))
@@ -260,6 +261,7 @@ class XDG:
             self.load_user_dirs()
 
     UserDirs = _UserDirs()
+
 
 for name in dir(XDG):
     attr = getattr(XDG, name)

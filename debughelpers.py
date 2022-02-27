@@ -2,10 +2,10 @@
 
 import traceback
 
-from utils.util_str import box, safe_unicode
 from log import safe_print
 from meta import wx_recversion
 from options import debug
+from utils.util_str import box, safe_unicode
 
 wxEventTypes = {}
 

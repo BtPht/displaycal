@@ -2,11 +2,11 @@ import atexit
 import errno
 import glob
 import os
-import platform
 import socket
 import subprocess as sp
 import sys
 import threading
+from platform import platform as print_platform
 from time import sleep
 
 from config import (
@@ -14,8 +14,6 @@ from config import (
     confighome,
     datahome,
     enc,
-    exe_ext,
-    exename,
     fs_enc,
     get_data_path,
     getcfg,
@@ -25,15 +23,16 @@ from config import (
     resfiles,
     runtype,
 )
-from utils.util_os import FileLock
-from utils.util_str import safe_str, safe_unicode
-
 from debughelpers import ResourceError, handle_error
 from log import log, safe_print
 from meta import VERSION, VERSION_BASE, VERSION_STRING, build
 from meta import name as appname
 from multiprocess import mp
 from options import verbose
+from utils.util_os import FileLock
+from utils.util_str import safe_str, safe_unicode
+
+import logging
 
 
 def _excepthook(etype, value, tb):
@@ -56,40 +55,42 @@ def _main(module, name, applockfilename, probe_ports=True):
     lock = AppLock(applockfilename, "a+", True, module in multi_instance)
     if not lock:
         # If a race condition occurs, do not start another instance
-        safe_print("Not starting another instance.")
+        print("Not starting another instance.")
         return
     log("=" * 80)
     if verbose >= 1:
         version = VERSION_STRING
         if VERSION > VERSION_BASE:
             version += " Beta"
-        safe_print(pyname + runtype, version, build)
-    safe_print(platform.platform())
-    safe_print("Python " + sys.version)
+        print(pyname + runtype, version, build)
+
+    # TODO: the call to platform() crashes in a subprocess
+    # logging.info(print_platform())
+    print("Python " + sys.version)
     cafile = os.getenv("SSL_CERT_FILE")
     if cafile:
-        safe_print("CA file", cafile)
+        print("CA file", cafile)
     # Enable faulthandler
     try:
         import faulthandler
     except Exception as exception:
-        safe_print(exception)
+        print(exception)
     else:
         try:
             faulthandler.enable(open(os.path.join(logdir, pyname + "-fault.log"), "w"))
         except Exception as exception:
             safe_print(exception)
         else:
-            safe_print("Faulthandler", getattr(faulthandler, "__version__", ""))
+            print("Faulthandler", getattr(faulthandler, "__version__", ""))
     from displaycal_wx.wxaddons import wx
 
     if "phoenix" in wx.PlatformInfo:
         pass
         # py2exe helper so wx.xml gets picked up
         # from wx import xml
-    safe_print("wxPython " + wx.version())
-    safe_print("Encoding: " + enc)
-    safe_print("File system encoding: " + fs_enc)
+    print("wxPython " + wx.version())
+    print("Encoding: " + enc)
+    print("File system encoding: " + fs_enc)
     initcfg(module)
     host = "127.0.0.1"
     defaultport = getcfg("app.port")
@@ -211,90 +212,6 @@ def _main(module, name, applockfilename, probe_ports=True):
                                         continue
                             break
                         appsocket.close()
-                else:
-                    pid = None
-                if not incoming:
-                    if sys.platform == "win32":
-                        import pywintypes
-                        import win32ts
-
-                        try:
-                            osid = win32ts.ProcessIdToSessionId(opid)
-                        except pywintypes.error as exception:
-                            safe_print("Enumerating processes failed:", exception)
-                            osid = None
-                        try:
-                            processes = win32ts.WTSEnumerateProcesses()
-                        except pywintypes.error as exception:
-                            safe_print("Enumerating processes failed:", exception)
-                        else:
-                            appname_lower = appname.lower()
-                            exename_lower = exename.lower()
-                            if module:
-                                pyexe_lower = appname_lower + "-" + module + exe_ext
-                            else:
-                                pyexe_lower = appname_lower + exe_ext
-                            incoming = None
-                            for (sid, pid2, basename, usid) in processes:
-                                basename_lower = basename.lower()
-                                if (
-                                    (
-                                        pid
-                                        and pid2 == pid
-                                        and basename_lower == exename_lower
-                                    )
-                                    or (
-                                        (osid is None or sid == osid)
-                                        and basename_lower == pyexe_lower
-                                    )
-                                ) and pid2 != opid:
-                                    # Other instance running
-                                    incoming = False
-                                    if module == "apply-profiles":
-                                        if not os.path.isfile(lockfilename):
-                                            # Create dummy lockfile
-                                            try:
-                                                with open(lockfilename, "w"):
-                                                    pass
-                                            except EnvironmentError as exception:
-                                                safe_print(
-                                                    "Warning - could "
-                                                    "not create dummy "
-                                                    "lockfile %s: %r"
-                                                    % (lockfilename, exception)
-                                                )
-                                            else:
-                                                safe_print(
-                                                    "Warning - had to "
-                                                    "create dummy "
-                                                    "lockfile",
-                                                    lockfilename,
-                                                )
-                                        safe_print(
-                                            "Closing existing instance " "with PID",
-                                            pid2,
-                                        )
-                                        startupinfo = sp.STARTUPINFO()
-                                        startupinfo.dwFlags |= sp.STARTF_USESHOWWINDOW
-                                        startupinfo.wShowWindow = sp.SW_HIDE
-                                        lock.unlock()
-                                        try:
-                                            p = sp.Popen(
-                                                ["taskkill", "/PID", "%s" % pid2],
-                                                stdin=sp.PIPE,
-                                                stdout=sp.PIPE,
-                                                stderr=sp.STDOUT,
-                                                startupinfo=startupinfo,
-                                            )
-                                            stdout, stderr = p.communicate()
-                                        except Exception as exception:
-                                            safe_print(exception)
-                                        else:
-                                            safe_print(stdout)
-                                            if not p.returncode:
-                                                # Successfully sent our close
-                                                # request.
-                                                incoming = "ok"
                 if incoming == "ok":
                     # Successfully sent our request
                     if module == "apply-profiles":
@@ -334,15 +251,6 @@ def _main(module, name, applockfilename, probe_ports=True):
         # Create listening socket
         appsocket = AppSocket()
         if appsocket:
-            if sys.platform != "win32":
-                # https://docs.microsoft.com/de-de/windows/win32/winsock/using-so-reuseaddr-and-so-exclusiveaddruse#using-so_reuseaddr
-                # From the above link: "The SO_REUSEADDR socket option allows
-                # a socket to forcibly bind to a port in use by another socket".
-                # Note that this is different from the behavior under Linux/BSD,
-                # where a socket can only be (re-)bound if no active listening
-                # socket is already bound to the address.
-                # Consequently, we don't use SO_REUSEADDR under Windows.
-                appsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sys._appsocket = appsocket.socket
             if getcfg("app.allow_network_clients"):
                 host = ""
@@ -433,24 +341,6 @@ def _main(module, name, applockfilename, probe_ports=True):
                     UserWarning(
                         "Warning - could not create " "directory '%s'" % datahome
                     )
-                )
-        elif sys.platform == "darwin":
-            # Check & fix permissions if necessary
-            import getpass
-
-            user = getpass.getuser().decode(fs_enc)
-            script = []
-            for directory in (confighome, datahome, logdir):
-                if os.path.isdir(directory) and not os.access(directory, os.W_OK):
-                    script.append("chown -R '%s' '%s'" % (user, directory))
-            if script:
-                sp.call(
-                    [
-                        "osascript",
-                        "-e",
-                        'do shell script "%s" with administrator privileges'
-                        % ";".join(script).encode(fs_enc),
-                    ]
                 )
         # Initialize & run
         if module == "3DLUT-maker":

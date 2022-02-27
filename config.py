@@ -13,27 +13,26 @@ import string
 import sys
 from decimal import Decimal
 
+import colormath
 from argyll_names import intents, observers, video_encodings, viewconds
-from defaultpaths import appdata, commonappdata
-
 from defaultpaths import (
+    appdata,
+    commonappdata,
+    iccprofiles,
+    iccprofiles_home,
     xdg_config_dir_default,
     xdg_config_home,
+    xdg_data_dirs,
     xdg_data_home,
     xdg_data_home_default,
-    xdg_data_dirs,
 )
-
-from utils.util_io import StringIOu as StringIO
-from utils.util_os import expanduseru, getenvu, is_superuser, listdir_re, which
-from utils.util_str import create_replace_function, safe_unicode, strtr
-
-import colormath
-from defaultpaths import iccprofiles, iccprofiles_home
 from meta import name as appname
 from meta import version
 from options import ascii, debug
 from safe_print import fs_enc
+from utils.util_io import StringIOu as StringIO
+from utils.util_os import expanduseru, getenvu, is_superuser, listdir_re, which
+from utils.util_str import create_replace_function, safe_unicode, strtr
 
 # Runtime configuration
 
@@ -85,12 +84,8 @@ datahome_default = os.path.join(xdg_data_home_default, appbasename)
 if not datahome_default in data_dirs:
     data_dirs.append(datahome_default)
 data_dirs.extend(os.path.join(dir_, appbasename) for dir_ in xdg_data_dirs)
-extra_data_dirs.extend(
-    os.path.join(dir_, "argyllcms") for dir_ in xdg_data_dirs
-)
-extra_data_dirs.extend(
-    os.path.join(dir_, "color", "argyll") for dir_ in xdg_data_dirs
-)
+extra_data_dirs.extend(os.path.join(dir_, "argyllcms") for dir_ in xdg_data_dirs)
+extra_data_dirs.extend(os.path.join(dir_, "color", "argyll") for dir_ in xdg_data_dirs)
 
 exe_ext = ""
 profile_ext = ".icc"
@@ -421,7 +416,7 @@ def getbitmap(name, display_missing_icon=True, scale=True, use_mask=False):
 
 def get_bitmap_as_icon(size, name, scale=True):
     """Like geticon, but return a wx.Icon instance"""
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     icon = wx.EmptyIcon()
     if sys.platform == "darwin" and wx.VERSION >= (2, 9) and size > 128:
@@ -437,14 +432,9 @@ def get_argyll_data_dir():
         argyll_data_dirname = "color"
     else:
         argyll_data_dirname = "ArgyllCMS"
-    if sys.platform == "darwin" and getcfg("argyll.version") < "1.5.0":
-        return os.path.join(
-            library if is_superuser() else library_home, argyll_data_dirname
-        )
-    else:
-        return os.path.join(
-            commonappdata[0] if is_superuser() else appdata, argyll_data_dirname
-        )
+    return os.path.join(
+        commonappdata[0] if is_superuser() else appdata, argyll_data_dirname
+    )
 
 
 def get_display_name(n=None, include_geometry=False):
@@ -452,7 +442,7 @@ def get_display_name(n=None, include_geometry=False):
     if n is None:
         n = getcfg("display.number") - 1
     displays = getcfg("displays")
-    if n >= 0 and n < len(displays):
+    if 0 <= n < len(displays):
         if include_geometry:
             return displays[n]
         else:
@@ -488,7 +478,7 @@ def get_display_number(display_no):
     """Translate from Argyll display index to wx display index"""
     if is_virtual_display(display_no):
         return 0
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     try:
         display = getcfg("displays")[display_no]
@@ -508,7 +498,7 @@ def get_display_number(display_no):
 
 def get_display_rects():
     """Return the Argyll enumerated display coordinates and sizes"""
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     display_rects = []
     for i, display in enumerate(getcfg("displays")):
@@ -520,7 +510,7 @@ def get_display_rects():
 
 def get_icon_bundle(sizes, name):
     """Return a wx.IconBundle with given icon sizes"""
-    from wxaddons import wx
+    from displaycal_wx.wxaddons import wx
 
     iconbundle = wx.IconBundle()
     if not sizes:
@@ -541,7 +531,7 @@ def get_instrument_name():
     """Return name of currently configured instrument"""
     n = getcfg("comport.number") - 1
     instrument_names = getcfg("instruments")
-    if n >= 0 and n < len(instrument_names):
+    if 0 <= n < len(instrument_names):
         return instrument_names[n]
     return ""
 
@@ -1332,7 +1322,7 @@ def getcfg(name, fallback=True, raw=False, cfg=cfg):
         deftype = type(defval)
     if cfg.has_option(configparser.DEFAULTSECT, name):
         try:
-            value = str(cfg.get(configparser.DEFAULTSECT, name), "UTF-8")
+            value = cfg.get(configparser.DEFAULTSECT, name)
         except UnicodeDecodeError:
             pass
         else:
@@ -1378,19 +1368,19 @@ def getcfg(name, fallback=True, raw=False, cfg=cfg):
             elif name == "copyright":
                 # Make sure DisplayCAL and Argyll version are up-to-date
                 pattern = re.compile(
-                    "(%s(?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*" % appname, re.I
+                    r"(%s(?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*" % appname, re.I
                 )
                 repl = create_replace_function("\\1%s", version)
                 value = re.sub(pattern, repl, value)
                 if appbasename != appname:
                     pattern = re.compile(
-                        "(%s(?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*" % appbasename,
+                        r"(%s(?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*" % appbasename,
                         re.I,
                     )
                     repl = create_replace_function("\\1%s", version)
                     value = re.sub(pattern, repl, value)
                 pattern = re.compile(
-                    "(Argyll(?:\s*CMS)?)((?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*", re.I
+                    r"(Argyll(?:\s*CMS)?)((?:\s*v(?:ersion|\.)?)?\s*)\d+(?:\.\d+)*", re.I
                 )
                 if defval.split()[-1] != "CMS":
                     repl = create_replace_function("\\1\\2%s", defval.split()[-1])
@@ -1834,7 +1824,7 @@ def set_default_app_dpi():
     global dpiset
     if not dpiset and not getcfg("app.dpi", False):
         # HighDPI support
-        from wxaddons import wx
+        from displaycal_wx.wxaddons import wx
 
         dpiset = True
         if sys.platform in ("darwin", "win32"):
@@ -1920,7 +1910,7 @@ def get_hidpi_scaling_factor():
             # e.g. '1.5;2.0;'
             screen_scale_factors = os.getenv("QT_SCREEN_SCALE_FACTORS", "").split(";")
             if screen_scale_factors:
-                from wxaddons import wx
+                from displaycal_wx.wxaddons import wx
 
                 match = False
                 app = wx.GetApp()
@@ -2012,7 +2002,7 @@ def setcfg(name, value, cfg=cfg):
                 )
                 for v in value
             )
-        cfg.set(configparser.DEFAULTSECT, name, str(value).encode("UTF-8"))
+        cfg.set(configparser.DEFAULTSECT, name, value)
 
 
 def setcfg_cond(condition, name, value, set_if_backup_exists=False, restore=True):
